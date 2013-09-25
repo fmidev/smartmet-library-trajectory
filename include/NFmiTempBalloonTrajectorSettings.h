@@ -55,3 +55,7 @@ private:
 							// 5. loppu (osunut takaisin maahan) eli kNoDirection
 	 double itsCurrentFloatTimeInMinutes; // jos 0, ei kellunta ole vielä alkanut, tämän avulla lasketaan milloin kellunta lopetetaan
 };
+
+inline std::ostream& operator<<(std::ostream& os, const NFmiTempBalloonTrajectorSettings& item){item.Write(os); return os;}
+inline std::istream& operator>>(std::istream& is, NFmiTempBalloonTrajectorSettings& item){item.Read(is); return is;}
+
