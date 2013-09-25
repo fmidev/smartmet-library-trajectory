@@ -332,8 +332,8 @@ NFmiTrajectory::NFmiTrajectory(void)
 ,itsPlumeParticleCount(50)
 ,itsStartLocationRangeInKM(0)
 ,itsPressureLevel(850)
-,itsIsentropicTpotValue(kFloatMissing)
 ,itsStartPressureLevelRange(0)
+,itsIsentropicTpotValue(kFloatMissing)
 ,itsStartTimeRangeInMinutes(0)
 ,itsDirection(kForward)
 ,itsCrossSectionTrajectoryPoints()
@@ -359,8 +359,8 @@ NFmiTrajectory::NFmiTrajectory(const NFmiPoint &theLatLon, const NFmiMetTime &th
 ,itsPlumeParticleCount(50)
 ,itsStartLocationRangeInKM(0)
 ,itsPressureLevel(850)
-,itsIsentropicTpotValue(kFloatMissing)
 ,itsStartPressureLevelRange(0)
+,itsIsentropicTpotValue(kFloatMissing)
 ,itsStartTimeRangeInMinutes(0)
 ,itsDirection(kForward)
 ,itsCrossSectionTrajectoryPoints()
@@ -504,7 +504,7 @@ void NFmiTrajectory::Write(std::ostream& os) const
 	os << itsStartLocationRangeInKM << " " << itsPressureLevel << " " << itsStartPressureLevelRange << " " << itsIsentropicTpotValue << " " << itsStartTimeRangeInMinutes << std::endl;
 
 	os << "// Direction + PlumesUsed + Isentropic + fCalcTempBalloonTrajectories" << std::endl;
-	os << itsDirection << " " << fPlumesUsed << " " << fIsentropic << " " << fCalcTempBalloonTrajectories << std::endl;
+	os << static_cast<int>(itsDirection) << " " << fPlumesUsed << " " << fIsentropic << " " << fCalcTempBalloonTrajectories << std::endl;
 
 	os << "// TempBalloonTrajectorSettings" << std::endl;
 	os << itsTempBalloonTrajectorSettings << std::endl;
@@ -584,9 +584,9 @@ NFmiTrajectorySystem::NFmiTrajectorySystem(NFmiInfoOrganizer *theInfoOrganizer, 
 ,fShowTrajectoryAnimationMarkers(true)
 ,fSelectedTrajectoryIsentropic(false)
 ,fShowTrajectoriesInCrossSectionView(false)
+,fUseMapTime(false)
 ,itsTempBalloonTrajectorSettings()
 ,fCalcTempBalloonTrajectors(false)
-,fUseMapTime(false)
 ,fTrajectorySaveEnabled(true)
 ,itsTrajectorySavePath()
 ,itsTrajectorySaveFilePattern()
@@ -637,10 +637,12 @@ static NFmiMetTime CalcRandStartTime(const NFmiMetTime &theStartTime, double the
 
 static NFmiPoint CalcRandStartPoint(const NFmiPoint &theStartPoint, double theStartLocationRangeInKM)
 {
+    const bool usePacificView = false;
+
 	double rangeRandValue = theStartLocationRangeInKM * 1000 * static_cast<double>(rand()) / RAND_MAX; // joku reaali luku v‰lill‰ 0 - 1
 	double dirRandValue = 360 * static_cast<double>(rand()) / RAND_MAX; // joku reaali luku v‰lill‰ 0 - 1
 	NFmiLocation loc(theStartPoint);
-	loc.SetLocation(dirRandValue, rangeRandValue);
+	loc.SetLocation(dirRandValue, rangeRandValue, usePacificView);
 	return loc.GetLocation();
 }
 
@@ -792,7 +794,8 @@ void NFmiTrajectorySystem::CalculateSingleTrajectory(boost::shared_ptr<NFmiFastQ
 			double dir = ::fmod(WD + 180, 360);
 			if(!forwardDir)
 				dir = ::fmod(WD, 360); // backwardissa k‰‰nnet‰‰n tuuli 180 astetta
-			nextLoc = currentLoc.GetLocation(dir, dist);
+			const bool usePacificView = false;
+			nextLoc = currentLoc.GetLocation(dir, dist, usePacificView);
 			theTrajector.AddPoint(nextLoc.GetLocation());
 			currentLoc = nextLoc;
 			index++;
@@ -926,7 +929,8 @@ static NFmiLocation CalcNewLocation(const NFmiLocation &theCurrentLocation, doub
 {
 		double dist = WS * theTimeStepInMinutes * 60; // saadaan kuljettu matka metrein‰
 		double dir = ::fmod(isForwardDir ? (WD + 180) : WD, 360); // jos backward trajectory pit‰‰ k‰‰nt‰‰ virtaus suunta 180 asteella
-		return theCurrentLocation.GetLocation(dir, dist);
+		const bool usePacificView = false;
+		return theCurrentLocation.GetLocation(dir, dist, usePacificView);
 }
 
 
@@ -1044,7 +1048,7 @@ static double CalcNewPressureLevelIsentropically(boost::shared_ptr<NFmiFastQuery
 			value1 = value2;
 			P1 = P2;
 			levelIndex1 = levelIndex2;
-			levelIndex2 = (firstDirectionUp) ? ++levelIndex2  : --levelIndex2;
+			levelIndex2 = (firstDirectionUp) ? levelIndex2+1  : levelIndex2-1;
 			value2 = theInfo->FastPressureLevelValue(xInd, yInd, tInd, levelIndex2);
 			P2 = GetPressureValue(theInfo, xInd, yInd, tInd, levelIndex2, hybridData, thePressureParamIndex);
 			if(IsValueBetween(theWantedTpot, value1, value2))
@@ -1063,7 +1067,7 @@ static double CalcNewPressureLevelIsentropically(boost::shared_ptr<NFmiFastQuery
 			value1 = value2;
 			P1 = P2;
 			levelIndex1 = levelIndex2;
-			levelIndex2 = (firstDirectionUp) ? --levelIndex2  : ++levelIndex2; // t‰ss‰ piti k‰‰nt‰‰ level laskuria!
+			levelIndex2 = (firstDirectionUp) ? levelIndex2-1  : levelIndex2+1; // t‰ss‰ piti k‰‰nt‰‰ level laskuria!
 			value2 = theInfo->FastPressureLevelValue(xInd, yInd, tInd, levelIndex2);
 			P2 = GetPressureValue(theInfo, xInd, yInd, tInd, levelIndex2, hybridData, thePressureParamIndex);
 			if(IsValueBetween(theWantedTpot, value1, value2))
@@ -1328,7 +1332,7 @@ std::string NFmiTrajectorySystem::MakeCurrentTrajectorySaveFileName(void)
 	NFmiMetTime currentTime(1);
 	// t‰ss‰ siis rakennetaan ajan perusteella tiedosto nimi, olettaen ett‰ itsTrajectorySaveFilePattern
 	// sis‰lt‰‰ ToStr:n mukaiset aikapatternit
-	std::string fileNameWithTimeStamp = currentTime.ToStr(itsTrajectorySaveFilePattern, kFinnish);
+	std::string fileNameWithTimeStamp = currentTime.ToStr(itsTrajectorySaveFilePattern, kFinnish).CharPtr();
 	std::string finalFileName = itsTrajectorySavePath;
 	if(finalFileName.size())
 	{
@@ -1529,7 +1533,7 @@ void NFmiTrajectorySystem::Write(std::ostream& os) const
 	os << itsSelectedStartLocationRangeInKM << " " << itsSelectedPressureLevel << " " << itsSelectedStartPressureLevelRange << std::endl;
 
 	os << "// SelectedDirection + SelectedStartTimeRangeInMinutes" << std::endl;
-	os << itsSelectedDirection << " " << itsSelectedStartTimeRangeInMinutes << std::endl;
+	os << static_cast<int>(itsSelectedDirection) << " " << itsSelectedStartTimeRangeInMinutes << std::endl;
 
 	os << "// PlumesUsed + TrajectoryViewOn + ShowTrajectoryArrows + ShowTrajectoryAnimationMarkers + SelectedTrajectoryIsentropic + ShowTrajectoriesInCrossSectionView + UseMapTime" << std::endl;
 	os << fPlumesUsed << " " << fTrajectoryViewOn << " " << fShowTrajectoryArrows << " " << fShowTrajectoryAnimationMarkers << " " << fSelectedTrajectoryIsentropic << " " << fShowTrajectoriesInCrossSectionView << " " << fUseMapTime << std::endl;
