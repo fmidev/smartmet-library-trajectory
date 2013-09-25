@@ -3,15 +3,14 @@
 //
 
 #include "NFmiTrajectorySystem.h"
-#include "NFmiFastQueryInfo.h"
-#include "NFmiInfoOrganizer.h"
-#include "NFmiProducerName.h"
-#include "NFmiProducerSystem.h"
-#include "NFmiSettings.h"
-//#include "FmiMeteditorDefinitions.h"
-#include "NFmiDataStoringHelpers.h"
-#include "NFmiValueString.h"
-#include "NFmiDataModifierAvg.h"
+#include <newbase/NFmiDataModifierAvg.h>
+#include <newbase/NFmiFastQueryInfo.h>
+#include <newbase/NFmiProducerName.h>
+#include <newbase/NFmiSettings.h>
+#include <newbase/NFmiValueString.h>
+#include <smarttools/NFmiDataStoringHelpers.h>
+#include <smarttools/NFmiInfoOrganizer.h>
+#include <smarttools/NFmiProducerSystem.h>
 #include <fstream>
 
 

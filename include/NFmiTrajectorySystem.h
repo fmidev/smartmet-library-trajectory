@@ -6,12 +6,12 @@
 
 #pragma once
 
-#include "NFmiDataMatrix.h"
-#include "NFmiTimeBag.h"
-#include "NFmiPoint.h"
-#include "NFmiProducer.h"
-#include "NFmiRawTempStationInfoSystem.h"
-#include "boost/shared_ptr.hpp"
+#include <newbase/NFmiDataMatrix.h>
+#include <newbase/NFmiTimeBag.h>
+#include <newbase/NFmiPoint.h>
+#include <newbase/NFmiProducer.h>
+#include <smarttools/NFmiRawTempStationInfoSystem.h>
+#include <boost/shared_ptr.hpp>
 
 class NFmiInfoOrganizer;
 class NFmiFastQueryInfo;
