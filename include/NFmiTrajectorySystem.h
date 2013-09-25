@@ -10,19 +10,11 @@
 #include "NFmiTempBalloonTrajectorSettings.h"
 #include "NFmiTrajectory.h"
 
-#include <newbase/NFmiDataMatrix.h>
-#include <newbase/NFmiTimeBag.h>
-#include <newbase/NFmiPoint.h>
-#include <newbase/NFmiProducer.h>
 #include <smarttools/NFmiRawTempStationInfoSystem.h>
-#include <boost/shared_ptr.hpp>
 
 class NFmiInfoOrganizer;
 class NFmiFastQueryInfo;
 class NFmiProducerSystem;
-
-
-
 
 //_________________________________________________________ NFmiTrajectorySystem
 class NFmiTrajectorySystem
