@@ -56,6 +56,7 @@ else:
     env.Append( CXXFLAGS= [
         # MAINFLAGS from orig. Makefile ('-fPIC' is automatically added by SCons)
         #
+	"-std=c++0x",
         "-fPIC", 
         "-Wall", 
         "-Wno-unused-parameter",
@@ -99,11 +100,24 @@ if WINDOWS:
 elif LINUX:
     # newbase and smarttools from system install
     #
+    env.Append( CPPPATH= [ PREFIX+"/include/mysql" ] )
     env.Append( CPPPATH= [ PREFIX+"/include/smartmet" ] )
     env.Append( CPPPATH= [ PREFIX+"/include/smartmet/newbase" ] )
     env.Append( CPPPATH= [ PREFIX+"/include/smartmet/smarttools" ] )
 
-env.Append( LIBS= [ "smartmet_newbase", "smartmet_smarttools"] )
+env.Append( LIBS= [ "smartmet_smarttools",
+	            "smartmet_newbase",
+		    "smartmet_fminames",
+		    "smartmet_macgyver",
+		    "boost_filesystem-mt",
+		    "boost_iostreams-mt",
+		    "boost_locale-mt",
+		    "boost_program_options-mt",
+		    "boost_regex-mt",
+		    "boost_thread-mt",
+		    "boost_system-mt",
+		    "mysqlpp"
+		    ] )
 
 
 # Debug settings
@@ -121,7 +135,7 @@ if DEBUG:
     
             # EXTRAFLAGS from orig. Makefile (for 'debug' target)
             #
-            "-ansi",
+	    # "-ansi",  DO NOT USE THIS UNTIL c++11 is supported
             "-Wcast-align",
             "-Wcast-qual",
             "-Winline",
@@ -187,3 +201,7 @@ for fn in Glob("source/*.cpp"):
 # Make just the static lib (at least it should be default for just 'scons')
 
 env.Library( "smartmet_trajectory", objs )
+
+# Make main programs
+
+env.Program( "qdtrajectory", [ "qdtrajectory.cpp", "libsmartmet_trajectory.a" ] );

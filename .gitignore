@@ -2,4 +2,6 @@
 obj
 libsmartmet_trajectory.a
 *~
-
+*.o
+/qdtrajectory
+*.sqd
