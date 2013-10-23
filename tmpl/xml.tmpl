@@ -1,0 +1,17 @@
+<producer>
+<TMPL_var producer>
+</producer>
+<trajectory direction="<TMPL_var direction>">
+<points>
+<TMPL_foreach trajectory.points as point><point><time><TMPL_var timestamp></time><location type="4"><TMPL_var latitude> <TMPL_var longitude> <TMPL_var pressure> <TMPL_var height></location></point>
+</TMPL_foreach></points>
+</trajectory><TMPL_if plumes><TMPL_foreach plumes as plume>
+<producer>
+<TMPL_var producer>
+</producer>
+<trajectory direction="<TMPL_var direction>">
+<points>
+<TMPL_foreach plume.points as point><point><time><TMPL_var timestamp></time><location type="4"><TMPL_var latitude> <TMPL_var longitude> <TMPL_var pressure> <TMPL_var height></location></point>
+</TMPL_foreach></points>
+</trajectory></TMPL_foreach></TMPL_if>
+

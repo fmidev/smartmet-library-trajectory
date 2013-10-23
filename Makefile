@@ -37,6 +37,11 @@ rpmrelease := $(shell grep "^Release:" $(LIB).spec  | cut -d\  -f 2 | tr . _)
 
 rpmexcludevcs := $(shell tar --help | grep -m 1 -o -- '--exclude-vcs')
 
+# Templates
+
+TEMPLATES = $(wildcard tmpl/*.tmpl)
+BYTECODES = $(TEMPLATES:%.tmpl=%.c2t)
+
 # What to install
 
 LIBFILE = libsmartmet_$(LIB).a
@@ -53,18 +58,18 @@ INSTALL_DATA = install -m 664
 #
 SCONS_FLAGS += objdir=$(objdir) prefix=$(PREFIX)
 
-all release:
+all release: $(BYTECODES)
 	scons $(SCONS_FLAGS) $(LIBFILE) $(PROG)
 
-debug:
+debug:  $(BYTECODES)
 	scons $(SCONS_FLAGS) debug=1 $(LIBFILE) $(PROG)
 
-profile:
+profile: $(BYTECODES)
 	scons $(SCONS_FLAGS) profile=1 $(LIBFILE) $(PROG)
 
 clean:
 	@#scons -c objdir=$(objdir)
-	-rm -f $(LIBFILE) *~ source/*~ include/*~ main/*.o $(PROG) .sconsign.dblite
+	-rm -f $(LIBFILE) *~ source/*~ include/*~ main/*.o $(PROG) .sconsign.dblite tmpl/*.c2t
 	-rm -rf $(objdir)
 
 install:
@@ -107,6 +112,7 @@ tag:
 
 cppcheck:
 	cppcheck -DUNIX -I include -I $(includedir) source
+
 headertest:
 	@echo "Checking self-sufficiency of each header:"
 	@echo
@@ -116,4 +122,7 @@ headertest:
 	echo "int main() { return 0; }" >> /tmp/$(LIB).cpp; \
 	$(CC) $(CFLAGS) $(INCLUDES) -o /dev/null /tmp/$(LIB).cpp $(LIBS); \
 	done
+
+%.c2t: %.tmpl
+	ctpp2c $< $@
 
