@@ -56,6 +56,7 @@ else:
     env.Append( CXXFLAGS= [
         # MAINFLAGS from orig. Makefile ('-fPIC' is automatically added by SCons)
         #
+	"-std=c++0x",
         "-fPIC", 
         "-Wall", 
         "-Wno-unused-parameter",
@@ -129,7 +130,7 @@ if DEBUG:
     
             # EXTRAFLAGS from orig. Makefile (for 'debug' target)
             #
-            "-ansi",
+	    # "-ansi",  DO NOT USE THIS UNTIL c++11 is supported
             "-Wcast-align",
             "-Wcast-qual",
             "-Winline",
