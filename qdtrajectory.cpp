@@ -1,7 +1,12 @@
+#include "NFmiTrajectory.h"
+#include "NFmiTrajectorySystem.h"
+
+#include <newbase/NFmiFastQueryInfo.h>
 #include <newbase/NFmiQueryData.h>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem/operations.hpp>
+#include <boost/make_shared.hpp>
 #include <boost/program_options.hpp>
 
 #include <stdexcept>
@@ -20,7 +25,8 @@ enum OutputFormat
 	GML,
 	GPX,
 	KML,
-	KMZ
+	KMZ,
+	XML
   };
 
 // ----------------------------------------------------------------------
@@ -71,6 +77,7 @@ OutputFormat parse_format(const std::string & desc)
   else if(name == "gpx")	return GPX;
   else if(name == "ascii")	return ASCII;
   else if(name == "csv")	return CSV;
+  else if(name == "xml")	return XML;
   else 
 	throw std::runtime_error("Unknown output format '"+desc+"'");
 }
@@ -138,6 +145,7 @@ bool parse_options(int argc, char * argv[])
 				<< "\tgpx\tGPS eXchange format" << std::endl
 				<< "\tkml\tKeyhole markup language" << std::endl
 				<< "\tkmz\tZipped KML" << std::endl
+				<< "\txml\tSimulation system native XML" << std::endl
 				<< std::endl
 				<< desc << std::endl;
 	  return false;
@@ -154,16 +162,50 @@ bool parse_options(int argc, char * argv[])
 
 // ----------------------------------------------------------------------
 /*!
+ * \brief Calculate a trajectory
+ */
+// ----------------------------------------------------------------------
+
+boost::shared_ptr<NFmiTrajectory>
+calculate_trajectory(boost::shared_ptr<NFmiFastQueryInfo> & theInfo)
+{
+  auto traj = boost::make_shared<NFmiTrajectory>();
+
+  traj->Producer(*theInfo->Producer());		// Copy producer information
+  // traj->DataType(...)					// Unused
+  traj->LatLon(NFmiPoint(25,60));			// Point of interest
+  traj->Time(NFmiMetTime());				// Start time of trajectory
+  traj->TimeStepInMinutes(10);				// Trajectory timestep in calculation & output
+  traj->TimeLengthInHours(24);				// Forecast length
+  traj->PlumesUsed(false);					// No plumes
+  traj->PlumeProbFactor(25);				// Plume disturbance factor percentage
+  traj->PlumeParticleCount(0);				// Plume size
+  traj->StartLocationRangeInKM(0);			// Radius of plume start locations
+  traj->StartTimeRangeInMinutes(0);			// +- time interval for particle departure
+  traj->PressureLevel(850);					// Initial pressure level
+  traj->StartPressureLevelRange(0);			// +- range of initial pressure level
+  traj->Direction(kForward);				// Track forward in time
+  traj->Isentropic(false);					// Do particles follow potential temperature
+  // traj->CalcTempBalloonTrajectors(false);
+  // traj->TempBalloonTrajectorSettings(NFmiTempBalloonTrajectorSettings());
+
+  NFmiTrajectorySystem::CalculateTrajectory(traj, theInfo);
+
+  return traj;
+}
+
+// ----------------------------------------------------------------------
+/*!
  * \brief Pretty print input file name
  */
 // ----------------------------------------------------------------------
 
-std::string pretty_input_filename(const std::string & filename)
+std::string pretty_input_filename(const std::string & theName)
 {
-  if(filename == "-")
+  if(theName == "-")
 	return "standard input";
   else
-	return "'" + filename + "'";
+	return "'" + theName + "'";
 }
 
 // ----------------------------------------------------------------------
@@ -182,6 +224,16 @@ int run(int argc, char * argv[])
   if(options.verbose)
 	std::cerr << "Reading querydata from " << pretty_input_filename(options.queryfile) << std::endl;
   NFmiQueryData qd(options.queryfile);
+  auto qi = boost::make_shared<NFmiFastQueryInfo>(&qd);
+
+  // Verify the data is suitable
+
+  if(qi->Level()->LevelType() != kFmiHybridLevel)
+	throw std::runtime_error("The input querydata must contain hybrid levels");
+
+  // Calculate the trajectory
+
+  auto trajectory = calculate_trajectory(qi);
 
   return 0;
 }
