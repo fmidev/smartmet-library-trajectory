@@ -103,7 +103,12 @@ elif LINUX:
     env.Append( CPPPATH= [ PREFIX+"/include/smartmet/newbase" ] )
     env.Append( CPPPATH= [ PREFIX+"/include/smartmet/smarttools" ] )
 
-env.Append( LIBS= [ "smartmet_newbase", "smartmet_smarttools"] )
+env.Append( LIBS= [ "smartmet_smarttools",
+	            "smartmet_newbase",
+		    "boost_filesystem-mt",
+		    "boost_program_options-mt",
+		    "boost_system-mt"
+		    ] )
 
 
 # Debug settings
