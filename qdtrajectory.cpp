@@ -2,7 +2,13 @@
 #include "NFmiTrajectorySystem.h"
 
 #include <newbase/NFmiFastQueryInfo.h>
+#include <newbase/NFmiPoint.h>
 #include <newbase/NFmiQueryData.h>
+
+#include <fminames/FmiLocationQueryOptions.h>
+#include <fminames/FmiLocationQuery.h>
+
+#include <macgyver/Cast.h>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem/operations.hpp>
@@ -11,6 +17,7 @@
 
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 // ----------------------------------------------------------------------
 /*!
@@ -40,6 +47,7 @@ struct Options
   Options();
 
   bool verbose;
+  NFmiPoint coordinate;
   unsigned int timestep;
   unsigned int hours;
   std::string queryfile;
@@ -64,6 +72,7 @@ Options options;
 
 Options::Options()
   : verbose(false)
+  , coordinate(NFmiPoint(kFloatMissing,kFloatMissing))
   , timestep(10)
   , hours(24)
   , queryfile("-")
@@ -102,6 +111,63 @@ OutputFormat parse_format(const std::string & desc)
 	throw std::runtime_error("Unknown output format '"+desc+"'");
 }
 
+// ----------------------------------------------------------------------
+/*!
+ * \brief Parse a lon,lat coordinate
+ */
+// ----------------------------------------------------------------------
+
+NFmiPoint parse_lonlat(const std::string & theStr)
+{
+  std::vector<std::string> parts;
+  boost::algorithm::split(parts, theStr, boost::is_any_of(","));
+
+  if(parts.size() != 2)
+	throw std::runtime_error("Invalid coordinate specification '"+theStr+"'");
+
+  return NFmiPoint(Fmi::number_cast<double>(parts[0]),
+				   Fmi::number_cast<double>(parts[1]));
+  
+}
+
+// ----------------------------------------------------------------------
+/*!
+ * \brief Parse a lat,lon coordinate
+ */
+// ----------------------------------------------------------------------
+
+NFmiPoint parse_latlon(const std::string & theStr)
+{
+  std::vector<std::string> parts;
+  boost::algorithm::split(parts, theStr, boost::is_any_of(","));
+
+  if(parts.size() != 2)
+	throw std::runtime_error("Invalid coordinate specification '"+theStr+"'");
+
+  return NFmiPoint(Fmi::number_cast<double>(parts[1]),
+				   Fmi::number_cast<double>(parts[0]));
+  
+}
+
+// ----------------------------------------------------------------------
+/*!
+ * \brief Print location information
+ */
+// ----------------------------------------------------------------------
+
+void print_location(std::ostream & out, const FmiNames::FmiSimpleLocation & theLoc)
+{
+  out << "Location name: " << theLoc.name << std::endl
+	  << "           id: " << theLoc.id << std::endl
+	  << "          lon: " << theLoc.lon << std::endl
+	  << "          lat: " << theLoc.lat << std::endl
+	  << "      country: " << theLoc.country << std::endl
+	  << "        admin: " << theLoc.admin << std::endl
+	  << "      feature: " << theLoc.feature << std::endl
+	  << "     timezone: " << theLoc.timezone << std::endl
+	  << "    elevation: " << theLoc.elevation << std::endl;
+}
+
 
 // ----------------------------------------------------------------------
 /*!
@@ -117,12 +183,23 @@ bool parse_options(int argc, char * argv[])
 
   std::string opt_format;
 
+  double opt_longitude = kFloatMissing;
+  double opt_latitude = kFloatMissing;
+  std::string opt_lonlat;
+  std::string opt_latlon;
+  std::string opt_place;
+
   po::options_description desc("Available options");
   desc.add_options()
 	("help,h" , "print out usage information")
 	("version,V" , "display version number")
 	("verbose,v" , po::bool_switch(&options.verbose), "verbose mode")
 	("querydata,q", po::value(&options.queryfile), "input querydata (standard input)")
+	("place,p", po::value(&opt_place), "location name")
+	("lonlat", po::value(&opt_lonlat), "longitude,latitude")
+	("latlon", po::value(&opt_latlon), "latitude,longitude")
+	("longitude,x", po::value(&opt_longitude), "dispersal longitude")
+	("latitude,y", po::value(&opt_latitude), "dispersal latitude")
 	("format,f", po::value(&opt_format), "output format (kml)")
 	("timestep,T", po::value(&options.timestep), "time step in minutes (10)")
 	("hours,H", po::value(&options.hours), "simulation length in hours (24)")
@@ -187,6 +264,34 @@ bool parse_options(int argc, char * argv[])
   if(!opt_format.empty())
 	options.format = parse_format(opt_format);
 
+  if(!opt_place.empty())
+	{
+	  FmiNames::FmiLocationQueryOptions opts;
+	  FmiNames::FmiLocationQuery query;
+	  auto res = query.FetchByName(opts,opt_place);
+	  if(res.empty())
+		throw std::runtime_error("Unknown location '"+opt_place);
+	  if(options.verbose)
+		print_location(std::cerr,res[0]);
+
+	  options.coordinate = NFmiPoint(res[0].lon,res[0].lat);
+	}
+
+  if(!opt_lonlat.empty())
+	options.coordinate = parse_lonlat(opt_lonlat);
+
+  if(!opt_latlon.empty())
+	options.coordinate = parse_latlon(opt_lonlat);
+
+  if(opt_longitude != kFloatMissing)
+	options.coordinate.X(opt_longitude);
+
+  if(opt_latitude != kFloatMissing)
+	options.coordinate.Y(opt_latitude);
+
+  if(options.coordinate.X() == kFloatMissing || options.coordinate.Y() == kFloatMissing)
+	throw std::runtime_error("No simulation coordinate specified");
+
   return true;
 }
 
@@ -207,7 +312,7 @@ calculate_trajectory(boost::shared_ptr<NFmiFastQueryInfo> & theInfo)
   // trajectory->DataType(...)					// Unused
 
   // Point of interest
-  trajectory->LatLon(NFmiPoint(25,60));
+  trajectory->LatLon(options.coordinate);
 
   // Start time, time step and simulation length
   trajectory->Time(NFmiMetTime());
