@@ -5,3 +5,4 @@ libsmartmet_trajectory.a
 *.o
 /qdtrajectory
 *.sqd
+*.c2t

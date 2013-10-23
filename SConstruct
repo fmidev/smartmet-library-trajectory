@@ -105,10 +105,12 @@ elif LINUX:
     env.Append( CPPPATH= [ PREFIX+"/include/smartmet/newbase" ] )
     env.Append( CPPPATH= [ PREFIX+"/include/smartmet/smarttools" ] )
 
-env.Append( LIBS= [ "smartmet_smarttools",
+env.Append( LIBS= [ "smartmet_brainstorm-spine",
+	    	    "smartmet_smarttools",
 	            "smartmet_newbase",
 		    "smartmet_fminames",
 		    "smartmet_macgyver",
+		    "boost_date_time-mt",
 		    "boost_filesystem-mt",
 		    "boost_iostreams-mt",
 		    "boost_locale-mt",
@@ -116,6 +118,7 @@ env.Append( LIBS= [ "smartmet_smarttools",
 		    "boost_regex-mt",
 		    "boost_thread-mt",
 		    "boost_system-mt",
+		    "ctpp2",
 		    "mysqlpp",
 		    "bz2",
 		    "rt"

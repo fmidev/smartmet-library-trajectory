@@ -10,7 +10,13 @@ Source0: %{name}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
 BuildRequires: libsmartmet-newbase >= 13.9.23
 BuildRequires: libsmartmet-smarttools >= 13.9.23
+BuildRequires: libsmartmet-fminames >= 13.9.23
+BuildRequires: libsmartmet-macgyver >= 13.9.23
 BuildRequires: boost-devel >= 1.53
+BuildRequires: ctpp2 >= 2.8.2
+Requires: libsmartmet_brainstorm-spine
+Requires: mysqlpp
+Requires: bz2
 Provides: qdtrajectory
 
 %description
