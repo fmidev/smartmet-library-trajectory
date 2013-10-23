@@ -15,6 +15,7 @@
 #include <boost/make_shared.hpp>
 #include <boost/program_options.hpp>
 
+#include <fstream>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -51,6 +52,7 @@ struct Options
   unsigned int timestep;
   unsigned int hours;
   std::string queryfile;
+  std::string outfile;
   OutputFormat format;
   unsigned int plumesize;
   double disturbance;
@@ -59,7 +61,7 @@ struct Options
   double pressure;
   double pressurerange;
   bool isentropic;
-  bool forwards;
+  bool backwards;
 };
 
 Options options;
@@ -76,6 +78,7 @@ Options::Options()
   , timestep(10)
   , hours(24)
   , queryfile("-")
+  , outfile("-")
   , format(XML)
   , plumesize(0)
   , disturbance(25)
@@ -84,7 +87,7 @@ Options::Options()
   , pressure(850)
   , pressurerange(0)
   , isentropic(false)
-  , forwards(true)
+  , backwards(false)
 {
 }
 
@@ -195,6 +198,7 @@ bool parse_options(int argc, char * argv[])
 	("version,V" , "display version number")
 	("verbose,v" , po::bool_switch(&options.verbose), "verbose mode")
 	("querydata,q", po::value(&options.queryfile), "input querydata (standard input)")
+	("outfile,o", po::value(&options.outfile), "output file name")
 	("place,p", po::value(&opt_place), "location name")
 	("lonlat", po::value(&opt_lonlat), "longitude,latitude")
 	("latlon", po::value(&opt_latlon), "latitude,longitude")
@@ -210,7 +214,7 @@ bool parse_options(int argc, char * argv[])
 	("pressure,P", po::value(&options.pressure), "initial dispersal pressure")
 	("pressurerange", po::value(&options.pressurerange), "plume dispersal pressure range")
 	("isentropic,i", po::bool_switch(&options.isentropic), "isentropic simulation")
-	("backwards,b", po::bool_switch(&options.forwards), "backwards simulation in time")
+	("backwards,b", po::bool_switch(&options.backwards), "backwards simulation in time")
 	;
 
   po::positional_options_description p;
@@ -331,7 +335,7 @@ calculate_trajectory(boost::shared_ptr<NFmiFastQueryInfo> & theInfo)
   trajectory->StartPressureLevelRange(options.pressurerange);
 
   // Forward or backward in time
-  trajectory->Direction(options.forwards ? kForward : kBackward);
+  trajectory->Direction(options.backwards ? kBackward : kForward);
 
   // Follow potential temperature
   trajectory->Isentropic(options.isentropic);
@@ -379,14 +383,32 @@ int run(int argc, char * argv[])
 
   // Verify the data is suitable
 
-  if(qi->Level()->LevelType() != kFmiHybridLevel)
-	throw std::runtime_error("The input querydata must contain hybrid levels");
+  auto leveltype = qi->Level()->LevelType();
+  if(leveltype != kFmiHybridLevel && leveltype != kFmiPressureLevel)
+	throw std::runtime_error("The input querydata must contain hybrid or pressure level data");
 
   // Calculate the trajectory
 
   auto trajectory = calculate_trajectory(qi);
 
-  std::cout << trajectory->ToXMLStr() << std::endl;
+  // Format the result
+
+  std::string result = trajectory->ToXMLStr();
+
+  // Write the output
+
+  if(options.outfile == "-")
+	std::cout << result << std::endl;
+  else
+	{
+	  std::ofstream out(options.outfile.c_str());
+	  if(!out)
+		throw std::runtime_error("Failed to open '"+options.outfile+"' for writing");
+	  if(options.verbose)
+		std::cerr << "Writing to '" + options.outfile + "'" << std::endl;
+	  out << result;
+	  out.close();
+	}
 
   return 0;
 }
