@@ -103,6 +103,7 @@ class NFmiTrajectorySystem
 
 	void Write(std::ostream& os) const;
 	void Read(std::istream& is);
+
 private:
 	void Make3DRandomizing(double &WS, double &WD, double &w, int theRandStep, int theCounter, double theRandomFactor, NFmiSingleTrajector &theTrajector);
 	void CalculateTrajectoryViewTimeBag(void);

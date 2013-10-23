@@ -521,7 +521,7 @@ static double CalcNewPressureLevelIsentropically(boost::shared_ptr<NFmiFastQuery
 				nextPressure = ::CalcLogPFromLinearValues(value1, value2, theWantedTpot, P1, P2);
 				return nextPressure;
 			}
-		} while(levelIndex2 > 0 && levelIndex2 < theInfo->SizeLevels());
+		} while(levelIndex2 > 0 && levelIndex2 < theInfo->SizeLevels()-1);
 
 		// jos ei löytynyt toisesta suunnasta, kokeillaan toista suuntaa
 		levelIndex2 = startLevel;
@@ -540,7 +540,7 @@ static double CalcNewPressureLevelIsentropically(boost::shared_ptr<NFmiFastQuery
 				nextPressure = ::CalcLogPFromLinearValues(value1, value2, theWantedTpot, P1, P2);
 				return nextPressure;
 			}
-		} while(levelIndex2 > 0 && levelIndex2 < theInfo->SizeLevels());
+		} while(levelIndex2 > 0 && levelIndex2 < theInfo->SizeLevels()-1);
 	}
 
 	return nextPressure;
