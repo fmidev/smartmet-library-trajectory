@@ -1,3 +1,5 @@
+#include <newbase/NFmiQueryData.h>
+
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/program_options.hpp>
@@ -31,6 +33,7 @@ struct Options
 {
   Options();
 
+  bool verbose;
   std::string queryfile;
   OutputFormat format;
 };
@@ -44,7 +47,8 @@ Options options;
 // ----------------------------------------------------------------------
 
 Options::Options()
-  : queryfile("-")
+  : verbose(false)
+  , queryfile("-")
   , format(KML)
 {
 }
@@ -90,6 +94,7 @@ bool parse_options(int argc, char * argv[])
   desc.add_options()
 	("help,h" , "print out usage information")
 	("version,V" , "display version number")
+	("verbose,v" , po::bool_switch(&options.verbose), "verbose mode")
 	("querydata,q", po::value(&options.queryfile), "input querydata (standard input)")
 	("format,f", po::value(&opt_format), "output format (kml)")
 	;
@@ -149,6 +154,20 @@ bool parse_options(int argc, char * argv[])
 
 // ----------------------------------------------------------------------
 /*!
+ * \brief Pretty print input file name
+ */
+// ----------------------------------------------------------------------
+
+std::string pretty_input_filename(const std::string & filename)
+{
+  if(filename == "-")
+	return "standard input";
+  else
+	return "'" + filename + "'";
+}
+
+// ----------------------------------------------------------------------
+/*!
  * \brief Main program without exception handling
  */
 // ----------------------------------------------------------------------
@@ -157,6 +176,12 @@ int run(int argc, char * argv[])
 {
   if(!parse_options(argc,argv))
 	return 0;
+
+  // Read input data
+
+  if(options.verbose)
+	std::cerr << "Reading querydata from " << pretty_input_filename(options.queryfile) << std::endl;
+  NFmiQueryData qd(options.queryfile);
 
   return 0;
 }

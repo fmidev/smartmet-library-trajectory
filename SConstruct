@@ -106,7 +106,10 @@ elif LINUX:
 env.Append( LIBS= [ "smartmet_smarttools",
 	            "smartmet_newbase",
 		    "boost_filesystem-mt",
+		    "boost_iostreams-mt",
 		    "boost_program_options-mt",
+		    "boost_regex-mt",
+		    "boost_thread-mt",
 		    "boost_system-mt"
 		    ] )
 
