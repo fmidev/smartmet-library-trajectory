@@ -94,16 +94,16 @@ rpm: clean
 	if [ -e $(LIB).spec ]; \
 	then \
 	  mkdir -p $(rpmsourcedir) ; \
-	  tar $(rpmexcludevcs) -C ../ -cf $(rpmsourcedir)/libsmartmet-$(LIB).tar $(LIB) ; \
-	  gzip -f $(rpmsourcedir)/libsmartmet-$(LIB).tar ; \
-	  TAR_OPTIONS=--wildcards rpmbuild -ta $(rpmsourcedir)/libsmartmet-$(LIB).tar.gz ; \
-	  rm -f $(rpmsourcedir)/libsmartmet-$(LIB).tar.gz ; \
+	  tar $(rpmexcludevcs) -C ../ -cf $(rpmsourcedir)/smartmet-$(LIB).tar $(LIB) ; \
+	  gzip -f $(rpmsourcedir)/smartmet-$(LIB).tar ; \
+	  TAR_OPTIONS=--wildcards rpmbuild -ta $(rpmsourcedir)/smartmet-$(LIB).tar.gz ; \
+	  rm -f $(rpmsourcedir)/smartmet-$(LIB).tar.gz ; \
 	else \
 	  echo $(rpmerr); \
 	fi;
 
 tag:
-	cvs -f tag 'libsmartmet_$(LIB)_$(rpmversion)-$(rpmrelease)' .
+	cvs -f tag 'smartmet_$(LIB)_$(rpmversion)-$(rpmrelease)' .
 
 cppcheck:
 	cppcheck -DUNIX -I include -I $(includedir) source
