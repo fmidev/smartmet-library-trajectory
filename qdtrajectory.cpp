@@ -40,8 +40,18 @@ struct Options
   Options();
 
   bool verbose;
+  unsigned int timestep;
+  unsigned int hours;
   std::string queryfile;
   OutputFormat format;
+  unsigned int plumesize;
+  double disturbance;
+  double arearadius;
+  double timeinterval;
+  double pressure;
+  double pressurerange;
+  bool isentropic;
+  bool forwards;
 };
 
 Options options;
@@ -54,8 +64,18 @@ Options options;
 
 Options::Options()
   : verbose(false)
+  , timestep(10)
+  , hours(24)
   , queryfile("-")
-  , format(KML)
+  , format(XML)
+  , plumesize(0)
+  , disturbance(25)
+  , arearadius(0)
+  , timeinterval(0)
+  , pressure(850)
+  , pressurerange(0)
+  , isentropic(false)
+  , forwards(true)
 {
 }
 
@@ -104,6 +124,16 @@ bool parse_options(int argc, char * argv[])
 	("verbose,v" , po::bool_switch(&options.verbose), "verbose mode")
 	("querydata,q", po::value(&options.queryfile), "input querydata (standard input)")
 	("format,f", po::value(&opt_format), "output format (kml)")
+	("timestep,T", po::value(&options.timestep), "time step in minutes (10)")
+	("hours,H", po::value(&options.hours), "simulation length in hours (24)")
+	("plumesize,N", po::value(&options.plumesize), "plume size (0)")
+	("disturbance,D", po::value(&options.disturbance), "plume disturbance factor (25)")
+	("radius,R", po::value(&options.arearadius), "plume dispersal radius in km (0)")
+	("interval,I", po::value(&options.timeinterval), "plume dispersal time interval (+-) in minutes (0)")
+	("pressure,P", po::value(&options.pressure), "initial dispersal pressure")
+	("pressurerange", po::value(&options.pressurerange), "plume dispersal pressure range")
+	("isentropic,i", po::bool_switch(&options.isentropic), "isentropic simulation")
+	("backwards,b", po::bool_switch(&options.forwards), "backwards simulation in time")
 	;
 
   po::positional_options_description p;
@@ -169,29 +199,45 @@ bool parse_options(int argc, char * argv[])
 boost::shared_ptr<NFmiTrajectory>
 calculate_trajectory(boost::shared_ptr<NFmiFastQueryInfo> & theInfo)
 {
-  auto traj = boost::make_shared<NFmiTrajectory>();
+  auto trajectory = boost::make_shared<NFmiTrajectory>();
 
-  traj->Producer(*theInfo->Producer());		// Copy producer information
-  // traj->DataType(...)					// Unused
-  traj->LatLon(NFmiPoint(25,60));			// Point of interest
-  traj->Time(NFmiMetTime());				// Start time of trajectory
-  traj->TimeStepInMinutes(10);				// Trajectory timestep in calculation & output
-  traj->TimeLengthInHours(24);				// Forecast length
-  traj->PlumesUsed(false);					// No plumes
-  traj->PlumeProbFactor(25);				// Plume disturbance factor percentage
-  traj->PlumeParticleCount(0);				// Plume size
-  traj->StartLocationRangeInKM(0);			// Radius of plume start locations
-  traj->StartTimeRangeInMinutes(0);			// +- time interval for particle departure
-  traj->PressureLevel(850);					// Initial pressure level
-  traj->StartPressureLevelRange(0);			// +- range of initial pressure level
-  traj->Direction(kForward);				// Track forward in time
-  traj->Isentropic(false);					// Do particles follow potential temperature
-  // traj->CalcTempBalloonTrajectors(false);
-  // traj->TempBalloonTrajectorSettings(NFmiTempBalloonTrajectorSettings());
+// Copy producer information
+  trajectory->Producer(*theInfo->Producer());
 
-  NFmiTrajectorySystem::CalculateTrajectory(traj, theInfo);
+  // trajectory->DataType(...)					// Unused
 
-  return traj;
+  // Point of interest
+  trajectory->LatLon(NFmiPoint(25,60));
+
+  // Start time, time step and simulation length
+  trajectory->Time(NFmiMetTime());
+  trajectory->TimeStepInMinutes(options.timestep);
+  trajectory->TimeLengthInHours(options.hours);
+
+  // Plume mode, disturbance factor as a percentage, plume size
+  trajectory->PlumesUsed(options.plumesize > 0);
+  trajectory->PlumeParticleCount(options.plumesize);
+  trajectory->PlumeProbFactor(options.disturbance);
+
+  // Plume initial dispersion radius, start time interval, and pressure disribution 
+  trajectory->StartLocationRangeInKM(options.arearadius);
+  trajectory->StartTimeRangeInMinutes(options.timeinterval);
+  trajectory->PressureLevel(options.pressure);
+  trajectory->StartPressureLevelRange(options.pressurerange);
+
+  // Forward or backward in time
+  trajectory->Direction(options.forwards ? kForward : kBackward);
+
+  // Follow potential temperature
+  trajectory->Isentropic(options.isentropic);
+
+  // Balloon trajectories
+  // trajectory->CalcTempBalloonTrajectors(false);
+  // trajectory->TempBalloonTrajectorSettings(NFmiTempBalloonTrajectorSettings());
+
+  NFmiTrajectorySystem::CalculateTrajectory(trajectory, theInfo);
+
+  return trajectory;
 }
 
 // ----------------------------------------------------------------------
@@ -234,6 +280,8 @@ int run(int argc, char * argv[])
   // Calculate the trajectory
 
   auto trajectory = calculate_trajectory(qi);
+
+  std::cout << trajectory->ToXMLStr() << std::endl;
 
   return 0;
 }
