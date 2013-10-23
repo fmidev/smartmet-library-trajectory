@@ -19,6 +19,39 @@ double NFmiTrajectorySystem::itsLatestVersionNumber = 1.0;
 static const NFmiMetTime gMissingTime(1900, 0, 0, 0);
 
 
+#if 0
+// ----------------------------------------------------------------------
+/*!
+ * \brief A demonstration on how trajectories can be calculated
+ */
+// ----------------------------------------------------------------------
+
+static void CalcMyTrajectory(boost::shared_ptr<NFmiFastQueryInfo> &theInfo)
+{
+    boost::shared_ptr<NFmiTrajectory> trajectory(new NFmiTrajectory());
+    trajectory->Producer(NFmiProducer(kFmiMTAHIRLAM, "Hirlam")); // tämä merkitään esim. XML-outputin tietoihin
+//  trajectory->DataType(itsSelectedDataType); // tätä ei tarvita tässä käytössä
+    trajectory->LatLon(NFmiPoint(25.12, 60.36));
+    trajectory->Time(NFmiMetTime()); // trajektorin aloitushetki
+    trajectory->TimeStepInMinutes(10); // minkäpituisin stepein trajektoria lasketaan, tämä on myös output tarkkuus
+    trajectory->TimeLengthInHours(24);
+    trajectory->PlumesUsed(false);
+    trajectory->PlumeProbFactor(25); // prosentuaalinen häirintä kerroin (vain pluumin partikkeleille)
+    trajectory->PlumeParticleCount(0); // kuinka monta partikkelia on pluumissa
+    trajectory->StartLocationRangeInKM(0); // säde minkä sisältä partikkelit alueellisesti lähtevät
+    trajectory->StartTimeRangeInMinutes(0); // aikahaarukka, minkä sisältä partikkelit lähtevät
+    trajectory->PressureLevel(850); // lähtöpainepinta
+    trajectory->StartPressureLevelRange(0); // korkeushaarukka minkä painepintojen sisältä (+- haarukka) partikkelit lähtevät
+    trajectory->Direction(kForward); // kForward tai kBackward
+    trajectory->Isentropic(false); // seuraako trajektori potentiaalilämpötilaa
+//  trajectory->CalcTempBalloonTrajectories(false); // tätä ei tarvita tässä käytössä
+//  trajectory->TempBalloonTrajectorSettings(NFmiTempBalloonTrajectorSettings()); // tätä ei tarvita tässä käytössä
+
+    NFmiTrajectorySystem::CalculateTrajectory(trajectory, theInfo);
+
+    std::cout << trajectory->ToXMLStr() << std::endl;
+}
+#endif
 
 //_________________________________________________________ NFmiTrajectorySystem
 NFmiTrajectorySystem::NFmiTrajectorySystem(NFmiInfoOrganizer *theInfoOrganizer, NFmiProducerSystem *theProducerSystem)
@@ -671,7 +704,7 @@ void NFmiTrajectorySystem::CalculateSingle3DTrajectory(boost::shared_ptr<NFmiFas
 
 		if(!::MakeGroundAdjustment(WS, WD, w, currentPressure, theInfo, xInd, yInd, tInd, groundLevelIndex, hybridData, usedWParam))
 			break;
-		Make3DRandomizing(WS, WD, w, theRandStep, index, theRandFactor, theTrajector);
+		NFmiTrajectorySystem::Make3DRandomizing(WS, WD, w, theRandStep, index, theRandFactor, theTrajector);
 		nextLoc = ::CalcNewLocation(currentLoc, WS, WD, theTimeStepInMinutes, forwardDir);
 
 		(forwardDir) ? currentTime.NextMetTime() : currentTime.PreviousMetTime(); // isentrooppi laskuja varten pitää laskea seuraava aika

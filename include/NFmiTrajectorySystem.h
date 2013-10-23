@@ -99,17 +99,17 @@ class NFmiTrajectorySystem
 	void MakeSureThatTrajectoriesAreCalculated(void); // t‰m‰ on viewmakro optimointia varten tehty varmistus funktio. T‰t‰ kutsutaan trajektoryView-luokassa ennen varsinaista trajektorien piirtoa
 	void SetCaseStudyTimes(const NFmiMetTime &theCaseStudyTime);
 	void CalculateTrajectory(boost::shared_ptr<NFmiTrajectory> &theTrajectory);
-	void CalculateTrajectory(boost::shared_ptr<NFmiTrajectory> &theTrajectory, boost::shared_ptr<NFmiFastQueryInfo> &theInfo);
+	static void CalculateTrajectory(boost::shared_ptr<NFmiTrajectory> &theTrajectory, boost::shared_ptr<NFmiFastQueryInfo> &theInfo);
 
 	void Write(std::ostream& os) const;
 	void Read(std::istream& is);
 
 private:
-	void Make3DRandomizing(double &WS, double &WD, double &w, int theRandStep, int theCounter, double theRandomFactor, NFmiSingleTrajector &theTrajector);
+	static void Make3DRandomizing(double &WS, double &WD, double &w, int theRandStep, int theCounter, double theRandomFactor, NFmiSingleTrajector &theTrajector);
 	void CalculateTrajectoryViewTimeBag(void);
 	void SetSelectedValuesToTrajectory(boost::shared_ptr<NFmiTrajectory> &theTrajectory, bool fInitialize, bool fKeepLevelSettings);
-	void CalculateSingleTrajectory(boost::shared_ptr<NFmiFastQueryInfo> &theInfo, NFmiSingleTrajector &theTrajector, int theTimeStepInMinutes, int theTimeLengthInHours, double theRandFactor, int theRandStep, FmiDirection theDirection, bool fIsentropic, bool fCalcBalloonTrajectory, NFmiTempBalloonTrajectorSettings &theTempBalloonTrajectorSettings);
-	void CalculateSingle3DTrajectory(boost::shared_ptr<NFmiFastQueryInfo> &theInfo, NFmiSingleTrajector &theTrajector, int theTimeStepInMinutes, int theTimeLengthInHours, double theRandFactor, int theRandStep, FmiDirection theDirection, bool fIsentropic, bool fCalcBalloonTrajectory, NFmiTempBalloonTrajectorSettings &theTempBalloonTrajectorSettings);
+	static void CalculateSingleTrajectory(boost::shared_ptr<NFmiFastQueryInfo> &theInfo, NFmiSingleTrajector &theTrajector, int theTimeStepInMinutes, int theTimeLengthInHours, double theRandFactor, int theRandStep, FmiDirection theDirection, bool fIsentropic, bool fCalcBalloonTrajectory, NFmiTempBalloonTrajectorSettings &theTempBalloonTrajectorSettings);
+	static void CalculateSingle3DTrajectory(boost::shared_ptr<NFmiFastQueryInfo> &theInfo, NFmiSingleTrajector &theTrajector, int theTimeStepInMinutes, int theTimeLengthInHours, double theRandFactor, int theRandStep, FmiDirection theDirection, bool fIsentropic, bool fCalcBalloonTrajectory, NFmiTempBalloonTrajectorSettings &theTempBalloonTrajectorSettings);
 
 	NFmiInfoOrganizer *itsInfoOrganizer; // t‰‰lt‰ saadaan data, ei omista/tuhoa!
 	NFmiProducerSystem *itsProducerSystem;
