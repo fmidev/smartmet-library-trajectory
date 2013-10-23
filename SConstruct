@@ -187,3 +187,7 @@ for fn in Glob("source/*.cpp"):
 # Make just the static lib (at least it should be default for just 'scons')
 
 env.Library( "smartmet_trajectory", objs )
+
+# Make main programs
+
+env.Program( "qdtrajectory", [ "qdtrajectory.cpp", "libsmartmet_trajectory.a" ] );

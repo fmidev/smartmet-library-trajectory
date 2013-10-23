@@ -1,4 +1,5 @@
 LIB = trajectory
+PROG = qdtrajectory
 
 ifeq ($(origin PREFIX), undefined)
   PREFIX = /usr
@@ -53,17 +54,17 @@ INSTALL_DATA = install -m 664
 SCONS_FLAGS += objdir=$(objdir) prefix=$(PREFIX)
 
 all release:
-	scons $(SCONS_FLAGS) $(LIBFILE)
+	scons $(SCONS_FLAGS) $(LIBFILE) $(PROG)
 
 debug:
-	scons $(SCONS_FLAGS) debug=1 $(LIBFILE)
+	scons $(SCONS_FLAGS) debug=1 $(LIBFILE) $(PROG)
 
 profile:
-	scons $(SCONS_FLAGS) profile=1 $(LIBFILE)
+	scons $(SCONS_FLAGS) profile=1 $(LIBFILE) $(PROG)
 
 clean:
 	@#scons -c objdir=$(objdir)
-	-rm -f $(LIBFILE) *~ source/*~ include/*~
+	-rm -f $(LIBFILE) *~ source/*~ include/*~ *.o $(PROG) .sconsign.dblite
 	-rm -rf $(objdir)
 
 install:
@@ -75,6 +76,12 @@ install:
 	done
 	@mkdir -p $(libdir)
 	$(INSTALL_DATA) $(LIBFILE) $(libdir)/$(LIBFILE)
+	mkdir -p $(bindir)
+	@list='$(PROG)'; \
+	for prog in $$list; do \
+	  echo $(INSTALL_PROG) $$prog $(bindir)/$$prog; \
+	  $(INSTALL_PROG) $$prog $(bindir)/$$prog; \
+	done
 
 test:
 	cd test && make test
