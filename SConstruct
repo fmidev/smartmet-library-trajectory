@@ -116,9 +116,12 @@ env.Append( LIBS= [ "smartmet_smarttools",
 		    "boost_regex-mt",
 		    "boost_thread-mt",
 		    "boost_system-mt",
-		    "mysqlpp"
+		    "mysqlpp",
+		    "bz2",
+		    "rt"
 		    ] )
 
+env.ParseConfig("pkg-config --libs icu-i18n")
 
 # Debug settings
 #
