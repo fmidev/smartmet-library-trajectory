@@ -13,10 +13,12 @@
 
 enum OutputFormat
   {
-	KML,
-	KMZ,
 	ASCII,
-	CSV
+	CSV,
+	GML,
+	GPX,
+	KML,
+	KMZ
   };
 
 // ----------------------------------------------------------------------
@@ -55,16 +57,16 @@ Options::Options()
 
 OutputFormat parse_format(const std::string & desc)
 {
+  static 
+
   std::string name = boost::algorithm::to_lower_copy(desc);
 
-  if(name == "kml")
-	return KML;
-  else if(name == "kmz")
-	return KMZ;
-  else if(name == "ascii")
-	return ASCII;
-  else if(name == "csv")
-	return CSV;
+  if     (name == "kml")	return KML;
+  else if(name == "kmz")	return KMZ;
+  else if(name == "gml")	return GML;
+  else if(name == "gpx")	return GPX;
+  else if(name == "ascii")	return ASCII;
+  else if(name == "csv")	return CSV;
   else 
 	throw std::runtime_error("Unknown output format '"+desc+"'");
 }
@@ -125,10 +127,12 @@ bool parse_options(int argc, char * argv[])
 				<< std::endl
 				<< "Supported output formats:" << std::endl
 				<< std::endl
-				<< "\tkml\tKeyhole markup language" << std::endl
-				<< "\tkmz\tZipped KML" << std::endl
 				<< "\tascii\tTabular coordinate data" << std::endl
 				<< "\tcsv\tComma separated coordinate data" << std::endl
+				<< "\tgml\tGeography markaup language" << std::endl
+				<< "\tgpx\tGPS eXchange format" << std::endl
+				<< "\tkml\tKeyhole markup language" << std::endl
+				<< "\tkmz\tZipped KML" << std::endl
 				<< std::endl
 				<< desc << std::endl;
 	  return false;
