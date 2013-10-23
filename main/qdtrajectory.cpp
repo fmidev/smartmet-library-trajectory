@@ -8,6 +8,7 @@
 #include <fminames/FmiLocationQueryOptions.h>
 #include <fminames/FmiLocationQuery.h>
 
+#include <macgyver/AnsiEscapeCodes.h>
 #include <macgyver/Cast.h>
 
 #include <boost/algorithm/string.hpp>
@@ -46,6 +47,7 @@ enum OutputFormat
 struct Options
 {
   Options();
+  void report(std::ostream & out) const;
 
   bool verbose;
   NFmiPoint coordinate;
@@ -53,6 +55,7 @@ struct Options
   unsigned int hours;
   std::string queryfile;
   std::string outfile;
+  std::string templatedir;
   OutputFormat format;
   unsigned int plumesize;
   double disturbance;
@@ -79,6 +82,7 @@ Options::Options()
   , hours(24)
   , queryfile("-")
   , outfile("-")
+  , templatedir("inc")	// TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
   , format(XML)
   , plumesize(0)
   , disturbance(25)
@@ -90,6 +94,38 @@ Options::Options()
   , backwards(false)
 {
 }
+
+// ----------------------------------------------------------------------
+/*!
+ * \brief Print the parsed options
+ */
+// ----------------------------------------------------------------------
+
+void Options::report(std::ostream & out) const
+{
+#define HEADER(stream,title) stream << ANSI_BOLD_ON << ANSI_UNDERLINE_ON << title << ANSI_BOLD_OFF << ANSI_UNDERLINE_OFF << std::endl;
+#define REPORT(stream,name,value) stream << ANSI_ITALIC_ON << std::setw(35) << std::left << name << ANSI_ITALIC_OFF << value << std::endl;
+
+  HEADER(out,"Options summary");
+  REPORT(out,"Verbose:",verbose);
+  REPORT(out,"Longitude:",coordinate.X());
+  REPORT(out,"Latitude:",coordinate.Y());
+  REPORT(out,"Time step in minutes:",timestep);
+  REPORT(out,"Simulation length in hours:",hours);
+  REPORT(out,"Input querydata:",queryfile);
+  REPORT(out,"Output file:",outfile);
+  REPORT(out,"Template directory:",templatedir);
+  REPORT(out,"Plume size:",plumesize);
+  REPORT(out,"Plume disturbance factor:",disturbance);
+  REPORT(out,"Plume dispersion radius in km:",arearadius);
+  REPORT(out,"Plume time dispersion in minutes:", timeinterval);
+  REPORT(out,"Plume pressure level:", pressure);
+  REPORT(out,"Plume pressure dispersion in hPa:", pressurerange);
+  REPORT(out,"Isentropic mode:",isentropic);
+  REPORT(out,"Backward simulation in time:",backwards);
+  out << std::endl;
+}
+
 
 // ----------------------------------------------------------------------
 /*!
@@ -205,6 +241,7 @@ bool parse_options(int argc, char * argv[])
 	("longitude,x", po::value(&opt_longitude), "dispersal longitude")
 	("latitude,y", po::value(&opt_latitude), "dispersal latitude")
 	("format,f", po::value(&opt_format), "output format (kml)")
+	("templatedir", po::value(&options.templatedir), "template directory for output formats")
 	("timestep,T", po::value(&options.timestep), "time step in minutes (10)")
 	("hours,H", po::value(&options.hours), "simulation length in hours (24)")
 	("plumesize,N", po::value(&options.plumesize), "plume size (0)")
@@ -373,6 +410,9 @@ int run(int argc, char * argv[])
 {
   if(!parse_options(argc,argv))
 	return 0;
+
+  if(options.verbose)
+	options.report(std::cerr);
 
   // Read input data
 
