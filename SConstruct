@@ -207,4 +207,4 @@ env.Library( "smartmet_trajectory", objs )
 
 # Make main programs
 
-env.Program( "qdtrajectory", [ "qdtrajectory.cpp", "libsmartmet_trajectory.a" ] );
+env.Program( "qdtrajectory", [ "main/qdtrajectory.cpp", "libsmartmet_trajectory.a" ] );

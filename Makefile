@@ -64,7 +64,7 @@ profile:
 
 clean:
 	@#scons -c objdir=$(objdir)
-	-rm -f $(LIBFILE) *~ source/*~ include/*~ *.o $(PROG) .sconsign.dblite
+	-rm -f $(LIBFILE) *~ source/*~ include/*~ main/*.o $(PROG) .sconsign.dblite
 	-rm -rf $(objdir)
 
 install:
