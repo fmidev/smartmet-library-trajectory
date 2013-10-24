@@ -18,6 +18,8 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/foreach.hpp>
+#include <boost/iostreams/filtering_stream.hpp>
+#include <boost/iostreams/filter/gzip.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/program_options.hpp>
 
@@ -54,7 +56,7 @@ struct Options
   double pressurerange;
   bool isentropic;
   bool backwards;
-
+  bool compress;
   bool debughash;
 
   bool kml_tessellate;
@@ -88,6 +90,7 @@ Options::Options()
   , pressurerange(0)
   , isentropic(false)
   , backwards(false)
+  , compress(false)
   , debughash(false)
   , kml_tessellate(false)
   , kml_extrude(false)
@@ -114,6 +117,7 @@ void Options::report(std::ostream & out) const
   REPORT(out,"Input querydata:",queryfile);
   REPORT(out,"Output file:",outfile);
   REPORT(out,"Output format:",format);
+  REPORT(out,"Compression:",compress);
   REPORT(out,"Template directory:",templatedir);
   REPORT(out,"Template file:",templatefile);
   REPORT(out,"Plume size:",plumesize);
@@ -277,6 +281,7 @@ bool parse_options(int argc, char * argv[])
 	("pressure-range", po::value(&options.pressurerange), "plume dispersal pressure range")
 	("isentropic,i", po::bool_switch(&options.isentropic), "isentropic simulation")
 	("backwards,b", po::bool_switch(&options.backwards), "backwards simulation in time")
+	("compress,z", po::bool_switch(&options.compress), "gzip the output")
 	("debug-hash", po::bool_switch(&options.debughash), "print the internal hash tables")
 	("kml-tessellate", po::bool_switch(&options.kml_tessellate), "tessellate KML tracks")
 	("kml-extrude", po::bool_switch(&options.kml_extrude), "extrude KML tracks")
@@ -686,18 +691,34 @@ int run(int argc, char * argv[])
 
   // Write the output
 
+  boost::iostreams::filtering_stream<boost::iostreams::output> filter;
+
+  if(options.compress || options.format == "kmz")
+	filter.push(boost::iostreams::gzip_compressor());
+
   if(options.outfile == "-")
-	std::cout << result << std::endl;
+	{
+	  filter.push(std::cout);
+	  filter << result;
+	  filter.flush();
+	  filter.reset();
+	}
   else
 	{
 	  std::ofstream out(options.outfile.c_str());
 	  if(!out)
 		throw std::runtime_error("Failed to open '"+options.outfile+"' for writing");
+
 	  if(options.verbose)
 		std::cerr << "Writing to '" + options.outfile + "'\n";
-	  out << result;
+
+	  filter.push(out);
+	  filter << result;
+	  filter.flush();
+	  filter.reset();
 	  out.close();
 	}
+  
 
   return 0;
 }
