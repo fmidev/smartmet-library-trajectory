@@ -183,42 +183,6 @@ int pretty_direction(FmiDirection dir)
 
 // ----------------------------------------------------------------------
 /*!
- * \brief Convert NFmiMetTime to ptime
- */
-// ----------------------------------------------------------------------
-
-boost::posix_time::ptime to_ptime(const NFmiMetTime & theTime)
-{
-  boost::gregorian::date date(theTime.GetYear(),
-							  theTime.GetMonth(),
-							  theTime.GetDay());
-  
-  boost::posix_time::ptime utc(date,
-							   boost::posix_time::hours(theTime.GetHour())+
-							   boost::posix_time::minutes(theTime.GetMin())+
-							   boost::posix_time::seconds(theTime.GetSec()));
-  return utc;
-}
-
-// ----------------------------------------------------------------------
-/*!
- * \brief Construct NFmiMetTime from posix time
- */
-// ----------------------------------------------------------------------
-
-NFmiMetTime to_mettime(const boost::posix_time::ptime & t)
-{
-  return NFmiMetTime(static_cast<short>(t.date().year()),
-					 static_cast<short>(t.date().month()),
-					 static_cast<short>(t.date().day()),
-					 static_cast<short>(t.time_of_day().hours()),
-					 static_cast<short>(t.time_of_day().minutes()),
-					 static_cast<short>(t.time_of_day().seconds()),
-					 1);
-}
-
-// ----------------------------------------------------------------------
-/*!
  * \brief Parse a lon,lat coordinate
  */
 // ----------------------------------------------------------------------
@@ -477,7 +441,7 @@ calculate_trajectory(boost::shared_ptr<NFmiFastQueryInfo> & theInfo)
   if(options.starttime.is_not_a_date_time())
 	trajectory->Time(theInfo->OriginTime());
   else
-	trajectory->Time(to_mettime(options.starttime));
+	trajectory->Time(options.starttime);
 
   trajectory->TimeStepInMinutes(options.timestep);
   trajectory->TimeLengthInHours(options.hours);
@@ -551,7 +515,7 @@ void hash_trajector(CTPP::CDT & hash, int index, const NFmiSingleTrajector & tra
 	{
 	  CTPP::CDT & group = hash["points"][i];
 
-	  boost::posix_time::ptime pt = to_ptime(t);
+	  boost::posix_time::ptime pt = t.PosixTime();
 
 	  // Track start and end times
 	  if(i==0)
