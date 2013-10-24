@@ -1,17 +1,5 @@
-<producer>
-<TMPL_var producer>
-</producer>
-<trajectory direction="<TMPL_var direction>">
-<points>
-<TMPL_foreach trajectory.points as point><point><time><TMPL_var timestamp></time><location type="4"><TMPL_var latitude> <TMPL_var longitude> <TMPL_var pressure> <TMPL_var height></location></point>
-</TMPL_foreach></points>
-</trajectory><TMPL_if plumes><TMPL_foreach plumes as plume>
-<producer>
-<TMPL_var producer>
-</producer>
-<trajectory direction="<TMPL_var direction>">
-<points>
-<TMPL_foreach plume.points as point><point><time><TMPL_var timestamp></time><location type="4"><TMPL_var latitude> <TMPL_var longitude> <TMPL_var pressure> <TMPL_var height></location></point>
-</TMPL_foreach></points>
-</trajectory></TMPL_foreach></TMPL_if>
-
+<trajectories producer="<TMPL_var producer>" direction="<TMPL_var direction>" lon="<TMPL_var longitude>" lat="<TMPL_var latitude>" pressure="<TMPL_var pressure>"<TMPL_if disturbance> disturbance="<TMPL_var disturbance>"</TMPL_if><TMPL_if radius> radius="<TMPL_var radius>"</TMPL_if><TMPL_if interval> interval="<TMPL_var interval>"</TMPL_if><TMPL_if range> range="<TMPL_var range>"</TMPL_if>><TMPL_foreach trajectories as trajectory>
+<trajectory index="<TMPL_var index>" name="<TMPL_var name>"><TMPL_foreach trajectory.points as point>
+<point time="<TMPL_var isotime>" lon="<TMPL_var longitude>" lat="<TMPL_var latitude>" pressure="<TMPL_var pressure>" height="<TMPL_var height>"/></TMPL_foreach>
+</trajectory></TMPL_foreach>
+</trajectories>
