@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.0">
+<name>Trajectory calculation with <TMPL_var producer></name>
+<wpt lat="<TMPL_var latitude>" lon="<TMPL_var longitude>">
+<name>Simulation start point</name>
+</wpt><TMPL_foreach trajectories as trajectory>
+<trk>
+<name><TMPL_var name></name>
+<number><TMPL_var (index+1)></number>
+<trkseg><TMPL_foreach trajectory.points as point>
+<trkpt lat="<TMPL_var latitude>" lon="<TMPL_var longitude>"><ele><TMPL_var height></ele><time><TMPL_var xmltime></time></trkpt></TMPL_foreach>
+</trkseg>
+</trk></TMPL_foreach>
+</gpx>
