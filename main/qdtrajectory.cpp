@@ -530,7 +530,7 @@ void build_hash(CTPP::CDT & hash,
   hash["longitude"] = options.coordinate.X();
   hash["latitude"] = options.coordinate.Y();
 
-  if(options.plumesize >= 0)
+  if(options.plumesize > 0)
 	{
 	  hash["radius"] = options.arearadius;
 	  hash["disturbance"] = options.disturbance;
