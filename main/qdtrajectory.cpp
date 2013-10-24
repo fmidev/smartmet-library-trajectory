@@ -327,13 +327,11 @@ bool parse_options(int argc, char * argv[])
 		"     kml   Keyhole markup language\n"
 		"     kmz   Compressed KML\n"
 		"\n"
-		"This program supports the above formats natively. In addition\n"
-		"the extended KML format with support for gx:track is supported\n"
+		"In addition the extended KML format with the gx:track element is supported\n"
 		"with format names 'kmlx' and 'kmzx'.\n"
 		"\n"
-		"In addition the 'debug' format is supported for dumping the contents of\n"
-		"the simulation in a legacy XML format. Please use --list-formats to see\n"
-		"the complete list of which formats installed in the template directory.\n"
+		"The 'debug' format dumps the contents of the respective C++ objects\n"
+		"in a legacy XML format, and is not intended for production use.\n"
 		"\n";
 
 	  std::cout << desc << '\n';
