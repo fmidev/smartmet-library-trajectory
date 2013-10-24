@@ -97,8 +97,8 @@ Options::Options()
 
 void Options::report(std::ostream & out) const
 {
-#define HEADER(stream,title) stream << ANSI_BOLD_ON << ANSI_UNDERLINE_ON << title << ANSI_BOLD_OFF << ANSI_UNDERLINE_OFF << std::endl;
-#define REPORT(stream,name,value) stream << ANSI_ITALIC_ON << std::setw(35) << std::left << name << ANSI_ITALIC_OFF << value << std::endl;
+#define HEADER(stream,title) stream << ANSI_BOLD_ON << ANSI_UNDERLINE_ON << title << ANSI_BOLD_OFF << ANSI_UNDERLINE_OFF << '\n';
+#define REPORT(stream,name,value) stream << ANSI_ITALIC_ON << std::setw(35) << std::left << name << ANSI_ITALIC_OFF << value << '\n';
 
   HEADER(out,"Options summary");
   REPORT(out,"Verbose:",verbose);
@@ -119,7 +119,37 @@ void Options::report(std::ostream & out) const
   REPORT(out,"Plume pressure dispersion in hPa:", pressurerange);
   REPORT(out,"Isentropic mode:",isentropic);
   REPORT(out,"Backward simulation in time:",backwards);
-  out << std::endl;
+  out << '\n';
+}
+
+// ----------------------------------------------------------------------
+/*!
+ * \brief Print available formats based on the template directory
+ */
+// ----------------------------------------------------------------------
+
+void list_formats()
+{
+  namespace fs = boost::filesystem;
+
+  fs::path p = options.templatedir;
+
+  if(!fs::exists(p))
+	throw std::runtime_error("Template directory '"+options.templatedir+"' does not exist");
+
+  if(!fs::is_directory(p))
+	throw std::runtime_error("Not a directory: '"+options.templatedir+"'");
+
+  std::cerr << "Formats found from template directory '" << options.templatedir << "':\n\n";
+
+  size_t count = 0;
+  for(fs::directory_iterator i(p), end; i!=end; ++i)
+	{
+	  if(i->path().extension() == ".c2t")
+		std::cerr << std::setw(3) << std::right << ++count << ". " << i->path().stem().string() << '\n';
+	}
+
+  std::cerr << std::endl << "Found " << count << (count!=1 ? " formats.\n" : " format.\n");
 }
 
 // ----------------------------------------------------------------------
@@ -184,15 +214,15 @@ NFmiPoint parse_latlon(const std::string & theStr)
 
 void print_location(std::ostream & out, const FmiNames::FmiSimpleLocation & theLoc)
 {
-  out << "Location name: " << theLoc.name << std::endl
-	  << "           id: " << theLoc.id << std::endl
-	  << "          lon: " << theLoc.lon << std::endl
-	  << "          lat: " << theLoc.lat << std::endl
-	  << "      country: " << theLoc.country << std::endl
-	  << "        admin: " << theLoc.admin << std::endl
-	  << "      feature: " << theLoc.feature << std::endl
-	  << "     timezone: " << theLoc.timezone << std::endl
-	  << "    elevation: " << theLoc.elevation << std::endl;
+  out << "Location name: " << theLoc.name << '\n'
+	  << "           id: " << theLoc.id << '\n'
+	  << "          lon: " << theLoc.lon << '\n'
+	  << "          lat: " << theLoc.lat << '\n'
+	  << "      country: " << theLoc.country << '\n'
+	  << "        admin: " << theLoc.admin << '\n'
+	  << "      feature: " << theLoc.feature << '\n'
+	  << "     timezone: " << theLoc.timezone << '\n'
+	  << "    elevation: " << theLoc.elevation << '\n';
 }
 
 
@@ -229,19 +259,20 @@ bool parse_options(int argc, char * argv[])
 	("longitude,x", po::value(&opt_longitude), "dispersal longitude")
 	("latitude,y", po::value(&opt_latitude), "dispersal latitude")
 	("format,f", po::value(&opt_format), "output format (kml)")
+	("list-formats", "list known output formats and exit")
 	("templatedir", po::value(&options.templatedir), "template directory for output formats")
 	("template", po::value(&options.templatefile), "specific output template file to use")
 	("timestep,T", po::value(&options.timestep), "time step in minutes (10)")
 	("hours,H", po::value(&options.hours), "simulation length in hours (24)")
-	("plumesize,N", po::value(&options.plumesize), "plume size (0)")
+	("plume-size,N", po::value(&options.plumesize), "plume size (0)")
 	("disturbance,D", po::value(&options.disturbance), "plume disturbance factor (25)")
 	("radius,R", po::value(&options.arearadius), "plume dispersal radius in km (0)")
 	("interval,I", po::value(&options.timeinterval), "plume dispersal time interval (+-) in minutes (0)")
 	("pressure,P", po::value(&options.pressure), "initial dispersal pressure")
-	("pressurerange", po::value(&options.pressurerange), "plume dispersal pressure range")
+	("pressure-range", po::value(&options.pressurerange), "plume dispersal pressure range")
 	("isentropic,i", po::bool_switch(&options.isentropic), "isentropic simulation")
 	("backwards,b", po::bool_switch(&options.backwards), "backwards simulation in time")
-	("debughash", po::bool_switch(&options.debughash), "print the internal hash tables")
+	("debug-hash", po::bool_switch(&options.debughash), "print the internal hash tables")
 	;
 
   po::positional_options_description p;
@@ -262,31 +293,41 @@ bool parse_options(int argc, char * argv[])
 				<< __DATE__
 				<< ' '
 				<< __TIME__
-				<< ')'
-				<< std::endl;
+				<< ")\n";
+	  return false;
 	}
 
   if(opt.count("help"))
 	{
-	  std::cout << "Usage: qdtrajectory [options] querydata" << std::endl
-				<< "       qdtrajectory -i querydata [options]" << std::endl
-				<< "       qdtrajectory [options] < querydata" << std::endl
-				<< "       cat querydata | qdtrajectory [options]" << std::endl
-				<< std::endl
-				<< "Calculate trajectories based on model level querydata." << std::endl
-				<< std::endl
-				<< "Supported output formats:" << std::endl
-				<< std::endl
-				<< "\tascii\tTabular coordinate data" << std::endl
-				<< "\tcsv\tComma separated coordinate data" << std::endl
-				<< "\tgml\tGeography markaup language" << std::endl
-				<< "\tgpx\tGPS eXchange format" << std::endl
-				<< "\tkml\tKeyhole markup language" << std::endl
-				<< "\tkmz\tZipped KML" << std::endl
-				<< "\txml\tTemplated XML based on the debug format" << std::endl
-				<< "\tdebug\tNative XML generated by the C++ trajectory classes" << std::endl
-				<< std::endl
-				<< desc << std::endl;
+	  std::cout <<
+		"Usage: qdtrajectory [options] querydata\n"
+		"       qdtrajectory -i querydata [options]\n"
+		"       qdtrajectory [options] < querydata\n"
+		"       cat querydata | qdtrajectory [options]\n"
+		"\n"
+		"Calculate trajectories based on model level querydata.\n"
+		"\n"
+		"The supported output formats can be listed using the --list-formats\n"
+		"option, which essentially just lists the output templates found from\n"
+		"the template directory. Some common output formats include:\n"
+		"\n"
+		"     gml   Geography markaup language\n"
+		"     gpx   GPS eXchange format\n"
+		"     kml   Keyhole markup language\n"
+		"     kmz   Zipped KML\n"
+		"\n"
+		"In addition the 'debug' format is supported for dumping the contents of\n"
+		"the simulation in a legacy XML format. Please use --list-formats to see\n"
+		"which formats are supported.\n"
+		"\n";
+
+	  std::cout << desc << '\n';
+	  return false;
+	}
+
+  if(opt.count("list-formats"))
+	{
+	  list_formats();
 	  return false;
 	}
 
@@ -521,7 +562,7 @@ std::string format_result(boost::shared_ptr<NFmiTrajectory> trajectory)
 	throw std::runtime_error("Template file '"+tmpl+"' is missing");
 
   if(options.verbose)
-	std::cerr << "Format template file is '" << tmpl << "'" << std::endl;
+	std::cerr << "Format template file is '" << tmpl << "'\n";
 
   // Build the hash
 
@@ -614,7 +655,7 @@ int run(int argc, char * argv[])
 	  if(!out)
 		throw std::runtime_error("Failed to open '"+options.outfile+"' for writing");
 	  if(options.verbose)
-		std::cerr << "Writing to '" + options.outfile + "'" << std::endl;
+		std::cerr << "Writing to '" + options.outfile + "'\n";
 	  out << result;
 	  out.close();
 	}
@@ -640,6 +681,6 @@ catch(std::exception & e)
   }
 catch(...)
   {
-        std::cerr << "Error: Caught an unknown exception" << std::endl;
+        std::cerr << "Error: Caught an unknown exception\n";
         return 1;
   }
