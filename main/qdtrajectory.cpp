@@ -12,6 +12,7 @@
 #include <macgyver/AnsiEscapeCodes.h>
 #include <macgyver/Cast.h>
 #include <macgyver/TimeFormatter.h>
+#include <macgyver/TimeParser.h>
 
 #include <brainstorm/spine/TemplateFormatter.h>
 
@@ -41,6 +42,7 @@ struct Options
 
   bool verbose;
   NFmiPoint coordinate;
+  boost::posix_time::ptime starttime;
   unsigned int timestep;
   unsigned int hours;
   std::string queryfile;
@@ -75,6 +77,7 @@ Options options;
 Options::Options()
   : verbose(false)
   , coordinate(NFmiPoint(kFloatMissing,kFloatMissing))
+  , starttime()
   , timestep(10)
   , hours(24)
   , queryfile("-")
@@ -112,6 +115,7 @@ void Options::report(std::ostream & out) const
   REPORT(out,"Verbose:",verbose);
   REPORT(out,"Longitude:",coordinate.X());
   REPORT(out,"Latitude:",coordinate.Y());
+  REPORT(out,"Start time:",to_iso_extended_string(starttime));
   REPORT(out,"Time step in minutes:",timestep);
   REPORT(out,"Simulation length in hours:",hours);
   REPORT(out,"Input querydata:",queryfile);
@@ -179,6 +183,42 @@ int pretty_direction(FmiDirection dir)
 
 // ----------------------------------------------------------------------
 /*!
+ * \brief Convert NFmiMetTime to ptime
+ */
+// ----------------------------------------------------------------------
+
+boost::posix_time::ptime to_ptime(const NFmiMetTime & theTime)
+{
+  boost::gregorian::date date(theTime.GetYear(),
+							  theTime.GetMonth(),
+							  theTime.GetDay());
+  
+  boost::posix_time::ptime utc(date,
+							   boost::posix_time::hours(theTime.GetHour())+
+							   boost::posix_time::minutes(theTime.GetMin())+
+							   boost::posix_time::seconds(theTime.GetSec()));
+  return utc;
+}
+
+// ----------------------------------------------------------------------
+/*!
+ * \brief Construct NFmiMetTime from posix time
+ */
+// ----------------------------------------------------------------------
+
+NFmiMetTime to_mettime(const boost::posix_time::ptime & t)
+{
+  return NFmiMetTime(static_cast<short>(t.date().year()),
+					 static_cast<short>(t.date().month()),
+					 static_cast<short>(t.date().day()),
+					 static_cast<short>(t.time_of_day().hours()),
+					 static_cast<short>(t.time_of_day().minutes()),
+					 static_cast<short>(t.time_of_day().seconds()),
+					 1);
+}
+
+// ----------------------------------------------------------------------
+/*!
  * \brief Parse a lon,lat coordinate
  */
 // ----------------------------------------------------------------------
@@ -234,6 +274,31 @@ void print_location(std::ostream & out, const FmiNames::FmiSimpleLocation & theL
 	  << "    elevation: " << theLoc.elevation << '\n';
 }
 
+// ----------------------------------------------------------------------
+/*!
+ * \brief Parse the start time of the simulation
+ */
+// ----------------------------------------------------------------------
+
+boost::posix_time::ptime parse_starttime(const std::string & theStr)
+{
+  boost::posix_time::ptime p;
+
+  if(theStr == "now")
+	p = Fmi::TimeParser::parse("0");
+  else if(theStr != "origintime")
+	p = Fmi::TimeParser::parse(theStr);
+
+  // Round up to nearest timestep
+  if(!p.is_not_a_date_time() && options.timestep > 1)
+	{
+	  int offset = p.time_of_day().total_seconds() % (60*options.timestep);
+	  if(offset > 0)
+		p += boost::posix_time::seconds(60*options.timestep - offset);
+	}
+  
+  return p;
+}
 
 // ----------------------------------------------------------------------
 /*!
@@ -254,6 +319,7 @@ bool parse_options(int argc, char * argv[])
   std::string opt_lonlat;
   std::string opt_latlon;
   std::string opt_place;
+  std::string opt_starttime = "now";
 
   po::options_description desc("Available options");
   desc.add_options()
@@ -271,6 +337,7 @@ bool parse_options(int argc, char * argv[])
 	("list-formats", "list known output formats and exit")
 	("templatedir", po::value(&options.templatedir), "template directory for output formats")
 	("template", po::value(&options.templatefile), "specific output template file to use")
+	("starttime,t", po::value(&opt_starttime), "simulation start time (now, origintime or formatted time)")
 	("timestep,T", po::value(&options.timestep), "time step in minutes (10)")
 	("hours,H", po::value(&options.hours), "simulation length in hours (24)")
 	("plume-size,N", po::value(&options.plumesize), "plume size (0)")
@@ -378,6 +445,9 @@ bool parse_options(int argc, char * argv[])
   if(options.coordinate.X() == kFloatMissing || options.coordinate.Y() == kFloatMissing)
 	throw std::runtime_error("No simulation coordinate specified");
 
+  if(!opt_starttime.empty())
+	options.starttime = parse_starttime(opt_starttime);
+
   return true;
 }
 
@@ -401,7 +471,11 @@ calculate_trajectory(boost::shared_ptr<NFmiFastQueryInfo> & theInfo)
   trajectory->LatLon(options.coordinate);
 
   // Start time, time step and simulation length
-  trajectory->Time(NFmiMetTime());
+  if(options.starttime.is_not_a_date_time())
+	trajectory->Time(theInfo->OriginTime());
+  else
+	trajectory->Time(to_mettime(options.starttime));
+
   trajectory->TimeStepInMinutes(options.timestep);
   trajectory->TimeLengthInHours(options.hours);
 
@@ -429,25 +503,6 @@ calculate_trajectory(boost::shared_ptr<NFmiFastQueryInfo> & theInfo)
   NFmiTrajectorySystem::CalculateTrajectory(trajectory, theInfo);
 
   return trajectory;
-}
-
-// ----------------------------------------------------------------------
-/*!
- * \brief Convert NFmiMetTime to ptime
- */
-// ----------------------------------------------------------------------
-
-boost::posix_time::ptime to_ptime(const NFmiMetTime & theTime)
-{
-  boost::gregorian::date date(theTime.GetYear(),
-							  theTime.GetMonth(),
-							  theTime.GetDay());
-  
-  boost::posix_time::ptime utc(date,
-							   boost::posix_time::hours(theTime.GetHour())+
-							   boost::posix_time::minutes(theTime.GetMin())+
-							   boost::posix_time::seconds(theTime.GetSec()));
-  return utc;
 }
 
 // ----------------------------------------------------------------------
