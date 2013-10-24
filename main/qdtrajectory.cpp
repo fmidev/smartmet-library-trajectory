@@ -53,7 +53,7 @@ struct Options
   unsigned int plumesize;
   double disturbance;
   double arearadius;
-  double timeinterval;
+  unsigned int timeinterval;
   double pressure;
   double pressurerange;
   bool isentropic;
@@ -465,7 +465,7 @@ calculate_trajectory(boost::shared_ptr<NFmiFastQueryInfo> & theInfo)
 {
   auto trajectory = boost::make_shared<NFmiTrajectory>();
 
-// Copy producer information
+  // Copy producer information
   trajectory->Producer(*theInfo->Producer());
 
   // trajectory->DataType(...)					// Unused
