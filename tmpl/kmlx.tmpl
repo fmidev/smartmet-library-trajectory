@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">
+<Document>
+<name>Trajectory simulation with <TMPL_var producer></name>
+<Schema id="trajectoryschema">
+<gx:SimpleArrayField name="pressure" type="float">
+<displayName>Pressure</displayName>
+</gx:SimpleArrayField>
+</Schema>
+<Placemark>
+<name>Simulation start point</name>
+<Point>
+<coordinates><TMPL_var longitude>,<TMPL_var latitude></coordinates>
+</Point>
+</Placemark>
+<TMPL_foreach trajectories as trajectory><Placemark>
+<name><TMPL_var name></name>
+<gx:Track>
+<TMPL_foreach trajectory.points as point><when><TMPL_var xmltime></when>
+</TMPL_foreach><TMPL_foreach trajectory.points as point><gx:coord><TMPL_var longitude> <TMPL_var latitude> <TMPL_var height></gx:coord>
+</TMPL_foreach><ExtendedData>
+<SchemaData schemaUrl="#trajectoryschema">
+<gx:SimpleArrayData name="pressure">
+<TMPL_foreach trajectory.points as point><gx:value><TMPL_var pressure></gx:value>
+</TMPL_foreach></gx:SimpleArrayData>
+</SchemaData>
+</ExtendedData>
+</gx:Track>
+</Placemark>
+</TMPL_foreach></Document>
+</kml>

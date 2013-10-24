@@ -323,14 +323,17 @@ bool parse_options(int argc, char * argv[])
 		"option, which essentially just lists the output templates found from\n"
 		"the template directory. Some common output formats include:\n"
 		"\n"
-		"     gml   Geography markaup language\n"
 		"     gpx   GPS eXchange format\n"
 		"     kml   Keyhole markup language\n"
-		"     kmz   Zipped KML\n"
+		"     kmz   Compressed KML\n"
+		"\n"
+		"This program supports the above formats natively. In addition\n"
+		"the extended KML format with support for gx:track is supported\n"
+		"with format names 'kmlx' and 'kmzx'.\n"
 		"\n"
 		"In addition the 'debug' format is supported for dumping the contents of\n"
 		"the simulation in a legacy XML format. Please use --list-formats to see\n"
-		"which formats are supported.\n"
+		"the complete list of which formats installed in the template directory.\n"
 		"\n";
 
 	  std::cout << desc << '\n';
@@ -693,7 +696,7 @@ int run(int argc, char * argv[])
 
   boost::iostreams::filtering_stream<boost::iostreams::output> filter;
 
-  if(options.compress || options.format == "kmz")
+  if(options.compress || options.format == "kmz" || options.format == "kmzx")
 	filter.push(boost::iostreams::gzip_compressor());
 
   if(options.outfile == "-")
