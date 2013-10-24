@@ -8,15 +8,16 @@ Group: Development/Tools
 URL: http://www.weatherproof.fi
 Source0: %{name}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
-BuildRequires: libsmartmet-newbase >= 13.9.23
-BuildRequires: libsmartmet-smarttools >= 13.9.23
-BuildRequires: libsmartmet-fminames >= 13.9.23
-BuildRequires: libsmartmet-macgyver >= 13.9.23
-BuildRequires: boost-devel >= 1.53
+BuildRequires: libsmartmet-brainstorm-spine >= 13.10.9
+BuildRequires: libsmartmet-newbase >= 13.10.17
+BuildRequires: libsmartmet-smarttools >= 13.10.17
+BuildRequires: libsmartmet-fminames >= 13.8.29
+BuildRequires: libsmartmet-macgyver >= 13.10.8
+BuildRequires: boost-devel
 BuildRequires: ctpp2 >= 2.8.2
-Requires: libsmartmet_brainstorm-spine
-Requires: mysqlpp
-Requires: bz2
+Requires: libsmartmet-brainstorm-spine >= 13.10.9
+Requires: mysql++
+Requires: bzip2
 Provides: qdtrajectory
 
 %description
@@ -38,7 +39,7 @@ rm -rf $RPM_BUILD_ROOT
 make %{_smp_mflags}
 
 %install
-%makeinstall includedir=%{buildroot}%{_includedir}/smartmet
+%makeinstall includedir=%{buildroot}%{_includedir}/smartmet datadir=%{buildroot}%{_datadir}/smartmet
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -46,6 +47,12 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,0775)
 %{_bindir}/qdtrajectory
+%{_datadir}/smartmet/%{LIBNAME}/gpx.c2t
+%{_datadir}/smartmet/%{LIBNAME}/kml.c2t
+%{_datadir}/smartmet/%{LIBNAME}/kmlx.c2t
+%{_datadir}/smartmet/%{LIBNAME}/kmz.c2t
+%{_datadir}/smartmet/%{LIBNAME}/kmzx.c2t
+%{_datadir}/smartmet/%{LIBNAME}/xml.c2t
 
 %files -n libsmartmet-%{LIBNAME}
 %{_includedir}/smartmet/%{LIBNAME}
