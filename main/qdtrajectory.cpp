@@ -384,7 +384,7 @@ bool parse_options(int argc, char * argv[])
 		"       qdtrajectory [options] < querydata\n"
 		"       cat querydata | qdtrajectory [options]\n"
 		"\n"
-		"Calculate trajectories based on model level querydata.\n"
+		"Calculate trajectories based on model or pressure level querydata.\n"
 		"\n"
 		"The supported output formats can be listed using the --list-formats\n"
 		"option, which essentially just lists the output templates found from\n"
