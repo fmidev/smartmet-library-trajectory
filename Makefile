@@ -24,6 +24,7 @@ endif
 
 bindir = $(PREFIX)/bin
 includedir = $(PREFIX)/include/smartmet
+datadir = $(PREFIX)/share/smartmet
 objdir = obj
 
 # rpm variables
@@ -73,8 +74,8 @@ clean:
 	-rm -rf $(objdir)
 
 install:
-	@mkdir -p $(includedir)/$(LIB)
-	 @list=`cd include && ls -1 *.h`; \
+	mkdir -p $(includedir)/$(LIB)
+	@list=`cd include && ls -1 *.h`; \
 	for hdr in $$list; do \
 	  echo $(INSTALL_DATA) include/$$hdr $(includedir)/$(LIB)/$$hdr; \
 	  $(INSTALL_DATA) include/$$hdr $(includedir)/$(LIB)/$$hdr; \
@@ -87,6 +88,10 @@ install:
 	  echo $(INSTALL_PROG) $$prog $(bindir)/$$prog; \
 	  $(INSTALL_PROG) $$prog $(bindir)/$$prog; \
 	done
+	mkdir -p $(datadir)/$(LIB)
+	@list=`ls -1 tmpl/*.c2t`; \
+	echo $(INSTALL_DATA) $$list $(datadir)/$(LIB)/; \
+	$(INSTALL_DATA) $$list $(datadir)/$(LIB)/
 
 test:
 	cd test && make test
@@ -98,6 +103,7 @@ html:
 rpm: clean
 	if [ -e $(LIB).spec ]; \
 	then \
+	  smartspecupdate $(LIB).spec ; \
 	  mkdir -p $(rpmsourcedir) ; \
 	  tar $(rpmexcludevcs) -C ../ -cf $(rpmsourcedir)/smartmet-$(LIB).tar $(LIB) ; \
 	  gzip -f $(rpmsourcedir)/smartmet-$(LIB).tar ; \
