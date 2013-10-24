@@ -57,6 +57,9 @@ struct Options
 
   bool debughash;
 
+  bool kml_tessellate;
+  bool kml_extrude;
+
 };
 
 Options options;
@@ -86,6 +89,8 @@ Options::Options()
   , isentropic(false)
   , backwards(false)
   , debughash(false)
+  , kml_tessellate(false)
+  , kml_extrude(false)
 {
 }
 
@@ -273,6 +278,8 @@ bool parse_options(int argc, char * argv[])
 	("isentropic,i", po::bool_switch(&options.isentropic), "isentropic simulation")
 	("backwards,b", po::bool_switch(&options.backwards), "backwards simulation in time")
 	("debug-hash", po::bool_switch(&options.debughash), "print the internal hash tables")
+	("kml-tessellate", po::bool_switch(&options.kml_tessellate), "tessellate KML tracks")
+	("kml-extrude", po::bool_switch(&options.kml_extrude), "extrude KML tracks")
 	;
 
   po::positional_options_description p;
@@ -482,6 +489,12 @@ void hash_trajector(CTPP::CDT & hash, int index, const NFmiSingleTrajector & tra
 
 	  boost::posix_time::ptime pt = to_ptime(t);
 
+	  // Track start and end times
+	  if(i==0)
+		hash["starttime"] = xmlformatter->format(pt);
+	  else if(i==points.size()-1)
+		hash["endtime"] = xmlformatter->format(pt);
+
 	  group["timestamp"] = stampformatter->format(pt);
 	  group["epoch"]     = epochformatter->format(pt);
 	  group["isotime"]   = isoformatter->format(pt);
@@ -530,12 +543,15 @@ void build_hash(CTPP::CDT & hash,
   hash["longitude"] = options.coordinate.X();
   hash["latitude"] = options.coordinate.Y();
 
+  hash["kml"]["tessellate"] = options.kml_tessellate ? 1 : 0;
+  hash["kml"]["extrude"]    = options.kml_extrude ? 1 : 0;
+
   if(options.plumesize > 0)
 	{
-	  hash["radius"] = options.arearadius;
-	  hash["disturbance"] = options.disturbance;
-	  hash["interval"] = options.timeinterval;
-	  hash["range"] = options.pressurerange;
+	  hash["plume"]["radius"] = options.arearadius;
+	  hash["plume"]["disturbance"] = options.disturbance;
+	  hash["plume"]["interval"] = options.timeinterval;
+	  hash["plume"]["range"] = options.pressurerange;
 	}
 
 
