@@ -18,6 +18,8 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/foreach.hpp>
+#include <boost/iostreams/filtering_stream.hpp>
+#include <boost/iostreams/filter/gzip.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/program_options.hpp>
 
@@ -54,8 +56,11 @@ struct Options
   double pressurerange;
   bool isentropic;
   bool backwards;
-
+  bool compress;
   bool debughash;
+
+  bool kml_tessellate;
+  bool kml_extrude;
 
 };
 
@@ -85,7 +90,10 @@ Options::Options()
   , pressurerange(0)
   , isentropic(false)
   , backwards(false)
+  , compress(false)
   , debughash(false)
+  , kml_tessellate(false)
+  , kml_extrude(false)
 {
 }
 
@@ -109,6 +117,7 @@ void Options::report(std::ostream & out) const
   REPORT(out,"Input querydata:",queryfile);
   REPORT(out,"Output file:",outfile);
   REPORT(out,"Output format:",format);
+  REPORT(out,"Compression:",compress);
   REPORT(out,"Template directory:",templatedir);
   REPORT(out,"Template file:",templatefile);
   REPORT(out,"Plume size:",plumesize);
@@ -272,7 +281,10 @@ bool parse_options(int argc, char * argv[])
 	("pressure-range", po::value(&options.pressurerange), "plume dispersal pressure range")
 	("isentropic,i", po::bool_switch(&options.isentropic), "isentropic simulation")
 	("backwards,b", po::bool_switch(&options.backwards), "backwards simulation in time")
+	("compress,z", po::bool_switch(&options.compress), "gzip the output")
 	("debug-hash", po::bool_switch(&options.debughash), "print the internal hash tables")
+	("kml-tessellate", po::bool_switch(&options.kml_tessellate), "tessellate KML tracks")
+	("kml-extrude", po::bool_switch(&options.kml_extrude), "extrude KML tracks")
 	;
 
   po::positional_options_description p;
@@ -482,6 +494,12 @@ void hash_trajector(CTPP::CDT & hash, int index, const NFmiSingleTrajector & tra
 
 	  boost::posix_time::ptime pt = to_ptime(t);
 
+	  // Track start and end times
+	  if(i==0)
+		hash["starttime"] = xmlformatter->format(pt);
+	  else if(i==points.size()-1)
+		hash["endtime"] = xmlformatter->format(pt);
+
 	  group["timestamp"] = stampformatter->format(pt);
 	  group["epoch"]     = epochformatter->format(pt);
 	  group["isotime"]   = isoformatter->format(pt);
@@ -530,12 +548,15 @@ void build_hash(CTPP::CDT & hash,
   hash["longitude"] = options.coordinate.X();
   hash["latitude"] = options.coordinate.Y();
 
+  hash["kml"]["tessellate"] = options.kml_tessellate ? 1 : 0;
+  hash["kml"]["extrude"]    = options.kml_extrude ? 1 : 0;
+
   if(options.plumesize > 0)
 	{
-	  hash["radius"] = options.arearadius;
-	  hash["disturbance"] = options.disturbance;
-	  hash["interval"] = options.timeinterval;
-	  hash["range"] = options.pressurerange;
+	  hash["plume"]["radius"] = options.arearadius;
+	  hash["plume"]["disturbance"] = options.disturbance;
+	  hash["plume"]["interval"] = options.timeinterval;
+	  hash["plume"]["range"] = options.pressurerange;
 	}
 
 
@@ -670,18 +691,34 @@ int run(int argc, char * argv[])
 
   // Write the output
 
+  boost::iostreams::filtering_stream<boost::iostreams::output> filter;
+
+  if(options.compress || options.format == "kmz")
+	filter.push(boost::iostreams::gzip_compressor());
+
   if(options.outfile == "-")
-	std::cout << result << std::endl;
+	{
+	  filter.push(std::cout);
+	  filter << result;
+	  filter.flush();
+	  filter.reset();
+	}
   else
 	{
 	  std::ofstream out(options.outfile.c_str());
 	  if(!out)
 		throw std::runtime_error("Failed to open '"+options.outfile+"' for writing");
+
 	  if(options.verbose)
 		std::cerr << "Writing to '" + options.outfile + "'\n";
-	  out << result;
+
+	  filter.push(out);
+	  filter << result;
+	  filter.flush();
+	  filter.reset();
 	  out.close();
 	}
+  
 
   return 0;
 }

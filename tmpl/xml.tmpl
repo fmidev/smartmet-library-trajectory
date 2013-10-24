@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<trajectories producer="<TMPL_var producer>" direction="<TMPL_var direction>" lon="<TMPL_var longitude>" lat="<TMPL_var latitude>" pressure="<TMPL_var pressure>"<TMPL_if disturbance> disturbance="<TMPL_var disturbance>"</TMPL_if><TMPL_if radius> radius="<TMPL_var radius>"</TMPL_if><TMPL_if interval> interval="<TMPL_var interval>"</TMPL_if><TMPL_if range> range="<TMPL_var range>"</TMPL_if>><TMPL_foreach trajectories as trajectory>
+<trajectories producer="<TMPL_var producer>" direction="<TMPL_var direction>" lon="<TMPL_var longitude>" lat="<TMPL_var latitude>" pressure="<TMPL_var pressure>"<TMPL_if plume.disturbance> disturbance="<TMPL_var plume.disturbance>"</TMPL_if><TMPL_if plume.radius> radius="<TMPL_var plume.radius>"</TMPL_if><TMPL_if plume.interval> interval="<TMPL_var plume.interval>"</TMPL_if><TMPL_if plume.range> range="<TMPL_var plume.range>"</TMPL_if>><TMPL_foreach trajectories as trajectory>
 <trajectory index="<TMPL_var index>" name="<TMPL_var name>"><TMPL_foreach trajectory.points as point>
 <point time="<TMPL_var isotime>" lon="<TMPL_var longitude>" lat="<TMPL_var latitude>" pressure="<TMPL_var pressure>" height="<TMPL_var height>"/></TMPL_foreach>
 </trajectory></TMPL_foreach>
