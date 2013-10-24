@@ -443,14 +443,13 @@ boost::posix_time::ptime to_ptime(const NFmiMetTime & theTime)
  */
 // ----------------------------------------------------------------------
 
-void hash_trajector(CTPP::CDT & hash, const NFmiSingleTrajector & trajector)
+void hash_trajector(CTPP::CDT & hash, int index, const NFmiSingleTrajector & trajector)
 {
   static Fmi::TimeFormatter * isoformatter   = Fmi::TimeFormatter::create("iso");
   static Fmi::TimeFormatter * epochformatter = Fmi::TimeFormatter::create("epoch");
   static Fmi::TimeFormatter * stampformatter = Fmi::TimeFormatter::create("timestamp");
   static Fmi::TimeFormatter * sqlformatter   = Fmi::TimeFormatter::create("sql");
   static Fmi::TimeFormatter * xmlformatter   = Fmi::TimeFormatter::create("xml");
-
 
   // Data being printed
 
@@ -462,6 +461,15 @@ void hash_trajector(CTPP::CDT & hash, const NFmiSingleTrajector & trajector)
   int timestep = options.timestep;
   if(options.backwards)
 	timestep = -timestep;
+
+  // Common information
+
+  hash["index"] = index;
+
+  if(index == 0)
+	hash["name"] = "Main trajectory";
+  else
+	hash["name"] = "Plume " + boost::lexical_cast<std::string>(index);
 
   // Start time
 
@@ -480,10 +488,10 @@ void hash_trajector(CTPP::CDT & hash, const NFmiSingleTrajector & trajector)
 	  group["sqltime"]   = sqlformatter->format(pt);
 	  group["xmltime"]   = xmlformatter->format(pt);
 
-	  group["longitude"] = points[i].X();
-	  group["latitude"]  = points[i].Y();
-	  group["pressure"]  = pressures[i];
-	  group["height"]    = heights[i];
+	  group["longitude"] = round(10000*points[i].X())/10000;
+	  group["latitude"]  = round(10000*points[i].Y())/10000;
+	  group["pressure"]  = round(10*pressures[i])/10;
+	  group["height"]    = round(10*heights[i])/10;
 
 	  t.ChangeByMinutes(timestep);
 	}
@@ -518,16 +526,31 @@ void build_hash(CTPP::CDT & hash,
 {
   hash["direction"] = pretty_direction(trajectory.Direction());
   hash["producer"] = trajectory.Producer().GetName().CharPtr();
+  hash["pressure"] = options.pressure;
+  hash["longitude"] = options.coordinate.X();
+  hash["latitude"] = options.coordinate.Y();
 
-  hash_trajector(hash["trajectory"],trajectory.MainTrajector());
+  if(options.plumesize >= 0)
+	{
+	  hash["radius"] = options.arearadius;
+	  hash["disturbance"] = options.disturbance;
+	  hash["interval"] = options.timeinterval;
+	  hash["range"] = options.pressurerange;
+	}
+
+
+  CTPP::CDT & tgroup = hash["trajectories"];
+
+  int index = 0;
+  hash_trajector(tgroup[index],index,trajectory.MainTrajector());
 
   if(trajectory.PlumesUsed())
 	{
-	  int number = 0;
 	  const auto & plumes = trajectory.PlumeTrajectories();
 	  BOOST_FOREACH(const auto & traj, plumes)
 		{
-		  hash_trajector(hash["plumes"][number++],*traj);
+		  ++index;
+		  hash_trajector(tgroup[index],index,*traj);
 		}
 	}
 }
@@ -543,7 +566,7 @@ std::string template_filename()
   if(!options.templatefile.empty())
 	return options.templatefile;
 
-  return (options.templatedir + "/" + options.format + ".ct2");
+  return (options.templatedir + "/" + options.format + ".c2t");
 }
 
 // ----------------------------------------------------------------------
