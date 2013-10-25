@@ -14,7 +14,7 @@
 #include <macgyver/TimeFormatter.h>
 #include <macgyver/TimeParser.h>
 
-#include <brainstorm/spine/TemplateFormatter.h>
+#include <macgyver/TemplateFormatter.h>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem/operations.hpp>
@@ -515,7 +515,7 @@ void hash_trajector(CTPP::CDT & hash, int index, const NFmiSingleTrajector & tra
 	{
 	  CTPP::CDT & group = hash["points"][i];
 
-	  boost::posix_time::ptime pt = t.PosixTime();
+	  boost::posix_time::ptime pt = t;
 
 	  // Track start and end times
 	  if(i==0)
@@ -645,7 +645,7 @@ std::string format_result(boost::shared_ptr<NFmiTrajectory> trajectory)
   std::ostringstream log;
   try
 	{
-	  BrainStorm::TemplateFormatter formatter;
+	  Fmi::TemplateFormatter formatter;
 	  formatter.load_template(tmpl);
 	  formatter.process(hash, output, log);
 	}
