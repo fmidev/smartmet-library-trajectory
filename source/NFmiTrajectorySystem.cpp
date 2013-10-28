@@ -125,7 +125,7 @@ static int CalcRandomizerStep(int theTimeStepInMinutes, int theRandomizerStepInM
 
 static NFmiMetTime CalcRandStartTime(const NFmiMetTime &theStartTime, double theStartTimeRangeInMinutes, int theRoundStepInMinutes)
 {
-	double rangeRandValue = theStartTimeRangeInMinutes * static_cast<double>(2*rand()-RAND_MAX) / RAND_MAX; // joku reaali luku v‰lill‰ -1 ja - 1
+	double rangeRandValue = theStartTimeRangeInMinutes * (2.0*rand()-RAND_MAX) / RAND_MAX; // joku reaali luku v‰lill‰ -1 ja - 1
 	long usedRangeRandValue = round(rangeRandValue/theRoundStepInMinutes) * theRoundStepInMinutes;
 	NFmiMetTime aTime(theStartTime);
 	aTime.SetTimeStep(static_cast<short>(theRoundStepInMinutes));
@@ -146,7 +146,7 @@ static NFmiPoint CalcRandStartPoint(const NFmiPoint &theStartPoint, double theSt
 
 static double CalcRandStartPressureLevel(double theStartPressureLevel, double theStartPressureLevelRange, double theMaxPressureLevel)
 {
-	double rangeRandValue = theStartPressureLevelRange * static_cast<double>(2*rand()-RAND_MAX) / RAND_MAX; // joku reaali luku v‰lill‰ -1 ja 1
+	double rangeRandValue = theStartPressureLevelRange * (2.0*rand()-RAND_MAX) / RAND_MAX; // joku reaali luku v‰lill‰ -1 ja 1
 	double value = theStartPressureLevel + rangeRandValue;
 	if(value < 1)
 		value = 1;
@@ -218,7 +218,7 @@ void NFmiTrajectorySystem::CalculateTrajectory(boost::shared_ptr<NFmiTrajectory>
 // randFactor on satunnaisuuden suurin vaihtelu arvo verrattuna annettuun WS:‰‰n.
 static double RandomizeWSValue(double WS, double randFactor)
 {
-	double randValue = (static_cast<double>(2*rand()) - RAND_MAX) / RAND_MAX; // joku reaali luku v‰lill‰ -1 - 1
+	double randValue = (2.0*rand() - RAND_MAX) / RAND_MAX; // joku reaali luku v‰lill‰ -1 - 1
 	double modifyValue = WS * randValue * randFactor * 0.01; // muutetaan luku oikeaksi muutos arvoksi
 	return modifyValue;
 }
@@ -239,7 +239,7 @@ static double WDAdd(double WD, double changeValue, double maxValue)
 // randFactor on satunnaisuuden suurin vaihtelu arvo verrattuna annettuun WS:‰‰n.
 static double RandomizeWDValue(double randFactor, double maxValue)
 {
-	double randValue = (static_cast<double>(2*rand()) - RAND_MAX) / RAND_MAX; // joku reaali luku v‰lill‰ -1 - 1
+    double randValue = (2.0*rand() - RAND_MAX) / RAND_MAX;
 	// min/max muutos on 1/3 osa maxValuesta
 	double modifyValue = maxValue * 0.33 * randValue * randFactor * 0.01; // muutetaan luku oikeaksi muutos arvoksi ottaen huomioon max arvo
 	return modifyValue;
@@ -247,7 +247,7 @@ static double RandomizeWDValue(double randFactor, double maxValue)
 
 static double RandomizewValue(double w, double randFactor)
 {
-	double randValue = (static_cast<double>(2*rand()) - RAND_MAX) / RAND_MAX; // joku reaali luku v‰lill‰ -1 - 1
+	double randValue = (2.0*rand() - RAND_MAX) / RAND_MAX; // joku reaali luku v‰lill‰ -1 - 1
 	double modifyValue = w * randValue * randFactor * 0.01; // muutetaan luku oikeaksi muutos arvoksi
 	return modifyValue;
 }
