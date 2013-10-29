@@ -105,8 +105,7 @@ elif LINUX:
     env.Append( CPPPATH= [ PREFIX+"/include/smartmet/newbase" ] )
     env.Append( CPPPATH= [ PREFIX+"/include/smartmet/smarttools" ] )
 
-env.Append( LIBS= [ "smartmet_brainstorm-spine",
-	    	    "smartmet_smarttools",
+env.Append( LIBS= [ "smartmet_smarttools",
 	            "smartmet_newbase",
 		    "smartmet_fminames",
 		    "smartmet_macgyver",

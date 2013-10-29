@@ -8,14 +8,12 @@ Group: Development/Tools
 URL: http://www.weatherproof.fi
 Source0: %{name}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
-BuildRequires: libsmartmet-brainstorm-spine >= 13.10.25
 BuildRequires: libsmartmet-newbase >= 13.10.25
 BuildRequires: libsmartmet-smarttools >= 13.10.17
 BuildRequires: libsmartmet-fminames >= 13.8.29
 BuildRequires: libsmartmet-macgyver >= 13.10.25
 BuildRequires: boost-devel
 BuildRequires: ctpp2 >= 2.8.2
-Requires: libsmartmet-brainstorm-spine >= 13.10.25
 Requires: mysql++
 Requires: bzip2
 Provides: qdtrajectory
