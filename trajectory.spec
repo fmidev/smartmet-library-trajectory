@@ -1,21 +1,21 @@
 %define LIBNAME trajectory
 Summary: Trajectory calculation
 Name: smartmet-%{LIBNAME}
-Version: 13.10.23
+Version: 13.10.29
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
 URL: http://www.weatherproof.fi
 Source0: %{name}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
-BuildRequires: libsmartmet-brainstorm-spine >= 13.10.9
-BuildRequires: libsmartmet-newbase >= 13.10.17
+BuildRequires: libsmartmet-brainstorm-spine >= 13.10.25
+BuildRequires: libsmartmet-newbase >= 13.10.25
 BuildRequires: libsmartmet-smarttools >= 13.10.17
 BuildRequires: libsmartmet-fminames >= 13.8.29
-BuildRequires: libsmartmet-macgyver >= 13.10.8
+BuildRequires: libsmartmet-macgyver >= 13.10.25
 BuildRequires: boost-devel
 BuildRequires: ctpp2 >= 2.8.2
-Requires: libsmartmet-brainstorm-spine >= 13.10.9
+Requires: libsmartmet-brainstorm-spine >= 13.10.25
 Requires: mysql++
 Requires: bzip2
 Provides: qdtrajectory
@@ -59,6 +59,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libsmartmet_%{LIBNAME}.a
 
 %changelog
+* Tue Oct 29 2013 Mika Heiskanen <mika.heiskanen@fmi.fi> - 13.10.29-1.fmi
+- Fixed randomization of the trajectory
 * Wed Oct 23 2013 Mika Heiskanen <mika.heiskanen@fmi.fi> - 13.10.23-1.fmi
 - Added building of a separate tools library
 * Wed Sep 25 2013 Mika Heiskanen <mika.heiskanen@fmi.fi> - 13.9.25-1.fmi
