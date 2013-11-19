@@ -107,7 +107,7 @@ elif LINUX:
 
 env.Append( LIBS= [ "smartmet_smarttools",
 	            "smartmet_newbase",
-		    "smartmet_fminames",
+		    "smartmet_locus",
 		    "smartmet_macgyver",
 		    "boost_date_time-mt",
 		    "boost_filesystem-mt",
@@ -118,7 +118,7 @@ env.Append( LIBS= [ "smartmet_smarttools",
 		    "boost_thread-mt",
 		    "boost_system-mt",
 		    "ctpp2",
-		    "mysqlpp",
+		    "pqxx",
 		    "bz2",
 		    "rt"
 		    ] )

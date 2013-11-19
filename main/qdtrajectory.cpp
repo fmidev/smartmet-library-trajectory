@@ -6,8 +6,8 @@
 #include <newbase/NFmiPoint.h>
 #include <newbase/NFmiQueryData.h>
 
-#include <fminames/FmiLocationQueryOptions.h>
-#include <fminames/FmiLocationQuery.h>
+#include <locus/QueryOptions.h>
+#include <locus/Query.h>
 
 #include <macgyver/AnsiEscapeCodes.h>
 #include <macgyver/Cast.h>
@@ -225,7 +225,7 @@ NFmiPoint parse_latlon(const std::string & theStr)
  */
 // ----------------------------------------------------------------------
 
-void print_location(std::ostream & out, const FmiNames::FmiSimpleLocation & theLoc)
+void print_location(std::ostream & out, const Locus::SimpleLocation & theLoc)
 {
   out << "Location name: " << theLoc.name << '\n'
 	  << "           id: " << theLoc.id << '\n'
@@ -386,8 +386,8 @@ bool parse_options(int argc, char * argv[])
 
   if(!opt_place.empty())
 	{
-	  FmiNames::FmiLocationQueryOptions opts;
-	  FmiNames::FmiLocationQuery query;
+	  Locus::QueryOptions opts;
+	  Locus::Query query;
 	  auto res = query.FetchByName(opts,opt_place);
 	  if(res.empty())
 		throw std::runtime_error("Unknown location '"+opt_place);
