@@ -22,6 +22,7 @@
 #include <boost/iostreams/filtering_stream.hpp>
 #include <boost/iostreams/filter/gzip.hpp>
 #include <boost/make_shared.hpp>
+#include <boost/optional.hpp>
 #include <boost/program_options.hpp>
 
 #include <fstream>
@@ -52,10 +53,12 @@ struct Options
   std::string format;
   unsigned int plumesize;
   double disturbance;
-  double arearadius;
-  unsigned int timeinterval;
-  double pressure;
-  double pressurerange;
+  boost::optional<double> arearadius;
+  boost::optional<unsigned int> timeinterval;
+  boost::optional<double> pressure;
+  boost::optional<double> pressurerange;
+  boost::optional<double> height;
+  boost::optional<double> heightrange;
   bool isentropic;
   bool backwards;
   bool compress;
@@ -87,10 +90,12 @@ Options::Options()
   , format("xml")
   , plumesize(0)
   , disturbance(25)
-  , arearadius(0)
-  , timeinterval(0)
-  , pressure(850)
-  , pressurerange(0)
+  , arearadius()
+  , timeinterval()
+  , pressure()
+  , pressurerange()
+  , height()
+  , heightrange()
   , isentropic(false)
   , backwards(false)
   , compress(false)
@@ -306,10 +311,12 @@ bool parse_options(int argc, char * argv[])
 	("hours,H", po::value(&options.hours), "simulation length in hours (24)")
 	("plume-size,N", po::value(&options.plumesize), "plume size (0)")
 	("disturbance,D", po::value(&options.disturbance), "plume disturbance factor (25)")
-	("radius,R", po::value(&options.arearadius), "plume dispersal radius in km (0)")
-	("interval,I", po::value(&options.timeinterval), "plume dispersal time interval (+-) in minutes (0)")
-	("pressure,P", po::value(&options.pressure), "initial dispersal pressure")
-	("pressure-range", po::value(&options.pressurerange), "plume dispersal pressure range")
+	("radius,R", po::value<double>(), "plume dispersal radius in km (0)")
+	("interval,I", po::value<unsigned int>(), "plume dispersal time interval (+-) in minutes (0)")
+	("pressure,P", po::value<double>(), "initial dispersal pressure")
+	("pressure-range", po::value<double>(), "plume dispersal pressure range")
+	("height,Z", po::value<double>(), "plume dispersal height")
+	("height-range", po::value<double>(), "plume dispersal height range")
 	("isentropic,i", po::bool_switch(&options.isentropic), "isentropic simulation")
 	("backwards,b", po::bool_switch(&options.backwards), "backwards simulation in time")
 	("compress,z", po::bool_switch(&options.compress), "gzip the output")
@@ -378,6 +385,24 @@ bool parse_options(int argc, char * argv[])
 	  return false;
 	}
 
+  if(opt.count("radius"))
+	options.arearadius = opt["radius"].as<double>();
+
+  if(opt.count("interval"))
+	options.timeinterval = opt["interval"].as<unsigned int>();
+
+  if(opt.count("pressure"))
+	options.pressure = opt["pressure"].as<double>();
+
+  if(opt.count("pressure-range"))
+	options.pressurerange = opt["pressure-range"].as<double>();
+
+  if(opt.count("height"))
+	options.height = opt["height"].as<double>();
+
+  if(opt.count("height-range"))
+	options.heightrange = opt["height-range"].as<double>();
+
   if(options.queryfile != "-" && !fs::exists(options.queryfile))
 	throw std::runtime_error("Input file '"+options.queryfile+"' does not exist");
 
@@ -415,6 +440,24 @@ bool parse_options(int argc, char * argv[])
   if(!opt_starttime.empty())
 	options.starttime = parse_starttime(opt_starttime);
 
+  if(!options.pressure && !options.height)
+	throw std::runtime_error("Must specify simulation start pressure or height");
+
+  if(options.pressure && options.height)
+	throw std::runtime_error("Cannot specify both simulation start pressure and height");
+
+  if(options.pressurerange && options.heightrange)
+	throw std::runtime_error("Cannot specify both simulation pressure and height ranges");
+
+  if(options.heightrange && !options.height)
+	throw std::runtime_error("Specifying simulation height range without a height is not supported");
+
+  if(options.plumesize == 0)
+	{
+	  if(options.arearadius || options.timeinterval || options.pressurerange || options.heightrange)
+		throw std::runtime_error("Specifying intervals or ranges when plume size is 0 is meaningless");
+	}
+
   return true;
 }
 
@@ -451,12 +494,6 @@ calculate_trajectory(boost::shared_ptr<NFmiFastQueryInfo> & theInfo)
   trajectory->PlumeParticleCount(options.plumesize);
   trajectory->PlumeProbFactor(options.disturbance);
 
-  // Plume initial dispersion radius, start time interval, and pressure disribution 
-  trajectory->StartLocationRangeInKM(options.arearadius);
-  trajectory->StartTimeRangeInMinutes(options.timeinterval);
-  trajectory->PressureLevel(options.pressure);
-  trajectory->StartPressureLevelRange(options.pressurerange);
-
   // Forward or backward in time
   trajectory->Direction(options.backwards ? kBackward : kForward);
 
@@ -466,6 +503,38 @@ calculate_trajectory(boost::shared_ptr<NFmiFastQueryInfo> & theInfo)
   // Balloon trajectories
   // trajectory->CalcTempBalloonTrajectors(false);
   // trajectory->TempBalloonTrajectorSettings(NFmiTempBalloonTrajectorSettings());
+
+  // Plume initial dispersion radius, start time interval, and pressure disribution 
+  if(options.arearadius)  trajectory->StartLocationRangeInKM(*options.arearadius);
+  if(options.timeinterval) trajectory->StartTimeRangeInMinutes(*options.timeinterval);
+  if(options.pressure) trajectory->PressureLevel(*options.pressure);
+  if(options.pressurerange) trajectory->StartPressureLevelRange(*options.pressurerange);
+
+  // Convert input height parameters to simulation pressure parameters
+  if(options.height)
+	{
+	  if(!theInfo->Param(kFmiPressure))
+		throw std::runtime_error("Pressure parameter missing from forecast data");
+
+	  if(!options.heightrange)
+		{
+		  float p = theInfo->HeightValue(*options.height, trajectory->LatLon(), trajectory->Time());
+		  if(p == kFloatMissing)
+			throw std::runtime_error("Unable to calculate simulation pressure for height "+boost::lexical_cast<std::string>(*options.height));
+		  trajectory->PressureLevel(p);
+		}
+	  else
+		{
+		  float dz = *options.heightrange/2;
+		  float p1 = theInfo->HeightValue(*options.height - dz, trajectory->LatLon(), trajectory->Time());
+		  float p2 = theInfo->HeightValue(*options.height + dz, trajectory->LatLon(), trajectory->Time());
+		  if(p1 == kFloatMissing || p2 == kFloatMissing)
+			throw std::runtime_error("Unable to calculate pressure range corresponding to input height options");
+		  trajectory->PressureLevel((p1+p2)/2);
+		  trajectory->StartPressureLevelRange((p1-p2)/2);
+		}
+	}
+
 
   NFmiTrajectorySystem::CalculateTrajectory(trajectory, theInfo);
 
@@ -567,19 +636,19 @@ void build_hash(CTPP::CDT & hash,
 {
   hash["direction"] = pretty_direction(trajectory.Direction());
   hash["producer"] = trajectory.Producer().GetName().CharPtr();
-  hash["pressure"] = options.pressure;
-  hash["longitude"] = options.coordinate.X();
-  hash["latitude"] = options.coordinate.Y();
+  hash["pressure"] = trajectory.PressureLevel();
+  hash["longitude"] = trajectory.LatLon().X();
+  hash["latitude"] = trajectory.LatLon().Y();
 
   hash["kml"]["tessellate"] = options.kml_tessellate ? 1 : 0;
   hash["kml"]["extrude"]    = options.kml_extrude ? 1 : 0;
 
   if(options.plumesize > 0)
 	{
-	  hash["plume"]["radius"] = options.arearadius;
-	  hash["plume"]["disturbance"] = options.disturbance;
-	  hash["plume"]["interval"] = options.timeinterval;
-	  hash["plume"]["range"] = options.pressurerange;
+	  hash["plume"]["disturbance"] = trajectory.PlumeProbFactor();
+	  hash["plume"]["radius"] = trajectory.StartLocationRangeInKM();
+	  hash["plume"]["interval"] = trajectory.StartTimeRangeInMinutes();
+	  hash["plume"]["range"] = trajectory.StartPressureLevelRange();
 	}
 
 
