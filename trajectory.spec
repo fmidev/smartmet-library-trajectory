@@ -1,14 +1,14 @@
 %define LIBNAME trajectory
 Summary: Trajectory calculation
 Name: smartmet-%{LIBNAME}
-Version: 14.1.20
+Version: 14.1.24
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
 URL: http://www.weatherproof.fi
 Source0: %{name}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
-BuildRequires: libsmartmet-newbase >= 14.1.20
+BuildRequires: libsmartmet-newbase >= 14.1.24
 BuildRequires: libsmartmet-smarttools >= 13.12.2
 BuildRequires: libsmartmet-locus >= 14.1.9
 BuildRequires: libsmartmet-macgyver >= 14.1.14
@@ -66,6 +66,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/smartmet/%{LIBNAME}/xml.c2t
 
 %changelog
+* Fri Jan 24 2014 Mika Heiskanen <mika.heiskanen@fmi.fi> - 14.1.24-1.fmi
+- Added missing PlaceMark end tag to KML template
 * Mon Jan 20 2014 Mika Heiskanen <mika.heiskanen@fmi.fi> - 14.1.20-1.fmi
 - Split templates into a separate package
 * Thu Dec 12 2013 Mika Heiskanen <mika.heiskanen@fmi.fi> - 13.12.12-1.fmi
