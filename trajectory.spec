@@ -2,7 +2,7 @@
 Summary: Trajectory calculation
 Name: smartmet-%{LIBNAME}
 Version: 14.1.24
-Release: 1%{?dist}.fmi
+Release: 2%{?dist}.fmi
 License: FMI
 Group: Development/Tools
 URL: http://www.weatherproof.fi
@@ -66,6 +66,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/smartmet/%{LIBNAME}/xml.c2t
 
 %changelog
+* Fri Jan 24 2014 Mika Heiskanen <mika.heiskanen@fmi.fi> - 14.1.24-1.fmi
+- Fixed PlaceMark case to Placemark
 * Fri Jan 24 2014 Mika Heiskanen <mika.heiskanen@fmi.fi> - 14.1.24-1.fmi
 - Added missing PlaceMark end tag to KML template
 * Mon Jan 20 2014 Mika Heiskanen <mika.heiskanen@fmi.fi> - 14.1.20-1.fmi
