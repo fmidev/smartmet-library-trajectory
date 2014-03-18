@@ -303,14 +303,13 @@ void NFmiTrajectorySystem::CalculateSingleTrajectory(boost::shared_ptr<NFmiFastQ
 
 static bool IsInfoHybridData(boost::shared_ptr<NFmiFastQueryInfo> &theInfo)
 {
-	bool hybridData = theInfo->DataType() == NFmiInfoData::kHybridData;
-	if(theInfo->DataType() == NFmiInfoData::kEditable)
+  if(theInfo->SizeLevels() > 1)
 	{
-		theInfo->FirstLevel();
-		if(theInfo->Level()->LevelType() == kFmiHybridLevel)
-			hybridData = true;
+	  theInfo->FirstLevel();
+	  if(theInfo->Level()->LevelType() == kFmiHybridLevel)
+		return true;
 	}
-	return hybridData;
+  return false;
 }
 
 static unsigned long GetInfoGroundLevelIndex(boost::shared_ptr<NFmiFastQueryInfo> &theInfo, bool hybridData)

@@ -463,6 +463,28 @@ bool parse_options(int argc, char * argv[])
 
 // ----------------------------------------------------------------------
 /*!
+ * \brief Find maximum value at a location
+ */
+// ----------------------------------------------------------------------
+
+float maximum_value_vertically(NFmiFastQueryInfo & theQ,
+							   const NFmiPoint & thePoint,
+							   const NFmiMetTime & theTime)
+{
+  float pmax = kFloatMissing;
+  for(theQ.ResetLevel(); theQ.NextLevel(); )
+	{
+	  float value = theQ.InterpolatedValue(thePoint, theTime);
+	  if(pmax == kFloatMissing)
+		pmax = value;
+	  else if(value != kFloatMissing)
+		pmax = std::max(pmax,value);
+	}
+  return pmax;
+}
+
+// ----------------------------------------------------------------------
+/*!
  * \brief Calculate a trajectory
  */
 // ----------------------------------------------------------------------
@@ -516,20 +538,27 @@ calculate_trajectory(boost::shared_ptr<NFmiFastQueryInfo> & theInfo)
 	  if(!theInfo->Param(kFmiPressure))
 		throw std::runtime_error("Pressure parameter missing from forecast data");
 
+	  // maximum pressure = lowest level value, but we do not know the order of the levels
+	  float pmax = maximum_value_vertically(*theInfo, trajectory->LatLon(), trajectory->Time());
+
 	  if(!options.heightrange)
 		{
 		  float p = theInfo->HeightValue(*options.height, trajectory->LatLon(), trajectory->Time());
-		  if(p == kFloatMissing)
-			throw std::runtime_error("Unable to calculate simulation pressure for height "+boost::lexical_cast<std::string>(*options.height));
-		  trajectory->PressureLevel(p);
+
+		  if(p != kFloatMissing)
+			trajectory->PressureLevel(p);
+		  else
+			trajectory->PressureLevel(pmax);
 		}
 	  else
 		{
 		  float dz = *options.heightrange/2;
 		  float p1 = theInfo->HeightValue(*options.height - dz, trajectory->LatLon(), trajectory->Time());
 		  float p2 = theInfo->HeightValue(*options.height + dz, trajectory->LatLon(), trajectory->Time());
-		  if(p1 == kFloatMissing || p2 == kFloatMissing)
-			throw std::runtime_error("Unable to calculate pressure range corresponding to input height options");
+
+		  if(p2 == kFloatMissing) p2 = pmax;
+		  if(p1 == kFloatMissing) p1 = pmax;
+
 		  trajectory->PressureLevel((p1+p2)/2);
 		  trajectory->StartPressureLevelRange((p1-p2)/2);
 		}
