@@ -128,7 +128,7 @@ static NFmiMetTime CalcRandStartTime(const NFmiMetTime &theStartTime, double the
 	double rangeRandValue = theStartTimeRangeInMinutes * (2.0*rand()-RAND_MAX) / RAND_MAX; // joku reaali luku välillä -1 ja - 1
 	long usedRangeRandValue = round(rangeRandValue/theRoundStepInMinutes) * theRoundStepInMinutes;
 	NFmiMetTime aTime(theStartTime);
-	aTime.SetTimeStep(static_cast<short>(theRoundStepInMinutes));
+	aTime.SetTimeStep(theRoundStepInMinutes);
 	aTime.ChangeByMinutes(usedRangeRandValue);
 	return aTime;
 }
@@ -265,7 +265,7 @@ void NFmiTrajectorySystem::CalculateSingleTrajectory(boost::shared_ptr<NFmiFastQ
 		NFmiLocation nextLoc;
 		NFmiMetTime startTime(theTrajector.StartTime());
 		NFmiMetTime currentTime(startTime);
-		currentTime.SetTimeStep(static_cast<short>(theTimeStepInMinutes));
+		currentTime.SetTimeStep(theTimeStepInMinutes);
 		NFmiMetTime endTime(startTime);
 		endTime.ChangeByHours(forwardDir ? theTimeLengthInHours : -theTimeLengthInHours);
 		double WS = kFloatMissing;
@@ -649,7 +649,7 @@ void NFmiTrajectorySystem::CalculateSingle3DTrajectory(boost::shared_ptr<NFmiFas
 	}
 	NFmiLocation nextLoc;
 	NFmiMetTime currentTime(startTime);
-	currentTime.SetTimeStep(static_cast<short>(theTimeStepInMinutes));
+	currentTime.SetTimeStep(theTimeStepInMinutes);
 	NFmiMetTime endTime(startTime);
 	endTime.ChangeByHours(forwardDir ? theTimeLengthInHours : -theTimeLengthInHours);
 	double WS = kFloatMissing;

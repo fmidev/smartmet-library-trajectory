@@ -127,7 +127,7 @@ void NFmiTrajectory::CalculateCrossSectionTrajectoryHelpData(void)
 	// sitten täytetään apudata vektori
 	int skipValue = static_cast<int>(usedTimeStepInMinutes / itsTimeStepInMinutes);
 	NFmiMetTime aTime(itsTime);
-	aTime.SetTimeStep(static_cast<short>(usedTimeStepInMinutes));
+	aTime.SetTimeStep(usedTimeStepInMinutes);
 	const checkedVector<NFmiPoint> &points = itsMainTrajector.Points();
 	int pointLocationCounter = 0;
 	if(itsDirection == kForward)

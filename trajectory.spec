@@ -1,17 +1,17 @@
 %define LIBNAME trajectory
 Summary: Trajectory calculation
 Name: smartmet-%{LIBNAME}
-Version: 14.3.18
+Version: 14.9.8
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
 URL: http://www.weatherproof.fi
 Source0: %{name}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
-BuildRequires: libsmartmet-newbase >= 14.3.14
-BuildRequires: libsmartmet-smarttools >= 13.12.2
-BuildRequires: libsmartmet-locus >= 14.1.9
-BuildRequires: libsmartmet-macgyver >= 14.2.27
+BuildRequires: libsmartmet-newbase >= 14.8.6
+BuildRequires: libsmartmet-smarttools >= 14.8.1
+BuildRequires: libsmartmet-locus >= 14.8.27
+BuildRequires: libsmartmet-macgyver >= 14.9.5
 BuildRequires: boost-devel
 BuildRequires: ctpp2 >= 2.8.2
 Requires: mysql++
@@ -66,6 +66,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/smartmet/%{LIBNAME}/xml.c2t
 
 %changelog
+* Mon Sep  8 2014 Mika Heiskanen <mika.heiskanen@fmi.fi> - 14.9.8-1.fmi
+- Recompiled due to newbase API changes
 * Tue Mar 18 2014 Mika Heiskanen <mika.heiskanen@fmi.fi> - 14.3.18-1.fmi
 - Use the maximum pressure available if the given height is too low
 * Fri Feb 14 2014 Mika Heiskanen <mika.heiskanen@fmi.fi> - 14.2.14-1.fmi
