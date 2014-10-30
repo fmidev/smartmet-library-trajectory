@@ -1,15 +1,15 @@
 %define LIBNAME trajectory
 Summary: Trajectory calculation
 Name: smartmet-%{LIBNAME}
-Version: 14.9.8
+Version: 14.10.30
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
 URL: http://www.weatherproof.fi
 Source0: %{name}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
-BuildRequires: libsmartmet-newbase >= 14.8.6
-BuildRequires: libsmartmet-smarttools >= 14.8.1
+BuildRequires: libsmartmet-newbase >= 14.10.30
+BuildRequires: libsmartmet-smarttools >= 14.10.30
 BuildRequires: libsmartmet-locus >= 14.8.27
 BuildRequires: libsmartmet-macgyver >= 14.9.5
 BuildRequires: boost-devel
@@ -66,6 +66,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/smartmet/%{LIBNAME}/xml.c2t
 
 %changelog
+* Thu Oct 30 2014 Mika Heiskanen <mika.heiskanen@fmi.fi> - 14.10.30-1.fmi
+- newbase has improved vertical interpolation algorithms
 * Mon Sep  8 2014 Mika Heiskanen <mika.heiskanen@fmi.fi> - 14.9.8-1.fmi
 - Recompiled due to newbase API changes
 * Tue Mar 18 2014 Mika Heiskanen <mika.heiskanen@fmi.fi> - 14.3.18-1.fmi
