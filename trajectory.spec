@@ -1,21 +1,33 @@
 %define LIBNAME trajectory
 Summary: Trajectory calculation
 Name: smartmet-%{LIBNAME}
-Version: 14.10.30
+Version: 15.2.24
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
 URL: http://www.weatherproof.fi
 Source0: %{name}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
-BuildRequires: libsmartmet-newbase >= 14.10.30
-BuildRequires: libsmartmet-smarttools >= 14.10.30
-BuildRequires: libsmartmet-locus >= 14.8.27
-BuildRequires: libsmartmet-macgyver >= 14.9.5
+BuildRequires: libsmartmet-newbase >= 15.2.24
+BuildRequires: libsmartmet-smarttools >= 15.2.16
+BuildRequires: libsmartmet-locus-devel >= 14.8.27
+BuildRequires: libsmartmet-macgyver >= 15.2.12
 BuildRequires: boost-devel
 BuildRequires: ctpp2 >= 2.8.2
 Requires: mysql++
 Requires: bzip2
+Requires: libsmartmet-macgyver >= 15.2.12
+Requires: libsmartmet-locus >= 14.8.27
+%if 0%{rhel} >= 7
+Requires: boost-date-time
+Requires: boost-filesystem
+Requires: boost-iostreams
+Requires: boost-locale
+Requires: boost-program-options
+Requires: boost-regex
+Requires: boost-thread
+Requires: boost-system
+%endif
 Provides: qdtrajectory
 
 %description
@@ -24,6 +36,7 @@ FMI Trajectory Calculation Tools
 %package -n libsmartmet-%{LIBNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
+Requires: libsmartmet-locus >= 14.8.27
 Provides: libsmartmet-%{LIBNAME}
 %description -n libsmartmet-%{LIBNAME}
 FMI Trajectory Calculation Libraries
@@ -66,6 +79,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/smartmet/%{LIBNAME}/xml.c2t
 
 %changelog
+* Tue Feb 24 2015 Mika Heiskanen <mika.heiskanen@fmi.fi> - 15.2.24-1.fmi
+- Recompiled with the latest newbase
 * Thu Oct 30 2014 Mika Heiskanen <mika.heiskanen@fmi.fi> - 14.10.30-1.fmi
 - newbase has improved vertical interpolation algorithms
 * Mon Sep  8 2014 Mika Heiskanen <mika.heiskanen@fmi.fi> - 14.9.8-1.fmi
