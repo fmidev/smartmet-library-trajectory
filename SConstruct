@@ -56,8 +56,11 @@ else:
     env.Append( CXXFLAGS= [
         # MAINFLAGS from orig. Makefile ('-fPIC' is automatically added by SCons)
         #
+	"-D_REENTRANT",
 	"-std=c++0x",
-        "-fPIC", 
+        "-fPIC",
+	"-shared",
+	"-rdynamic",
         "-Wall", 
         "-Wno-unused-parameter",
 #       "-Wno-variadic-macros",
@@ -117,6 +120,7 @@ env.Append( LIBS= [ "smartmet_smarttools",
 		    "boost_regex",
 		    "boost_thread",
 		    "boost_system",
+		    "gdal",
 		    "ctpp2",
 		    "pqxx",
 		    "bz2",
@@ -201,12 +205,12 @@ for fn in Glob("source/*.cpp"):
 	s= os.path.basename( str(fn) )
 	obj_s= OBJDIR+"/"+ s.replace(".cpp","")
 	
-	objs += env.Object( obj_s, fn )
+	objs += env.SharedObject( obj_s, fn )
 
 # Make just the static lib (at least it should be default for just 'scons')
 
-env.Library( "smartmet_trajectory", objs )
+env.SharedLibrary( "smartmet_trajectory", objs )
 
 # Make main programs
 
-env.Program( "qdtrajectory", [ "main/qdtrajectory.cpp", "libsmartmet_trajectory.a" ] );
+env.Program( "qdtrajectory", [ "main/qdtrajectory.cpp", "libsmartmet_trajectory.so" ] );

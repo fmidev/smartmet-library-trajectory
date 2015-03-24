@@ -45,7 +45,7 @@ BYTECODES = $(TEMPLATES:%.tmpl=%.c2t)
 
 # What to install
 
-LIBFILE = libsmartmet_$(LIB).a
+LIBFILE = libsmartmet_$(LIB).so
 
 # How to install
 
@@ -81,7 +81,7 @@ install:
 	  $(INSTALL_DATA) include/$$hdr $(includedir)/$(LIB)/$$hdr; \
 	done
 	@mkdir -p $(libdir)
-	$(INSTALL_DATA) $(LIBFILE) $(libdir)/$(LIBFILE)
+	$(INSTALL_PROG) $(LIBFILE) $(libdir)/$(LIBFILE)
 	mkdir -p $(bindir)
 	@list='$(PROG)'; \
 	for prog in $$list; do \

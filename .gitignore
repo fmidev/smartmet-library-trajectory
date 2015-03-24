@@ -1,6 +1,6 @@
 .sconsign.dblite
 obj
-libsmartmet_trajectory.a
+libsmartmet_trajectory.so
 *~
 *.o
 /qdtrajectory
