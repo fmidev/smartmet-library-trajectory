@@ -1,15 +1,15 @@
 %define LIBNAME trajectory
 Summary: Trajectory calculation
 Name: smartmet-%{LIBNAME}
-Version: 15.2.24
+Version: 15.3.30
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
 URL: http://www.weatherproof.fi
 Source0: %{name}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
-BuildRequires: libsmartmet-newbase >= 15.2.24
-BuildRequires: libsmartmet-smarttools >= 15.2.16
+BuildRequires: libsmartmet-newbase-devel >= 15.3.30
+BuildRequires: libsmartmet-smarttools-devel >= 15.3.30
 BuildRequires: libsmartmet-locus-devel >= 14.8.27
 BuildRequires: libsmartmet-macgyver >= 15.2.12
 BuildRequires: boost-devel
@@ -18,6 +18,8 @@ Requires: mysql++
 Requires: bzip2
 Requires: libsmartmet-macgyver >= 15.2.12
 Requires: libsmartmet-locus >= 14.8.27
+Requires: libsmartmet-newbase >= 15.3.30
+Requires: libsmartmet-smarttools >= 15.3.30
 %if 0%{rhel} >= 7
 Requires: boost-date-time
 Requires: boost-filesystem
@@ -63,12 +65,11 @@ make %{_smp_mflags}
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,root,root,0775)
+%defattr(0775,root,root,-)
 %{_bindir}/qdtrajectory
 
 %files -n libsmartmet-%{LIBNAME}
-%{_includedir}/smartmet/%{LIBNAME}
-%{_libdir}/libsmartmet_%{LIBNAME}.a
+%{_libdir}/libsmartmet_%{LIBNAME}.so
 
 %files -n smartmet-%{LIBNAME}-formats
 %{_datadir}/smartmet/%{LIBNAME}/gpx.c2t
@@ -78,7 +79,23 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/smartmet/%{LIBNAME}/kmzx.c2t
 %{_datadir}/smartmet/%{LIBNAME}/xml.c2t
 
+%post -p /sbin/ldconfig
+%postun -p /sbin/ldconfig
+
+%package -n libsmartmet-%{LIBNAME}-devel
+Summary: FMI trajectory development files
+Provides: %{LIBNAME}-devel
+
+%description -n libsmartmet-%{LIBNAME}-devel
+FMI trajectory development files
+
+%files -n libsmartmet-%{LIBNAME}-devel
+%defattr(0664,root,root,-)
+%{_includedir}/smartmet/%{LIBNAME}
+
 %changelog
+* Mon Mar 30 2015 Mika Heiskanen <mika.heiskanen@fmi.fi> - 15.3.30-1.fmi
+- Switched to using dynamic linkage
 * Tue Feb 24 2015 Mika Heiskanen <mika.heiskanen@fmi.fi> - 15.2.24-1.fmi
 - Recompiled with the latest newbase
 * Thu Oct 30 2014 Mika Heiskanen <mika.heiskanen@fmi.fi> - 14.10.30-1.fmi
