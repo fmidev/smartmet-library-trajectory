@@ -1,15 +1,15 @@
 %define LIBNAME trajectory
 Summary: Trajectory calculation
 Name: smartmet-%{LIBNAME}
-Version: 15.3.30
+Version: 15.4.9
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
 URL: http://www.weatherproof.fi
 Source0: %{name}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
-BuildRequires: libsmartmet-newbase-devel >= 15.3.30
-BuildRequires: libsmartmet-smarttools-devel >= 15.3.30
+BuildRequires: libsmartmet-newbase-devel >= 15.4.9
+BuildRequires: libsmartmet-smarttools-devel >= 15.4.9
 BuildRequires: libsmartmet-locus-devel >= 14.8.27
 BuildRequires: libsmartmet-macgyver >= 15.2.12
 BuildRequires: boost-devel
@@ -18,7 +18,7 @@ Requires: mysql++
 Requires: bzip2
 Requires: libsmartmet-macgyver >= 15.2.12
 Requires: libsmartmet-locus >= 14.8.27
-Requires: libsmartmet-newbase >= 15.3.30
+Requires: libsmartmet-newbase >= 15.4.9
 Requires: libsmartmet-smarttools >= 15.3.30
 %if 0%{rhel} >= 7
 Requires: boost-date-time
@@ -94,6 +94,8 @@ FMI trajectory development files
 %{_includedir}/smartmet/%{LIBNAME}
 
 %changelog
+* Thu Apr  9 2015 Mika Heiskanen <mika.heiskanen@fmi.fi> - 15.4.9-1.fmi
+- newbase API changed
 * Mon Mar 30 2015 Mika Heiskanen <mika.heiskanen@fmi.fi> - 15.3.30-1.fmi
 - Switched to using dynamic linkage
 * Tue Feb 24 2015 Mika Heiskanen <mika.heiskanen@fmi.fi> - 15.2.24-1.fmi
