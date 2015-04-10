@@ -19,8 +19,7 @@ Requires: bzip2
 Requires: libsmartmet-macgyver >= 15.2.12
 Requires: libsmartmet-locus >= 14.8.27
 Requires: libsmartmet-newbase >= 15.4.9
-Requires: libsmartmet-smarttools >= 15.3.30
-%if 0%{rhel} >= 7
+Requires: libsmartmet-smarttools >= 15.4.9
 Requires: boost-date-time
 Requires: boost-filesystem
 Requires: boost-iostreams
@@ -29,7 +28,6 @@ Requires: boost-program-options
 Requires: boost-regex
 Requires: boost-thread
 Requires: boost-system
-%endif
 Provides: qdtrajectory
 
 %description
