@@ -20,7 +20,6 @@ Requires: libsmartmet-macgyver >= 15.4.10
 Requires: libsmartmet-locus >= 15.4.9
 Requires: libsmartmet-newbase >= 15.4.15
 Requires: libsmartmet-smarttools >= 15.4.15
-%if 0%{rhel} >= 7
 Requires: boost-date-time
 Requires: boost-filesystem
 Requires: boost-iostreams
@@ -29,7 +28,6 @@ Requires: boost-program-options
 Requires: boost-regex
 Requires: boost-thread
 Requires: boost-system
-%endif
 Provides: qdtrajectory
 
 %description

@@ -131,10 +131,10 @@ void Options::report(std::ostream & out) const
   REPORT(out,"Template file:",templatefile);
   REPORT(out,"Plume size:",plumesize);
   REPORT(out,"Plume disturbance factor:",disturbance);
-  REPORT(out,"Plume dispersion radius in km:",arearadius);
-  REPORT(out,"Plume time dispersion in minutes:", timeinterval);
-  REPORT(out,"Plume pressure level:", pressure);
-  REPORT(out,"Plume pressure dispersion in hPa:", pressurerange);
+  if(arearadius) REPORT(out,"Plume dispersion radius in km:",*arearadius);
+  if(timeinterval) REPORT(out,"Plume time dispersion in minutes:", *timeinterval);
+  if(pressure) REPORT(out,"Plume pressure level:", *pressure);
+  if(pressurerange) REPORT(out,"Plume pressure dispersion in hPa:", *pressurerange);
   REPORT(out,"Isentropic mode:",isentropic);
   REPORT(out,"Backward simulation in time:",backwards);
   out << '\n';
