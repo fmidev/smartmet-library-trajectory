@@ -10,7 +10,7 @@
 #include <locus/Query.h>
 
 #include <macgyver/AnsiEscapeCodes.h>
-#include <macgyver/Cast.h>
+#include <macgyver/String.h>
 #include <macgyver/TimeFormatter.h>
 #include <macgyver/TimeParser.h>
 
@@ -200,8 +200,8 @@ NFmiPoint parse_lonlat(const std::string & theStr)
   if(parts.size() != 2)
 	throw std::runtime_error("Invalid coordinate specification '"+theStr+"'");
 
-  return NFmiPoint(Fmi::number_cast<double>(parts[0]),
-				   Fmi::number_cast<double>(parts[1]));
+  return NFmiPoint(Fmi::stod(parts[0]),
+				   Fmi::stod(parts[1]));
   
 }
 
@@ -219,8 +219,8 @@ NFmiPoint parse_latlon(const std::string & theStr)
   if(parts.size() != 2)
 	throw std::runtime_error("Invalid coordinate specification '"+theStr+"'");
 
-  return NFmiPoint(Fmi::number_cast<double>(parts[1]),
-				   Fmi::number_cast<double>(parts[0]));
+  return NFmiPoint(Fmi::stod(parts[1]),
+				   Fmi::stod(parts[0]));
   
 }
 
@@ -602,7 +602,7 @@ void hash_trajector(CTPP::CDT & hash, int index, const NFmiSingleTrajector & tra
   if(index == 0)
 	hash["name"] = "Main trajectory";
   else
-	hash["name"] = "Plume " + boost::lexical_cast<std::string>(index);
+	hash["name"] = "Plume " + Fmi::to_string(index);
 
   // Start time
 
