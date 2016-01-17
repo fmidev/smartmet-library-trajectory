@@ -73,6 +73,9 @@ clean:
 	-rm -f $(LIBFILE) *~ source/*~ include/*~ main/*~ main/*.o $(PROG) .sconsign.dblite tmpl/*.c2t
 	-rm -rf $(objdir)
 
+format:
+	clang-format -i -style=file include/*.h source/*.cpp
+
 install:
 	mkdir -p $(includedir)/$(LIB)
 	@list=`cd include && ls -1 *.h`; \
