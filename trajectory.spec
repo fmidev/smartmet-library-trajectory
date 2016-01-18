@@ -63,13 +63,15 @@ make %{_smp_mflags}
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(0775,root,root,-)
+%defattr(0775,root,root,0775)
 %{_bindir}/qdtrajectory
 
 %files -n libsmartmet-%{LIBNAME}
+%defattr(0775,root,root,0775)
 %{_libdir}/libsmartmet_%{LIBNAME}.so
 
 %files -n smartmet-%{LIBNAME}-formats
+%defattr(0664,root,root,0775)
 %{_datadir}/smartmet/%{LIBNAME}/gpx.c2t
 %{_datadir}/smartmet/%{LIBNAME}/kml.c2t
 %{_datadir}/smartmet/%{LIBNAME}/kmlx.c2t
@@ -88,8 +90,8 @@ Provides: %{LIBNAME}-devel
 FMI trajectory development files
 
 %files -n libsmartmet-%{LIBNAME}-devel
-%defattr(0664,root,root,-)
-%{_includedir}/smartmet/%{LIBNAME}/*.h
+%defattr(0664,root,root,0775)
+%{_includedir}/smartmet/%{LIBNAME}
 
 %changelog
 * Sun Jan 17 2016 Mika Heiskanen <mika.heiskanen@fmi.fi> - 16.1.17-1.fmi
