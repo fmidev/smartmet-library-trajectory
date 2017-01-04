@@ -1,4 +1,4 @@
-# SmartMetTrajectory Calculation Library
+# SmartMet Trajectory Calculation Library
 
 The trajectory calculation library is used by both the SmartMet Editor
 and SmartMet Server to provide trajectory calculations for massless
