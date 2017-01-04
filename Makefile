@@ -1,4 +1,7 @@
-LIB = trajectory
+SUBNAME = trajectory
+LIB = smartmet-$(SUBNAME)
+SPEC = smartmet-$(SUBNAME)
+INCDIR = smartmet/$(SUBNAME)
 PROG = qdtrajectory
 
 ifeq ($(origin PREFIX), undefined)
@@ -23,18 +26,13 @@ else
 endif
 
 bindir = $(PREFIX)/bin
-includedir = $(PREFIX)/include/smartmet
-datadir = $(PREFIX)/share/smartmet
+includedir = $(PREFIX)/include
+datadir = $(PREFIX)/share
 objdir = obj
 
 # rpm variables
 
 rpmsourcedir=/tmp/$(shell whoami)/rpmbuild
-
-rpmerr = "There's no spec file ($(LIB).spec). RPM wasn't created. Please make a spec file or copy and rename it into $(LIB).spec"
-
-rpmversion := $(shell grep "^Version:" $(LIB).spec  | cut -d\  -f 2 | tr . _)
-rpmrelease := $(shell grep "^Release:" $(LIB).spec  | cut -d\  -f 2 | tr . _)
 
 rpmexcludevcs := $(shell tar --help | grep -m 1 -o -- '--exclude-vcs')
 
@@ -45,7 +43,7 @@ BYTECODES = $(TEMPLATES:%.tmpl=%.c2t)
 
 # What to install
 
-LIBFILE = libsmartmet_$(LIB).so
+LIBFILE = lib$(LIB).so
 
 # How to install
 
@@ -77,11 +75,11 @@ format:
 	clang-format -i -style=file include/*.h source/*.cpp
 
 install:
-	mkdir -p $(includedir)/$(LIB)
+	mkdir -p $(includedir)/$(INCDIR)
 	@list=`cd include && ls -1 *.h`; \
 	for hdr in $$list; do \
-	  echo $(INSTALL_DATA) include/$$hdr $(includedir)/$(LIB)/$$hdr; \
-	  $(INSTALL_DATA) include/$$hdr $(includedir)/$(LIB)/$$hdr; \
+	  echo $(INSTALL_DATA) include/$$hdr $(includedir)/$(INCDIR)/$$hdr; \
+	  $(INSTALL_DATA) include/$$hdr $(includedir)/$(INCDIR)/$$hdr; \
 	done
 	@mkdir -p $(libdir)
 	$(INSTALL_PROG) $(LIBFILE) $(libdir)/$(LIBFILE)
@@ -91,33 +89,26 @@ install:
 	  echo $(INSTALL_PROG) $$prog $(bindir)/$$prog; \
 	  $(INSTALL_PROG) $$prog $(bindir)/$$prog; \
 	done
-	mkdir -p $(datadir)/$(LIB)
+	mkdir -p $(datadir)/smartmet/$(SUBNAME)
 	@list=`ls -1 tmpl/*.c2t`; \
-	echo $(INSTALL_DATA) $$list $(datadir)/$(LIB)/; \
-	$(INSTALL_DATA) $$list $(datadir)/$(LIB)/
+	echo $(INSTALL_DATA) $$list $(datadir)/smartmet/$(SUBNAME)/; \
+	$(INSTALL_DATA) $$list $(datadir)/smartmet/$(SUBNAME)/
 
 test:
 	cd test && make test
 
-html:
-	mkdir -p /data/local/html/lib/$(LIB)
-	doxygen $(LIB).dox
-
 rpm: clean
-	if [ -e $(LIB).spec ]; \
+	if [ -e $(SPEC).spec ]; \
 	then \
-	  smartspecupdate $(LIB).spec ; \
+	  smartspecupdate $(SPEC).spec ; \
 	  mkdir -p $(rpmsourcedir) ; \
-	  tar $(rpmexcludevcs) -C ../ -cf $(rpmsourcedir)/smartmet-$(LIB).tar $(LIB) ; \
-	  gzip -f $(rpmsourcedir)/smartmet-$(LIB).tar ; \
-	  TAR_OPTIONS=--wildcards rpmbuild -ta $(rpmsourcedir)/smartmet-$(LIB).tar.gz ; \
-	  rm -f $(rpmsourcedir)/smartmet-$(LIB).tar.gz ; \
+	  tar $(rpmexcludevcs) -C ../ -cf $(rpmsourcedir)/$(SPEC).tar $(SUBNAME) ; \
+	  gzip -f $(rpmsourcedir)/$(SPEC).tar ; \
+	  TAR_OPTIONS=--wildcards rpmbuild -ta $(rpmsourcedir)/$(SPEC).tar.gz ; \
+	  rm -f $(rpmsourcedir)/$(SPEC).tar.gz ; \
 	else \
-	  echo $(rpmerr); \
+	  echo $(SPEC).spec file missing; \
 	fi;
-
-tag:
-	cvs -f tag 'smartmet_$(LIB)_$(rpmversion)-$(rpmrelease)' .
 
 cppcheck:
 	cppcheck -DUNIX -I include -I $(includedir) source

@@ -108,10 +108,10 @@ elif LINUX:
     env.Append( CPPPATH= [ PREFIX+"/include/smartmet/newbase" ] )
     env.Append( CPPPATH= [ PREFIX+"/include/smartmet/smarttools" ] )
 
-env.Append( LIBS= [ "smartmet_smarttools",
-	            "smartmet_newbase",
-		    "smartmet_locus",
-		    "smartmet_macgyver",
+env.Append( LIBS= [ "smartmet-smarttools",
+	            "smartmet-newbase",
+		    "smartmet-locus",
+		    "smartmet-macgyver",
 		    "boost_date_time",
 		    "boost_filesystem",
 		    "boost_iostreams",
@@ -196,7 +196,7 @@ if PROFILE:
 
 objs= []
 
-env.Append( LIBS= [ "smartmet_newbase", "smartmet_smarttools" ] )
+env.Append( LIBS= [ "smartmet-newbase", "smartmet-smarttools" ] )
 if not WINDOWS:
     env.Append( CPPDEFINES= "_REENTRANT" )
 
@@ -209,8 +209,8 @@ for fn in Glob("source/*.cpp"):
 
 # Make just the static lib (at least it should be default for just 'scons')
 
-env.SharedLibrary( "smartmet_trajectory", objs )
+env.SharedLibrary( "smartmet-trajectory", objs )
 
 # Make main programs
 
-env.Program( "qdtrajectory", [ "main/qdtrajectory.cpp", "libsmartmet_trajectory.so" ] );
+env.Program( "qdtrajectory", [ "main/qdtrajectory.cpp", "libsmartmet-trajectory.so" ] );
