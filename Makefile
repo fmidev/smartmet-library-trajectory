@@ -100,7 +100,6 @@ test:
 rpm: clean
 	if [ -e $(SPEC).spec ]; \
 	then \
-	  smartspecupdate $(SPEC).spec ; \
 	  mkdir -p $(rpmsourcedir) ; \
 	  tar $(rpmexcludevcs) -C ../ -cf $(rpmsourcedir)/$(SPEC).tar $(SUBNAME) ; \
 	  gzip -f $(rpmsourcedir)/$(SPEC).tar ; \
