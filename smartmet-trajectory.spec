@@ -4,7 +4,7 @@
 %define DEVELNAME %{LIBNAME}-devel
 Summary: Trajectory calculation
 Name: %{BINNAME}
-Version: 17.1.4
+Version: 17.1.9
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
@@ -17,8 +17,6 @@ BuildRequires: smartmet-library-locus-devel >= 16.12.20
 BuildRequires: smartmet-library-macgyver-devel >= 16.12.20
 BuildRequires: boost-devel
 BuildRequires: ctpp2 >= 2.8.2
-Requires: mysql++
-Requires: bzip2
 Requires: smartmet-library-macgyver >= 16.12.20
 Requires: smartmet-library-locus >= 16.12.20
 Requires: smartmet-library-newbase >= 16.12.19

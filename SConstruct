@@ -103,7 +103,6 @@ if WINDOWS:
 elif LINUX:
     # newbase and smarttools from system install
     #
-    env.Append( CPPPATH= [ PREFIX+"/include/mysql" ] )
     env.Append( CPPPATH= [ PREFIX+"/include/smartmet" ] )
     env.Append( CPPPATH= [ PREFIX+"/include/smartmet/newbase" ] )
     env.Append( CPPPATH= [ PREFIX+"/include/smartmet/smarttools" ] )
@@ -123,7 +122,6 @@ env.Append( LIBS= [ "smartmet-smarttools",
 		    "gdal",
 		    "ctpp2",
 		    "pqxx",
-		    "bz2",
 		    "rt"
 		    ] )
 
