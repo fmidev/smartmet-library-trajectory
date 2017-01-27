@@ -4,23 +4,23 @@
 %define DEVELNAME %{LIBNAME}-devel
 Summary: Trajectory calculation
 Name: %{BINNAME}
-Version: 17.1.9
+Version: 17.1.27
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
 URL: https://github.com/fmidev/smartmet-library-trajectory
 Source0: %{name}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
-BuildRequires: smartmet-library-newbase-devel >= 16.12.19
-BuildRequires: smartmet-library-smarttools-devel >= 17.1.4
+BuildRequires: smartmet-library-newbase-devel >= 17.1.26
+BuildRequires: smartmet-library-smarttools-devel >= 17.1.27
 BuildRequires: smartmet-library-locus-devel >= 16.12.20
-BuildRequires: smartmet-library-macgyver-devel >= 16.12.20
+BuildRequires: smartmet-library-macgyver-devel >= 17.1.18
 BuildRequires: boost-devel
 BuildRequires: ctpp2 >= 2.8.2
-Requires: smartmet-library-macgyver >= 16.12.20
+Requires: smartmet-library-macgyver >= 17.1.18
 Requires: smartmet-library-locus >= 16.12.20
-Requires: smartmet-library-newbase >= 16.12.19
-Requires: smartmet-library-smarttools >= 17.1.4
+Requires: smartmet-library-newbase >= 17.1.26
+Requires: smartmet-library-smarttools >= 17.1.27
 Requires: smartmet-library-trajectory
 Requires: smartmet-trajectory-formats
 Requires: boost-date-time
@@ -102,6 +102,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/%{DIRNAME}
 
 %changelog
+* Fri Jan 27 2017 Mika Heiskanen <mika.heiskanen@fmi.fi> - 17.1.27-1.fmi
+- Recompiled due to NFmiQueryData object size change
+
 * Wed Jan  4 2017 Mika Heiskanen <mika.heiskanen@fmi.fi> - 17.1.4-1.fmi
 - Switched to FMI open source naming conventions
 
