@@ -1,1 +1,26 @@
-kml.tmpl
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+<name>Trajectory simulation with <TMPL_var producer></name>
+<Placemark>
+<name>Simulation start point</name>
+<Point>
+<coordinates><TMPL_var longitude>,<TMPL_var latitude></coordinates>
+</Point>
+</Placemark><TMPL_foreach trajectories as trajectory>
+<Placemark>
+<name><TMPL_var name></name>
+<LineString><TMPL_if kml.extrude>
+<extrude>1</extrude></TMPL_if><TMPL_if kml.tessellate>
+<tessellate>1</tessellate></TMPL_if>
+<TimeSpan>
+<begin><TMPL_var starttime></begin>
+<end><TMPL_var endtime></end>
+</TimeSpan>
+<coordinates><TMPL_foreach trajectory.points as point>
+<TMPL_var longitude>,<TMPL_var latitude>,<TMPL_var height></TMPL_foreach>
+</coordinates>
+</LineString>
+</Placemark></TMPL_foreach>
+</Document>
+</kml>

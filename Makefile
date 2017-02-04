@@ -34,8 +34,6 @@ objdir = obj
 
 rpmsourcedir=/tmp/$(shell whoami)/rpmbuild
 
-rpmexcludevcs := $(shell tar --help | grep -m 1 -o -- '--exclude-vcs')
-
 # Templates
 
 TEMPLATES = $(wildcard tmpl/*.tmpl)
@@ -101,9 +99,8 @@ rpm: clean
 	if [ -e $(SPEC).spec ]; \
 	then \
 	  mkdir -p $(rpmsourcedir) ; \
-	  tar $(rpmexcludevcs) -C ../ -cf $(rpmsourcedir)/$(SPEC).tar $(SUBNAME) ; \
-	  gzip -f $(rpmsourcedir)/$(SPEC).tar ; \
-	  TAR_OPTIONS=--wildcards rpmbuild -ta $(rpmsourcedir)/$(SPEC).tar.gz ; \
+	  tar -czvf $(rpmsourcedir)/$(SPEC).tar.gz --transform "s,^,$(SPEC)/," * ; \
+	  rpmbuild -ta $(rpmsourcedir)/$(SPEC).tar.gz ; \
 	  rm -f $(rpmsourcedir)/$(SPEC).tar.gz ; \
 	else \
 	  echo $(SPEC).spec file missing; \

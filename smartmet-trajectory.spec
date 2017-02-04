@@ -1,7 +1,7 @@
 %define DIRNAME trajectory
 %define BINNAME smartmet-%{DIRNAME}
-%define LIBNAME smartmet-library-%{DIRNAME}
-%define DEVELNAME %{LIBNAME}-devel
+%define SPECNAME smartmet-library-%{DIRNAME}
+%define DEVELNAME %{SPECNAME}-devel
 Summary: Trajectory calculation
 Name: %{BINNAME}
 Version: 17.1.27
@@ -38,13 +38,13 @@ Obsoletes: smartmet-trajectory-debuginfo < 17.1.4
 %description
 FMI Trajectory Calculation Tools
 
-%package -n %{LIBNAME}
+%package -n %{SPECNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
 Requires: smartmet-library-locus >= 16.12.20
-Provides: %{LIBNAME}
+Provides: %{SPECNAME}
 Obsoletes: libsmartmet-trajectory < 17.1.4
-%description -n %{LIBNAME}
+%description -n %{SPECNAME}
 FMI Trajectory Calculation Libraries
 
 %package -n %{DEVELNAME}
@@ -56,17 +56,17 @@ Obsoletes: libsmartmet-trajectory-devel < 17.1.4
 %description -n %{DEVELNAME}
 FMI Trajectory Calculation Libraries
 
-%package -n %{LIBNAME}-formats
+%package -n %{SPECNAME}-formats
 Summary: Trajectory calculation library data formats
 Group: Development/Libraries
-Provides: %{LIBNAME}-formats
-%description -n %{LIBNAME}-formats
+Provides: %{SPECNAME}-formats
+%description -n %{SPECNAME}-formats
 FMI Trajectory Calculation Libraries
 
 %prep
 rm -rf $RPM_BUILD_ROOT
 
-%setup -q -n %{DIRNAME}
+%setup -q -n %{BINNAME}
  
 %build
 make %{_smp_mflags}
@@ -81,7 +81,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(0775,root,root,0775)
 %{_bindir}/qdtrajectory
 
-%files -n %{LIBNAME}-formats
+%files -n %{SPECNAME}-formats
 %defattr(0664,root,root,0775)
 %{_datadir}/smartmet/%{DIRNAME}/gpx.c2t
 %{_datadir}/smartmet/%{DIRNAME}/kml.c2t
@@ -90,7 +90,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/smartmet/%{DIRNAME}/kmzx.c2t
 %{_datadir}/smartmet/%{DIRNAME}/xml.c2t
 
-%files -n %{LIBNAME}
+%files -n %{SPECNAME}
 %defattr(0775,root,root,0775)
 %{_libdir}/lib%{BINNAME}.so
 %post -p /sbin/ldconfig
