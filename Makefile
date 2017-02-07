@@ -62,7 +62,7 @@ profile: $(BYTECODES)
 
 clean:
 	@#scons -c objdir=$(objdir)
-	-rm -f $(LIBFILE) *~ source/*~ include/*~ main/*~ main/*.o $(PROG) .sconsign.dblite tmpl/*.c2t
+	-rm -f $(LIBFILE) *~ $(SUBNAME)/*~ main/*~ main/*.o $(PROG) .sconsign.dblite tmpl/*.c2t
 	-rm -rf $(objdir)
 
 format:
