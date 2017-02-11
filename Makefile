@@ -13,7 +13,7 @@ endif
 #
 # To build serially (helps get the error messages right): make debug SCONS_FLAGS=""
 #
-SCONS_FLAGS=-j 4
+SCONS_FLAGS=-j 8
 
 # Installation directories
 
@@ -66,7 +66,7 @@ clean:
 	-rm -rf $(objdir)
 
 format:
-	clang-format -i -style=file include/*.h source/*.cpp
+	clang-format -i -style=file $(SUBNAME)/*.h $(SUBNAME)/*.cpp
 
 install:
 	mkdir -p $(includedir)/$(INCDIR)

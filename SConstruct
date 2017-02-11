@@ -46,7 +46,7 @@ WINDOWS= env["PLATFORM"]=="win32"
 if WINDOWS:
     env.Replace( ENV= os.environ )
 
-env.Append( CPPPATH= [ "./include" ] )
+env.Append( CPPPATH= [ "./trajectory" ] )
 
 if WINDOWS: 
     if env["CC"]=="cl":
@@ -190,7 +190,7 @@ if PROFILE:
 #       object dir, but this did not work.    -- AKa 15-Sep-2008
 #
 #env.Replace( OBJDIR=OBJDIR )
-#env.Library( "smartmet_trajectory", Glob("source/*.cpp") )
+#env.Library( "smartmet_trajectory", Glob("trajectory/*.cpp") )
 
 objs= []
 
@@ -199,7 +199,7 @@ if not WINDOWS:
     env.Append( CPPDEFINES= "_REENTRANT" )
 
 
-for fn in Glob("source/*.cpp"): 
+for fn in Glob("trajectory/*.cpp"): 
 	s= os.path.basename( str(fn) )
 	obj_s= OBJDIR+"/"+ s.replace(".cpp","")
 	
