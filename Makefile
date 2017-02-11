@@ -70,10 +70,10 @@ format:
 
 install:
 	mkdir -p $(includedir)/$(INCDIR)
-	@list=`cd include && ls -1 *.h`; \
+	@list=`cd trajectory && ls -1 *.h`; \
 	for hdr in $$list; do \
-	  echo $(INSTALL_DATA) include/$$hdr $(includedir)/$(INCDIR)/$$hdr; \
-	  $(INSTALL_DATA) include/$$hdr $(includedir)/$(INCDIR)/$$hdr; \
+	  echo $(INSTALL_DATA) trajectory/$$hdr $(includedir)/$(INCDIR)/$$hdr; \
+	  $(INSTALL_DATA) trajectory/$$hdr $(includedir)/$(INCDIR)/$$hdr; \
 	done
 	@mkdir -p $(libdir)
 	$(INSTALL_PROG) $(LIBFILE) $(libdir)/$(LIBFILE)
@@ -100,19 +100,6 @@ rpm: clean
 	else \
 	  echo $(SPEC).spec file missing; \
 	fi;
-
-cppcheck:
-	cppcheck -DUNIX -I include -I $(includedir) source
-
-headertest:
-	@echo "Checking self-sufficiency of each header:"
-	@echo
-	@for hdr in `cd include && ls -1 *.h`; do \
-	echo $$hdr; \
-	echo "#include \"$$hdr\"" > /tmp/$(LIB).cpp; \
-	echo "int main() { return 0; }" >> /tmp/$(LIB).cpp; \
-	$(CC) $(CFLAGS) $(INCLUDES) -o /dev/null /tmp/$(LIB).cpp $(LIBS); \
-	done
 
 %.c2t: %.tmpl
 	ctpp2c $< $@
