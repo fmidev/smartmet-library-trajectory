@@ -10,7 +10,7 @@
 #include <locus/Query.h>
 
 #include <macgyver/AnsiEscapeCodes.h>
-#include <macgyver/String.h>
+#include <macgyver/StringConversion.h>
 #include <macgyver/TimeFormatter.h>
 #include <macgyver/TimeParser.h>
 

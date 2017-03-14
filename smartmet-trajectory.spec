@@ -4,23 +4,23 @@
 %define DEVELNAME %{SPECNAME}-devel
 Summary: Trajectory calculation
 Name: %{BINNAME}
-Version: 17.2.11
+Version: 17.3.14
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
 URL: https://github.com/fmidev/smartmet-library-trajectory
 Source0: %{name}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
-BuildRequires: smartmet-library-newbase-devel >= 17.2.10
-BuildRequires: smartmet-library-smarttools-devel >= 17.2.10
-BuildRequires: smartmet-library-locus-devel >= 17.2.3
-BuildRequires: smartmet-library-macgyver-devel >= 17.1.18
+BuildRequires: smartmet-library-newbase-devel >= 17.3.9
+BuildRequires: smartmet-library-smarttools-devel >= 17.3.9
+BuildRequires: smartmet-library-locus-devel >= 17.3.14
+BuildRequires: smartmet-library-macgyver-devel >= 17.3.14
 BuildRequires: boost-devel
 BuildRequires: ctpp2 >= 2.8.2
-Requires: smartmet-library-macgyver >= 17.1.18
-Requires: smartmet-library-locus >= 17.2.3
-Requires: smartmet-library-newbase >= 17.2.10
-Requires: smartmet-library-smarttools >= 17.2.10
+Requires: smartmet-library-macgyver >= 17.3.14
+Requires: smartmet-library-locus >= 17.3.14
+Requires: smartmet-library-newbase >= 17.3.9
+Requires: smartmet-library-smarttools >= 17.3.9
 Requires: smartmet-library-trajectory
 Requires: smartmet-trajectory-formats
 Requires: boost-date-time
@@ -41,7 +41,7 @@ FMI Trajectory Calculation Tools
 %package -n %{SPECNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
-Requires: smartmet-library-locus >= 17.2.3
+Requires: smartmet-library-locus >= 17.3.14
 Provides: %{SPECNAME}
 Obsoletes: libsmartmet-trajectory < 17.1.4
 %description -n %{SPECNAME}
@@ -50,7 +50,7 @@ FMI Trajectory Calculation Libraries
 %package -n %{DEVELNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
-Requires: smartmet-library-locus >= 17.2.3
+Requires: smartmet-library-locus >= 17.3.14
 Provides: %{DEVELNAME}
 Obsoletes: libsmartmet-trajectory-devel < 17.1.4
 %description -n %{DEVELNAME}
@@ -102,6 +102,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/%{DIRNAME}
 
 %changelog
+* Tue Mar 14 2017 Mika Heiskanen <mika.heiskanen@fmi.fi> - 17.3.14-1.fmi
+- Switched to using macgyver StringConversion tools
+ 
 * Sat Feb 11 2017 Mika Heiskanen <mika.heiskanen@fmi.fi> - 17.2.11-1.fmi
 - Repackaged due to newbase API change
 
