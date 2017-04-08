@@ -4,7 +4,7 @@
 %define DEVELNAME %{SPECNAME}-devel
 Summary: Trajectory calculation
 Name: %{BINNAME}
-Version: 17.3.14
+Version: 17.4.4
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
@@ -102,6 +102,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/%{DIRNAME}
 
 %changelog
+* Tue Apr  4 2017 Mika Heiskanen <mika.heiskanen@fmi.fi> - 17.4.4-1.fmi
+- Recompiled due to smarttools API changes
+- Fixed to specify database host and user name explicitly
+
 * Tue Mar 14 2017 Mika Heiskanen <mika.heiskanen@fmi.fi> - 17.3.14-1.fmi
 - Switched to using macgyver StringConversion tools
  
