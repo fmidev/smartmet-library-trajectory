@@ -17,6 +17,7 @@ BuildRequires: smartmet-library-locus-devel >= 17.3.14
 BuildRequires: smartmet-library-macgyver-devel >= 17.3.14
 BuildRequires: boost-devel
 BuildRequires: ctpp2 >= 2.8.2
+BuildRequires: scons
 Requires: smartmet-library-macgyver >= 17.3.14
 Requires: smartmet-library-locus >= 17.3.14
 Requires: smartmet-library-newbase >= 17.3.9
