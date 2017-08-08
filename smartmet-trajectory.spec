@@ -4,7 +4,7 @@
 %define DEVELNAME %{SPECNAME}-devel
 Summary: Trajectory calculation
 Name: %{BINNAME}
-Version: 17.4.4
+Version: 17.8.7
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
@@ -59,11 +59,13 @@ Obsoletes: libsmartmet-trajectory-devel < 17.1.4
 %description -n %{DEVELNAME}
 FMI Trajectory Calculation Libraries
 
-%package -n %{SPECNAME}-formats
+%package -n %{BINNAME}-formats
 Summary: Trajectory calculation library data formats
 Group: Development/Libraries
 Provides: %{SPECNAME}-formats
-%description -n %{SPECNAME}-formats
+Obsoletes: smartmet-library-trajectory-formats < 17.8.7
+Obsoletes: smartmet-trajectory-format < 17.8.7
+%description -n %{BINNAME}-formats
 FMI Trajectory Calculation Libraries
 
 %prep
@@ -84,7 +86,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(0775,root,root,0775)
 %{_bindir}/qdtrajectory
 
-%files -n %{SPECNAME}-formats
+%files -n %{BINNAME}-formats
 %defattr(0664,root,root,0775)
 %{_datadir}/smartmet/%{DIRNAME}/gpx.c2t
 %{_datadir}/smartmet/%{DIRNAME}/kml.c2t
