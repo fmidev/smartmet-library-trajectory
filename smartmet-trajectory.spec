@@ -4,7 +4,7 @@
 %define DEVELNAME %{SPECNAME}-devel
 Summary: Trajectory calculation
 Name: %{BINNAME}
-Version: 17.8.7
+Version: 17.8.28
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
@@ -13,17 +13,17 @@ Source0: %{name}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
 BuildRequires: gcc-c++
 BuildRequires: make
-BuildRequires: smartmet-library-newbase-devel >= 17.3.9
-BuildRequires: smartmet-library-smarttools-devel >= 17.3.9
-BuildRequires: smartmet-library-locus-devel >= 17.3.14
-BuildRequires: smartmet-library-macgyver-devel >= 17.3.14
+BuildRequires: smartmet-library-newbase-devel >= 17.8.28
+BuildRequires: smartmet-library-smarttools-devel >= 17.8.28
+BuildRequires: smartmet-library-locus-devel >= 17.8.28
+BuildRequires: smartmet-library-macgyver-devel >= 17.8.28
 BuildRequires: boost-devel
 BuildRequires: ctpp2 >= 2.8.2
 BuildRequires: scons
-Requires: smartmet-library-macgyver >= 17.3.14
-Requires: smartmet-library-locus >= 17.3.14
-Requires: smartmet-library-newbase >= 17.3.9
-Requires: smartmet-library-smarttools >= 17.3.9
+Requires: smartmet-library-macgyver >= 17.8.28
+Requires: smartmet-library-locus >= 17.8.28
+Requires: smartmet-library-newbase >= 17.8.28
+Requires: smartmet-library-smarttools >= 17.8.28
 Requires: smartmet-library-trajectory
 Requires: smartmet-trajectory-formats
 Requires: boost-date-time
@@ -44,7 +44,7 @@ FMI Trajectory Calculation Tools
 %package -n %{SPECNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
-Requires: smartmet-library-locus >= 17.3.14
+Requires: smartmet-library-locus >= 17.8.28
 Provides: %{SPECNAME}
 Obsoletes: libsmartmet-trajectory < 17.1.4
 %description -n %{SPECNAME}
@@ -53,7 +53,7 @@ FMI Trajectory Calculation Libraries
 %package -n %{DEVELNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
-Requires: smartmet-library-locus >= 17.3.14
+Requires: smartmet-library-locus >= 17.8.28
 Provides: %{DEVELNAME}
 Obsoletes: libsmartmet-trajectory-devel < 17.1.4
 %description -n %{DEVELNAME}
@@ -107,6 +107,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/%{DIRNAME}
 
 %changelog
+* Mon Aug 28 2017 Mika Heiskanen <mika.heiskanen@fmi.fi> - 17.8.28-1.fmi
+- Upgrade to boost 1.65
+
 * Tue Apr  4 2017 Mika Heiskanen <mika.heiskanen@fmi.fi> - 17.4.4-1.fmi
 - Recompiled due to smarttools API changes
 - Fixed to specify database host and user name explicitly
