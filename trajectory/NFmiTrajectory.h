@@ -2,10 +2,10 @@
 
 #include "NFmiSingleTrajector.h"
 #include "NFmiTempBalloonTrajectorSettings.h"
+#include <boost/shared_ptr.hpp>
 #include <newbase/NFmiMetTime.h>
 #include <newbase/NFmiPoint.h>
 #include <newbase/NFmiProducer.h>
-#include <boost/shared_ptr.hpp>
 
 // trajektori voi pitää sisällään yhdestä useampaan kpl yksittäisiä
 // trajektoreita. Yksi pää trajektory ja ns. satunnais pluumi, jossa useita partikkeleita.

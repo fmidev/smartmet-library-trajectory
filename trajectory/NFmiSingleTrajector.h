@@ -37,6 +37,7 @@ class NFmiSingleTrajector
   double RandWSdiff(void) const { return itsRandWSdiff; }
   double RandWDdiff(void) const { return itsRandWDdiff; }
   double Randwdiff(void) const { return itsRandwdiff; }
+
  private:
   checkedVector<NFmiPoint> itsPoints;
   checkedVector<float> itsPressures;

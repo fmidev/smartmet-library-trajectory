@@ -1037,15 +1037,15 @@ void NFmiTrajectorySystem::StoreSettings(void)
 
   // huom! trajektori save juttuja ei ainakaan toistaiseksi talleteta takaisin
   //	fTrajectorySaveEnabled =
-  //NFmiSettings::Require<bool>("MetEditor::TrajectorySystem::TrajectorySaveEnabled");
+  // NFmiSettings::Require<bool>("MetEditor::TrajectorySystem::TrajectorySaveEnabled");
   //	itsTrajectorySavePath =
-  //NFmiSettings::Require<std::string>("MetEditor::TrajectorySystem::TrajectorySavePath");
+  // NFmiSettings::Require<std::string>("MetEditor::TrajectorySystem::TrajectorySavePath");
   //	itsTrajectorySaveFilePattern =
-  //NFmiSettings::Require<std::string>("MetEditor::TrajectorySystem::TrajectorySaveFilePattern");
+  // NFmiSettings::Require<std::string>("MetEditor::TrajectorySystem::TrajectorySaveFilePattern");
   // HUOM2: itsLastTrajectoryLegendStr ei voi tallettaa takaisin konffeihin, koska
   // NFmiSettings-systeemi ei tue monirivisiä arvoja asetuksilla
   //	itsLastTrajectoryLegendStr =
-  //NFmiSettings::Require<std::string>("MetEditor::TrajectorySystem::LastTrajectoryLegendStr");
+  // NFmiSettings::Require<std::string>("MetEditor::TrajectorySystem::LastTrajectoryLegendStr");
 }
 
 std::string NFmiTrajectorySystem::MakeCurrentTrajectorySaveFileName(void)
@@ -1096,7 +1096,7 @@ void NFmiTrajectorySystem::SetSelectedValuesToAllTrajectories(void)
   fTrajectoryViewTimeBagDirty = true;
   // miten saisi tälläisen mem_fun virityksen toimimaan for_each:ille?!?!?!?
   //	std::for_each(itsTrajectories.begin(), itsTrajectories.end(),
-  //std::mem_fun(&NFmiTrajectorySystem::SetSelectedValuesToTrajectory));
+  // std::mem_fun(&NFmiTrajectorySystem::SetSelectedValuesToTrajectory));
   bool keepLevelSettings = KeepLevelSettingsForTrajektories(itsTrajectories);
   checkedVector<boost::shared_ptr<NFmiTrajectory> >::iterator it = itsTrajectories.begin();
   for (; it != itsTrajectories.end(); ++it)
