@@ -11,6 +11,7 @@ Group: Development/Tools
 URL: https://github.com/fmidev/smartmet-library-trajectory
 Source0: %{name}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
+BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
 BuildRequires: smartmet-library-newbase-devel >= 18.4.7
