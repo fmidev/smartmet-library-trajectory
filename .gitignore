@@ -1,6 +1,7 @@
+compile_commands.json
 .sconsign.dblite
 obj
-libsmartmet_trajectory.so
+libsmartmet-trajectory.so
 *~
 *.o
 /qdtrajectory
