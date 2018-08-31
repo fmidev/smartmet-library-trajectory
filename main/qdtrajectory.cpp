@@ -1,21 +1,6 @@
 #include "NFmiSingleTrajector.h"
 #include "NFmiTrajectory.h"
 #include "NFmiTrajectorySystem.h"
-
-#include <newbase/NFmiFastQueryInfo.h>
-#include <newbase/NFmiPoint.h>
-#include <newbase/NFmiQueryData.h>
-
-#include <locus/Query.h>
-#include <locus/QueryOptions.h>
-
-#include <macgyver/AnsiEscapeCodes.h>
-#include <macgyver/StringConversion.h>
-#include <macgyver/TimeFormatter.h>
-#include <macgyver/TimeParser.h>
-
-#include <macgyver/TemplateFormatter.h>
-
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/foreach.hpp>
@@ -24,7 +9,17 @@
 #include <boost/make_shared.hpp>
 #include <boost/optional.hpp>
 #include <boost/program_options.hpp>
-
+#include <locus/Query.h>
+#include <locus/QueryOptions.h>
+#include <macgyver/AnsiEscapeCodes.h>
+#include <macgyver/StringConversion.h>
+#include <macgyver/TemplateFormatter.h>
+#include <macgyver/TimeFormatter.h>
+#include <macgyver/TimeParser.h>
+#include <newbase/NFmiFastQueryInfo.h>
+#include <newbase/NFmiPoint.h>
+#include <newbase/NFmiQueryData.h>
+#include <newbase/NFmiSettings.h>
 #include <fstream>
 #include <stdexcept>
 #include <string>
@@ -398,10 +393,11 @@ bool parse_options(int argc, char *argv[])
   if (!opt_place.empty())
   {
     Locus::QueryOptions opts;
-    std::string username = "fminames_ro";
-    std::string password = "e2NMP*HwZs5n";
+    auto username = NFmiSettings::Require<std::string>("LOCUS_USER");
+    auto password = NFmiSettings::Require<std::string>("LOCUS_PASSWD");
+    auto host = NFmiSettings::Require<std::string>("LOCUS_HOST");
     std::string database = "fminames";
-    Locus::Query query("gemini", username, password, database);
+    Locus::Query query(host, username, password, database);
     auto res = query.FetchByName(opts, opt_place);
     if (res.empty()) throw std::runtime_error("Unknown location '" + opt_place);
     if (options.verbose) print_location(std::cerr, res[0]);
