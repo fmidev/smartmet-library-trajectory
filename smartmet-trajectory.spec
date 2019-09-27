@@ -4,7 +4,7 @@
 %define DEVELNAME %{SPECNAME}-devel
 Summary: Trajectory calculation
 Name: %{BINNAME}
-Version: 19.8.28
+Version: 19.9.26
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
@@ -14,18 +14,18 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
 BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
-BuildRequires: smartmet-library-newbase-devel >= 19.8.12
-BuildRequires: smartmet-library-smarttools-devel >= 18.10.1
-BuildRequires: smartmet-library-locus-devel >= 19.8.28
-BuildRequires: smartmet-library-macgyver-devel >= 19.8.2
+BuildRequires: smartmet-library-newbase-devel >= 19.9.26
+BuildRequires: smartmet-library-smarttools-devel >= 19.9.26
+BuildRequires: smartmet-library-locus-devel >= 19.9.26
+BuildRequires: smartmet-library-macgyver-devel >= 19.9.26
 BuildRequires: boost-devel
-BuildRequires: ctpp2 >= 2.8.7
+BuildRequires: ctpp2 >= 2.8.8
 BuildRequires: scons
 BuildRequires: gdal-devel
-Requires: smartmet-library-macgyver >= 19.8.2
-Requires: smartmet-library-locus >= 19.8.28
-Requires: smartmet-library-newbase >= 19.8.12
-Requires: smartmet-library-smarttools >= 18.10.1
+Requires: smartmet-library-macgyver >= 19.9.26
+Requires: smartmet-library-locus >= 19.9.26
+Requires: smartmet-library-newbase >= 19.9.26
+Requires: smartmet-library-smarttools >= 19.9.26
 Requires: smartmet-library-trajectory
 Requires: smartmet-trajectory-formats
 Requires: boost-date-time
@@ -46,7 +46,7 @@ FMI Trajectory Calculation Tools
 %package -n %{SPECNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
-Requires: smartmet-library-locus >= 19.8.28
+Requires: smartmet-library-locus >= 19.9.26
 Provides: %{SPECNAME}
 Obsoletes: libsmartmet-trajectory < 17.1.4
 %description -n %{SPECNAME}
@@ -55,7 +55,7 @@ FMI Trajectory Calculation Libraries
 %package -n %{DEVELNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
-Requires: smartmet-library-locus >= 19.8.28
+Requires: smartmet-library-locus >= 19.9.26
 Requires: %{SPECNAME}
 Provides: %{DEVELNAME}
 Obsoletes: libsmartmet-trajectory-devel < 17.1.4
@@ -110,6 +110,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/%{DIRNAME}
 
 %changelog
+* Thu Sep 26 2019 Mika Heiskanen <mika.heiskanen@fmi.fi> - 19.9.26-1.fmi
+- Repackaged due to newbase ABI changes
+
 * Wed Aug 28 2019 Mika Heiskanen <mika.heiskanen@fmi.fi> - 19.8.28-1.fmi
 - Repackaged since Locus Location object ABI changed
 
