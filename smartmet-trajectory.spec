@@ -4,7 +4,7 @@
 %define DEVELNAME %{SPECNAME}-devel
 Summary: Trajectory calculation
 Name: %{BINNAME}
-Version: 19.10.31
+Version: 19.11.20
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
@@ -14,8 +14,8 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
 BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
-BuildRequires: smartmet-library-newbase-devel >= 19.10.31
-BuildRequires: smartmet-library-smarttools-devel >= 19.10.31
+BuildRequires: smartmet-library-newbase-devel >= 19.11.20
+BuildRequires: smartmet-library-smarttools-devel >= 19.11.20
 BuildRequires: smartmet-library-locus-devel >= 19.9.26
 BuildRequires: smartmet-library-macgyver-devel >= 19.9.26
 BuildRequires: boost-devel
@@ -24,8 +24,8 @@ BuildRequires: scons
 BuildRequires: gdal-devel
 Requires: smartmet-library-macgyver >= 19.9.26
 Requires: smartmet-library-locus >= 19.9.26
-Requires: smartmet-library-newbase >= 19.10.31
-Requires: smartmet-library-smarttools >= 19.10.31
+Requires: smartmet-library-newbase >= 19.11.20
+Requires: smartmet-library-smarttools >= 19.11.20
 Requires: smartmet-library-trajectory
 Requires: smartmet-trajectory-formats
 Requires: boost-date-time
@@ -110,6 +110,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/%{DIRNAME}
 
 %changelog
+* Wed Nov 20 2019 Mika Heiskanen <mika.heiskanen@fmi.fi> - 19.11.20-1.fmi
+- Repackaged due to newbase API changes
+
 * Thu Oct 31 2019 Mika Heiskanen <mika.heiskanen@fmi.fi> - 19.10.31-1.fmi
 - Repackaged due to newbase API/ABI changes
 

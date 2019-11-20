@@ -125,7 +125,7 @@ void NFmiTrajectory::CalculateCrossSectionTrajectoryHelpData(void)
   int skipValue = static_cast<int>(usedTimeStepInMinutes / itsTimeStepInMinutes);
   NFmiMetTime aTime(itsTime);
   aTime.SetTimeStep(usedTimeStepInMinutes);
-  const checkedVector<NFmiPoint> &points = itsMainTrajector.Points();
+  const std::vector<NFmiPoint> &points = itsMainTrajector.Points();
   int pointLocationCounter = 0;
   if (itsDirection == kForward)
   {

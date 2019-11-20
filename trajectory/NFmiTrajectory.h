@@ -38,7 +38,7 @@ class NFmiTrajectory
   const NFmiSingleTrajector& MainTrajector(void) const { return itsMainTrajector; }
   void MainTrajector(const NFmiSingleTrajector& theTrajector) { itsMainTrajector = theTrajector; }
   void AddPlumeTrajector(boost::shared_ptr<NFmiSingleTrajector>& theTrajector);
-  const checkedVector<boost::shared_ptr<NFmiSingleTrajector> >& PlumeTrajectories(void) const
+  const std::vector<boost::shared_ptr<NFmiSingleTrajector> >& PlumeTrajectories(void) const
   {
     return itsPlumeTrajectories;
   }
@@ -67,11 +67,11 @@ class NFmiTrajectory
   void Isentropic(bool newValue) { fIsentropic = newValue; }
   double IsentropicTpotValue(void) const;
   void CalculateCrossSectionTrajectoryHelpData(void);
-  const checkedVector<NFmiPoint>& CrossSectionTrajectoryPoints(void) const
+  const std::vector<NFmiPoint>& CrossSectionTrajectoryPoints(void) const
   {
     return itsCrossSectionTrajectoryPoints;
   }
-  const checkedVector<NFmiMetTime> CrossSectionTrajectoryTimes(void) const
+  const std::vector<NFmiMetTime> CrossSectionTrajectoryTimes(void) const
   {
     return itsCrossSectionTrajectoryTimes;
   }
@@ -92,7 +92,7 @@ class NFmiTrajectory
 
  private:
   NFmiSingleTrajector itsMainTrajector;  // 'pää' trajektori eli ei mitää häirintää tämän laskussa
-  checkedVector<boost::shared_ptr<NFmiSingleTrajector> >
+  std::vector<boost::shared_ptr<NFmiSingleTrajector> >
       itsPlumeTrajectories;  // jos haluttu parvi trajektoreita, ne on talletettu tänne
   NFmiPoint itsLatLon;  // alku piste ns. pääpiste, koska tästä voidaan laskea myös "häirityt"
                         // alkupisteet pluumiin
@@ -112,8 +112,8 @@ class NFmiTrajectory
                                   // haluttu potentiaali lämpötila, mitä on käytetty
   int itsStartTimeRangeInMinutes;
   FmiDirection itsDirection;
-  checkedVector<NFmiPoint> itsCrossSectionTrajectoryPoints;
-  checkedVector<NFmiMetTime> itsCrossSectionTrajectoryTimes;
+  std::vector<NFmiPoint> itsCrossSectionTrajectoryPoints;
+  std::vector<NFmiMetTime> itsCrossSectionTrajectoryTimes;
   bool fPlumesUsed;
   bool fIsentropic;
   bool fCalcTempBalloonTrajectories;
