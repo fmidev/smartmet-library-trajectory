@@ -18,9 +18,9 @@ class NFmiSingleTrajector
   ~NFmiSingleTrajector(void);
 
   std::string ToXMLStr(int TimeStepInMinutes, NFmiProducer &Producer, FmiDirection Direction);
-  const checkedVector<NFmiPoint> &Points(void) const { return itsPoints; }
-  const checkedVector<float> &Pressures(void) const { return itsPressures; }
-  const checkedVector<float> &HeightValues(void) const { return itsHeightValues; }
+  const std::vector<NFmiPoint> &Points(void) const { return itsPoints; }
+  const std::vector<float> &Pressures(void) const { return itsPressures; }
+  const std::vector<float> &HeightValues(void) const { return itsHeightValues; }
   const NFmiPoint &StartLatLon(void) const { return itsStartLatLon; }
   void StartLatLon(const NFmiPoint &newValue) { itsStartLatLon = newValue; }
   const NFmiMetTime &StartTime(void) const { return itsStartTime; }
@@ -39,9 +39,9 @@ class NFmiSingleTrajector
   double Randwdiff(void) const { return itsRandwdiff; }
 
  private:
-  checkedVector<NFmiPoint> itsPoints;
-  checkedVector<float> itsPressures;
-  checkedVector<float> itsHeightValues;
+  std::vector<NFmiPoint> itsPoints;
+  std::vector<float> itsPressures;
+  std::vector<float> itsHeightValues;
   NFmiPoint itsStartLatLon;
   NFmiMetTime itsStartTime;
   double itsStartPressureLevel;   // yks. hPa
