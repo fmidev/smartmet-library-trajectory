@@ -4,7 +4,7 @@
 %define DEVELNAME %{SPECNAME}-devel
 Summary: Trajectory calculation
 Name: %{BINNAME}
-Version: 19.11.20
+Version: 19.12.12
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
@@ -21,7 +21,7 @@ BuildRequires: smartmet-library-macgyver-devel >= 19.9.26
 BuildRequires: boost-devel
 BuildRequires: ctpp2 >= 2.8.8
 BuildRequires: scons
-BuildRequires: gdal-devel
+BuildRequires: gdal30-devel
 Requires: smartmet-library-macgyver >= 19.9.26
 Requires: smartmet-library-locus >= 19.9.26
 Requires: smartmet-library-newbase >= 19.11.20
@@ -110,6 +110,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/%{DIRNAME}
 
 %changelog
+* Thu Dec 12 2019 Mika Heiskanen <mika.heiskanen@fmi.fi> - 19.12.12-1.fmi
+- Upgrade to GDAL 3.0
+
 * Wed Nov 20 2019 Mika Heiskanen <mika.heiskanen@fmi.fi> - 19.11.20-1.fmi
 - Repackaged due to newbase API changes
 
