@@ -4,7 +4,7 @@
 %define DEVELNAME %{SPECNAME}-devel
 Summary: Trajectory calculation
 Name: %{BINNAME}
-Version: 19.12.12
+Version: 19.12.13
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
@@ -14,18 +14,17 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
 BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
-BuildRequires: smartmet-library-newbase-devel >= 19.11.20
-BuildRequires: smartmet-library-smarttools-devel >= 19.11.20
-BuildRequires: smartmet-library-locus-devel >= 19.9.26
+BuildRequires: smartmet-library-newbase-devel >= 19.12.12
+BuildRequires: smartmet-library-smarttools-devel >= 19.12.13
+BuildRequires: smartmet-library-locus-devel >= 19.8.28
 BuildRequires: smartmet-library-macgyver-devel >= 19.9.26
 BuildRequires: boost-devel
 BuildRequires: ctpp2 >= 2.8.8
 BuildRequires: scons
-BuildRequires: gdal30-devel
 Requires: smartmet-library-macgyver >= 19.9.26
-Requires: smartmet-library-locus >= 19.9.26
-Requires: smartmet-library-newbase >= 19.11.20
-Requires: smartmet-library-smarttools >= 19.11.20
+Requires: smartmet-library-locus >= 19.8.28
+Requires: smartmet-library-newbase >= 19.12.12
+Requires: smartmet-library-smarttools >= 19.12.13
 Requires: smartmet-library-trajectory
 Requires: smartmet-trajectory-formats
 Requires: boost-date-time
@@ -46,7 +45,7 @@ FMI Trajectory Calculation Tools
 %package -n %{SPECNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
-Requires: smartmet-library-locus >= 19.9.26
+Requires: smartmet-library-locus >= 19.8.28
 Provides: %{SPECNAME}
 Obsoletes: libsmartmet-trajectory < 17.1.4
 %description -n %{SPECNAME}
@@ -55,7 +54,7 @@ FMI Trajectory Calculation Libraries
 %package -n %{DEVELNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
-Requires: smartmet-library-locus >= 19.9.26
+Requires: smartmet-library-locus >= 19.8.28
 Requires: %{SPECNAME}
 Provides: %{DEVELNAME}
 Obsoletes: libsmartmet-trajectory-devel < 17.1.4
@@ -110,6 +109,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/%{DIRNAME}
 
 %changelog
+* Fri Dec 13 2019 Mika Heiskanen <mika.heiskanen@fmi.fi> - 19.12.13-1.fmi
+- Removed obsolete GDAL dependency
+
 * Thu Dec 12 2019 Mika Heiskanen <mika.heiskanen@fmi.fi> - 19.12.12-1.fmi
 - Upgrade to GDAL 3.0
 

@@ -69,8 +69,7 @@ LDFLAGS_PROFILE =
 INCLUDES = -I$(includedir) \
 	-I$(includedir)/smartmet \
 	-I$(includedir)/smartmet/newbase \
-	-I$(includedir)/smartmet/smarttools \
-	-I$(PREFIX)/gdal30/include
+	-I$(includedir)/smartmet/smarttools
 
 LIBS = -L$(libdir) \
 	-lsmartmet-smarttools \
@@ -85,7 +84,6 @@ LIBS = -L$(libdir) \
 	-lboost_regex \
 	-lboost_thread \
 	-lboost_system \
-	-L$(PREFIX)/gdal30/lib -lgdal \
 	-lctpp2 \
 	-lpqxx \
 	-lrt
