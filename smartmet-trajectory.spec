@@ -4,7 +4,7 @@
 %define DEVELNAME %{SPECNAME}-devel
 Summary: Trajectory calculation
 Name: %{BINNAME}
-Version: 20.6.8
+Version: 20.8.21
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
@@ -14,18 +14,18 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
 BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
-BuildRequires: smartmet-library-newbase-devel >= 20.4.18
-BuildRequires: smartmet-library-smarttools-devel >= 20.4.18
-BuildRequires: smartmet-library-locus-devel >= 20.4.18
-BuildRequires: smartmet-library-macgyver-devel >= 20.4.18
+BuildRequires: smartmet-library-newbase-devel >= 20.8.21
+BuildRequires: smartmet-library-smarttools-devel >= 20.8.21
+BuildRequires: smartmet-library-locus-devel >= 20.8.21
+BuildRequires: smartmet-library-macgyver-devel >= 20.8.21
 BuildRequires: boost169-devel
 BuildRequires: ctpp2 >= 2.8.8
 BuildRequires: scons
 BuildRequires: gdal-devel
-Requires: smartmet-library-macgyver >= 20.4.18
-Requires: smartmet-library-locus >= 20.4.18
-Requires: smartmet-library-newbase >= 20.4.18
-Requires: smartmet-library-smarttools >= 20.4.18
+Requires: smartmet-library-macgyver >= 20.8.21
+Requires: smartmet-library-locus >= 20.8.21
+Requires: smartmet-library-newbase >= 20.8.21
+Requires: smartmet-library-smarttools >= 20.8.21
 Requires: smartmet-library-trajectory
 Requires: smartmet-trajectory-formats
 Requires: boost169-date-time
@@ -46,7 +46,7 @@ FMI Trajectory Calculation Tools
 %package -n %{SPECNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
-Requires: smartmet-library-locus >= 20.4.18
+Requires: smartmet-library-locus >= 20.8.21
 Provides: %{SPECNAME}
 Obsoletes: libsmartmet-trajectory < 17.1.4
 %description -n %{SPECNAME}
@@ -55,7 +55,7 @@ FMI Trajectory Calculation Libraries
 %package -n %{DEVELNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
-Requires: smartmet-library-locus >= 20.4.18
+Requires: smartmet-library-locus >= 20.8.21
 Requires: %{SPECNAME}
 Provides: %{DEVELNAME}
 Obsoletes: libsmartmet-trajectory-devel < 17.1.4
@@ -110,6 +110,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/%{DIRNAME}
 
 %changelog
+* Fri Aug 21 2020 Mika Heiskanen <mika.heiskanen@fmi.fi> - 20.8.21-1.fmi
+- Upgrade to fmt 6.2
+
 * Mon Jun  8 2020 Mika Heiskanen <mika.heiskanen@fmi.fi> - 20.6.8-1.fmi
 - Upgraded libpqxx dependencies
 
