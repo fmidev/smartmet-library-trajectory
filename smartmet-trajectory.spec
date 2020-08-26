@@ -4,7 +4,7 @@
 %define DEVELNAME %{SPECNAME}-devel
 Summary: Trajectory calculation
 Name: %{BINNAME}
-Version: 20.8.21
+Version: 20.8.26
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
@@ -14,8 +14,8 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
 BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
-BuildRequires: smartmet-library-newbase-devel >= 20.8.21
-BuildRequires: smartmet-library-smarttools-devel >= 20.8.21
+BuildRequires: smartmet-library-newbase-devel >= 20.8.25
+BuildRequires: smartmet-library-smarttools-devel >= 20.8.25
 BuildRequires: smartmet-library-locus-devel >= 20.8.21
 BuildRequires: smartmet-library-macgyver-devel >= 20.8.21
 BuildRequires: boost169-devel
@@ -24,8 +24,8 @@ BuildRequires: scons
 BuildRequires: gdal30-devel
 Requires: smartmet-library-macgyver >= 20.8.21
 Requires: smartmet-library-locus >= 20.8.21
-Requires: smartmet-library-newbase >= 20.8.21
-Requires: smartmet-library-smarttools >= 20.8.21
+Requires: smartmet-library-newbase >= 20.8.25
+Requires: smartmet-library-smarttools >= 20.8.25
 Requires: smartmet-library-trajectory
 Requires: smartmet-trajectory-formats
 Requires: boost169-date-time
@@ -110,6 +110,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/%{DIRNAME}
 
 %changelog
+* Wed Aug 26 2020 Mika Heiskanen <mika.heiskanen@fmi.fi> - 20.8.26-1.fmi
+- Repackaged due to NFmiGrid API changes
+
 * Fri Aug 21 2020 Mika Heiskanen <mika.heiskanen@fmi.fi> - 20.8.21-1.fmi
 - Upgrade to fmt 6.2
 
