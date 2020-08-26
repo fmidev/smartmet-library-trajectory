@@ -14,8 +14,8 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
 BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
-BuildRequires: smartmet-library-newbase-devel >= 20.8.25
-BuildRequires: smartmet-library-smarttools-devel >= 20.8.25
+BuildRequires: smartmet-library-newbase-devel >= 20.8.26
+BuildRequires: smartmet-library-smarttools-devel >= 20.8.26
 BuildRequires: smartmet-library-locus-devel >= 20.8.21
 BuildRequires: smartmet-library-macgyver-devel >= 20.8.21
 BuildRequires: boost169-devel
@@ -24,8 +24,8 @@ BuildRequires: scons
 BuildRequires: gdal30-devel
 Requires: smartmet-library-macgyver >= 20.8.21
 Requires: smartmet-library-locus >= 20.8.21
-Requires: smartmet-library-newbase >= 20.8.25
-Requires: smartmet-library-smarttools >= 20.8.25
+Requires: smartmet-library-newbase >= 20.8.26
+Requires: smartmet-library-smarttools >= 20.8.26
 Requires: smartmet-library-trajectory
 Requires: smartmet-trajectory-formats
 Requires: boost169-date-time
