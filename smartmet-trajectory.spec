@@ -21,7 +21,6 @@ BuildRequires: smartmet-library-macgyver-devel >= 20.8.21
 BuildRequires: boost169-devel
 BuildRequires: ctpp2 >= 2.8.8
 BuildRequires: scons
-BuildRequires: gdal-devel
 Requires: smartmet-library-macgyver >= 20.8.21
 Requires: smartmet-library-locus >= 20.8.21
 Requires: smartmet-library-newbase >= 20.8.21
@@ -36,6 +35,11 @@ Requires: boost169-program-options
 Requires: boost169-regex
 Requires: boost169-thread
 Requires: boost169-system
+%if 0%{rhel} >= 8
+BuildRequires: gdal30-devel
+%else
+BuildRequires: gdal-devel
+%endif
 Provides: qdtrajectory
 Obsoletes: smartmet-trajectory < 17.1.4
 Obsoletes: smartmet-trajectory-debuginfo < 17.1.4
