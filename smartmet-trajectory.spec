@@ -4,7 +4,7 @@
 %define DEVELNAME %{SPECNAME}-devel
 Summary: Trajectory calculation
 Name: %{BINNAME}
-Version: 21.1.5
+Version: 21.1.14
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
@@ -14,18 +14,18 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
 BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
-BuildRequires: smartmet-library-newbase-devel >= 21.1.5
-BuildRequires: smartmet-library-smarttools-devel >= 21.1.5
-BuildRequires: smartmet-library-locus-devel >= 20.12.15
-BuildRequires: smartmet-library-macgyver-devel >= 21.1.5
+BuildRequires: smartmet-library-newbase-devel >= 21.1.14
+BuildRequires: smartmet-library-smarttools-devel >= 21.1.14
+BuildRequires: smartmet-library-locus-devel >= 21.1.14
+BuildRequires: smartmet-library-macgyver-devel >= 21.1.14
 BuildRequires: boost169-devel
 BuildRequires: ctpp2 >= 2.8.8
 BuildRequires: scons
 Requires: gdal32
-Requires: smartmet-library-macgyver >= 21.1.5
-Requires: smartmet-library-locus >= 20.12.15
-Requires: smartmet-library-newbase >= 21.1.5
-Requires: smartmet-library-smarttools >= 21.1.5
+Requires: smartmet-library-macgyver >= 21.1.14
+Requires: smartmet-library-locus >= 21.1.14
+Requires: smartmet-library-newbase >= 21.1.14
+Requires: smartmet-library-smarttools >= 21.1.14
 Requires: smartmet-library-trajectory
 Requires: smartmet-trajectory-formats
 Requires: boost169-date-time
@@ -47,7 +47,7 @@ FMI Trajectory Calculation Tools
 %package -n %{SPECNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
-Requires: smartmet-library-locus >= 20.12.15
+Requires: smartmet-library-locus >= 21.1.14
 Provides: %{SPECNAME}
 Obsoletes: libsmartmet-trajectory < 17.1.4
 %description -n %{SPECNAME}
@@ -56,7 +56,7 @@ FMI Trajectory Calculation Libraries
 %package -n %{DEVELNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
-Requires: smartmet-library-locus >= 20.12.15
+Requires: smartmet-library-locus >= 21.1.14
 Requires: %{SPECNAME}
 Provides: %{DEVELNAME}
 Obsoletes: libsmartmet-trajectory-devel < 17.1.4
@@ -111,6 +111,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/%{DIRNAME}
 
 %changelog
+* Thu Jan 14 2021 Mika Heiskanen <mika.heiskanen@fmi.fi> - 21.1.14-1.fmi
+- Repackaged smartmet to resolve debuginfo issues
+
 * Tue Jan  5 2021 Mika Heiskanen <mika.heiskanen@fmi.fi> - 21.1.5-1.fmi
 - gdal upgrade
 
