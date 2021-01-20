@@ -20,7 +20,6 @@ BuildRequires: smartmet-library-locus-devel >= 21.1.14
 BuildRequires: smartmet-library-macgyver-devel >= 21.1.14
 BuildRequires: boost169-devel
 BuildRequires: ctpp2 >= 2.8.8
-BuildRequires: scons
 Requires: gdal32
 Requires: smartmet-library-macgyver >= 21.1.14
 Requires: smartmet-library-locus >= 21.1.14
