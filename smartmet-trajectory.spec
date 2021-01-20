@@ -4,7 +4,7 @@
 %define DEVELNAME %{SPECNAME}-devel
 Summary: Trajectory calculation
 Name: %{BINNAME}
-Version: 21.1.14
+Version: 21.1.20
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
@@ -110,6 +110,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/%{DIRNAME}
 
 %changelog
+* Wed Jan 20 2021 Andris Pavenis <andris.pavenis@fmi.fi> - 21.2.20-1.fmi
+- Use makefile.inc
+
 * Thu Jan 14 2021 Mika Heiskanen <mika.heiskanen@fmi.fi> - 21.1.14-1.fmi
 - Repackaged smartmet to resolve debuginfo issues
 
