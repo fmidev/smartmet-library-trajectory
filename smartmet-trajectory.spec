@@ -4,8 +4,8 @@
 %define DEVELNAME %{SPECNAME}-devel
 Summary: Trajectory calculation
 Name: %{BINNAME}
-Version: 21.2.16
-Release: 2%{?dist}.fmi
+Version: 21.2.18
+Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
 URL: https://github.com/fmidev/smartmet-library-trajectory
@@ -14,8 +14,8 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
 BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
-BuildRequires: smartmet-library-newbase-devel >= 21.2.16
-BuildRequires: smartmet-library-smarttools-devel >= 21.2.16
+BuildRequires: smartmet-library-newbase-devel >= 21.2.18
+BuildRequires: smartmet-library-smarttools-devel >= 21.2.18
 BuildRequires: smartmet-library-locus-devel >= 21.2.2
 BuildRequires: smartmet-library-macgyver-devel >= 21.1.25
 BuildRequires: boost169-devel
@@ -23,8 +23,8 @@ BuildRequires: ctpp2 >= 2.8.8
 Requires: gdal32
 Requires: smartmet-library-macgyver >= 21.1.25
 Requires: smartmet-library-locus >= 21.2.2
-Requires: smartmet-library-newbase >= 21.2.16
-Requires: smartmet-library-smarttools >= 21.2.16
+Requires: smartmet-library-newbase >= 21.2.18
+Requires: smartmet-library-smarttools >= 21.2.18
 Requires: smartmet-library-trajectory
 Requires: smartmet-trajectory-formats
 Requires: boost169-date-time
@@ -110,6 +110,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/%{DIRNAME}
 
 %changelog
+* Thu Feb 18 2021 Mika Heiskanen <mika.heiskanen@fmi.fi> - 21.2.18-1.fmi
+- Repackaged due to NFmiArea ABI changes
+
 * Tue Feb 16 2021 Andris Pavēnis <andris.pavenis@fmi.fi> - 21.2.16-2.fmi
 - Repackaged due to newbase ABI changes
 
