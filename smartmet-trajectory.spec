@@ -4,7 +4,7 @@
 %define DEVELNAME %{SPECNAME}-devel
 Summary: Trajectory calculation
 Name: %{BINNAME}
-Version: 21.2.18
+Version: 21.5.6
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
@@ -14,17 +14,17 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
 BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
-BuildRequires: smartmet-library-newbase-devel >= 21.2.18
-BuildRequires: smartmet-library-smarttools-devel >= 21.2.18
-BuildRequires: smartmet-library-locus-devel >= 21.2.2
-BuildRequires: smartmet-library-macgyver-devel >= 21.1.25
+BuildRequires: smartmet-library-newbase-devel >= 21.5.6
+BuildRequires: smartmet-library-smarttools-devel >= 21.5.6
+BuildRequires: smartmet-library-locus-devel >= 21.2.18
+BuildRequires: smartmet-library-macgyver-devel >= 21.2.25
 BuildRequires: boost169-devel
 BuildRequires: ctpp2 >= 2.8.8
 Requires: gdal32
-Requires: smartmet-library-macgyver >= 21.1.25
-Requires: smartmet-library-locus >= 21.2.2
-Requires: smartmet-library-newbase >= 21.2.18
-Requires: smartmet-library-smarttools >= 21.2.18
+Requires: smartmet-library-macgyver >= 21.2.25
+Requires: smartmet-library-locus >= 21.2.18
+Requires: smartmet-library-newbase >= 21.5.6
+Requires: smartmet-library-smarttools >= 21.5.6
 Requires: smartmet-library-trajectory
 Requires: smartmet-trajectory-formats
 Requires: boost169-date-time
@@ -46,7 +46,7 @@ FMI Trajectory Calculation Tools
 %package -n %{SPECNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
-Requires: smartmet-library-locus >= 21.2.2
+Requires: smartmet-library-locus >= 21.2.18
 Provides: %{SPECNAME}
 Obsoletes: libsmartmet-trajectory < 17.1.4
 %description -n %{SPECNAME}
@@ -55,7 +55,7 @@ FMI Trajectory Calculation Libraries
 %package -n %{DEVELNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
-Requires: smartmet-library-locus >= 21.2.2
+Requires: smartmet-library-locus >= 21.2.18
 Requires: %{SPECNAME}
 Provides: %{DEVELNAME}
 Obsoletes: libsmartmet-trajectory-devel < 17.1.4
@@ -110,6 +110,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/%{DIRNAME}
 
 %changelog
+* Thu May  6 2021 Mika Heiskanen <mika.heiskanen@fmi.fi> - 21.5.6-1.fmi
+- Repackaged due to NFmiAzimuthalArea ABI changes
+
 * Thu Feb 18 2021 Mika Heiskanen <mika.heiskanen@fmi.fi> - 21.2.18-1.fmi
 - Repackaged due to NFmiArea ABI changes
 
