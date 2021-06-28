@@ -4,7 +4,7 @@
 %define DEVELNAME %{SPECNAME}-devel
 Summary: Trajectory calculation
 Name: %{BINNAME}
-Version: 20.8.27
+Version: 21.6.21
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
@@ -14,18 +14,17 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
 BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
-BuildRequires: smartmet-library-newbase-devel >= 20.8.27
-BuildRequires: smartmet-library-smarttools-devel >= 20.8.27
-BuildRequires: smartmet-library-locus-devel >= 20.8.21
-BuildRequires: smartmet-library-macgyver-devel >= 20.8.21
+BuildRequires: smartmet-library-newbase-devel >= 21.5.6
+BuildRequires: smartmet-library-smarttools-devel >= 21.5.6
+BuildRequires: smartmet-library-locus-devel >= 21.2.18
+BuildRequires: smartmet-library-macgyver-devel >= 21.2.25
 BuildRequires: boost169-devel
 BuildRequires: ctpp2 >= 2.8.8
-BuildRequires: scons
-BuildRequires: gdal30-devel
-Requires: smartmet-library-macgyver >= 20.8.21
-Requires: smartmet-library-locus >= 20.8.21
-Requires: smartmet-library-newbase >= 20.8.27
-Requires: smartmet-library-smarttools >= 20.8.27
+Requires: gdal32
+Requires: smartmet-library-macgyver >= 21.2.25
+Requires: smartmet-library-locus >= 21.2.18
+Requires: smartmet-library-newbase >= 21.5.6
+Requires: smartmet-library-smarttools >= 21.5.6
 Requires: smartmet-library-trajectory
 Requires: smartmet-trajectory-formats
 Requires: boost169-date-time
@@ -36,6 +35,7 @@ Requires: boost169-program-options
 Requires: boost169-regex
 Requires: boost169-thread
 Requires: boost169-system
+BuildRequires: gdal32-devel
 Provides: qdtrajectory
 Obsoletes: smartmet-trajectory < 17.1.4
 Obsoletes: smartmet-trajectory-debuginfo < 17.1.4
@@ -46,7 +46,7 @@ FMI Trajectory Calculation Tools
 %package -n %{SPECNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
-Requires: smartmet-library-locus >= 20.8.21
+Requires: smartmet-library-locus >= 21.2.18
 Provides: %{SPECNAME}
 Obsoletes: libsmartmet-trajectory < 17.1.4
 %description -n %{SPECNAME}
@@ -55,7 +55,7 @@ FMI Trajectory Calculation Libraries
 %package -n %{DEVELNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
-Requires: smartmet-library-locus >= 20.8.21
+Requires: smartmet-library-locus >= 21.2.18
 Requires: %{SPECNAME}
 Provides: %{DEVELNAME}
 Obsoletes: libsmartmet-trajectory-devel < 17.1.4
@@ -110,6 +110,33 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/%{DIRNAME}
 
 %changelog
+* Mon Jun 21 2021 Andris Pavēnis <andris.pavenis@fmi.fi> 21.6.21-1.fmi
+- Repackaged due to smartmet-library-locus ABI changes
+
+* Thu May  6 2021 Mika Heiskanen <mika.heiskanen@fmi.fi> - 21.5.6-1.fmi
+- Repackaged due to NFmiAzimuthalArea ABI changes
+
+* Thu Feb 18 2021 Mika Heiskanen <mika.heiskanen@fmi.fi> - 21.2.18-1.fmi
+- Repackaged due to NFmiArea ABI changes
+
+* Tue Feb 16 2021 Andris Pavēnis <andris.pavenis@fmi.fi> - 21.2.16-2.fmi
+- Repackaged due to newbase ABI changes
+
+* Tue Feb 16 2021 Mika Heiskanen <mika.heiskanen@fmi.fi> - 21.2.16-1.fmi
+- Repackaged due to NFmiArea ABI changes
+
+* Wed Jan 20 2021 Andris Pavenis <andris.pavenis@fmi.fi> - 21.2.20-1.fmi
+- Use makefile.inc
+
+* Thu Jan 14 2021 Mika Heiskanen <mika.heiskanen@fmi.fi> - 21.1.14-1.fmi
+- Repackaged smartmet to resolve debuginfo issues
+
+* Tue Jan  5 2021 Mika Heiskanen <mika.heiskanen@fmi.fi> - 21.1.5-1.fmi
+- gdal upgrade
+
+* Tue Dec 15 2020 Mika Heiskanen <mika.heiskanen@fmi.fi> - 20.12.15-1.fmi
+- Upgrade to pgdg12
+
 * Thu Aug 27 2020 Mika Heiskanen <mika.heiskanen@fmi.fi> - 20.8.27-1.fmi
 - NFmiGrid API changed
 
