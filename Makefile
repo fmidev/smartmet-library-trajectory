@@ -8,7 +8,7 @@ REQUIRES = gdal
 include $(shell echo $${PREFIX-/usr})/share/smartmet/devel/makefile.inc
 # Default compiler flags
 
-DEFINES = -DUNIX -DWGS84
+DEFINES = -DUNIX
 
 # Templates
 
