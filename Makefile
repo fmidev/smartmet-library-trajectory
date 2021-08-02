@@ -128,7 +128,8 @@ rpm: clean $(SPEC).spec
 .SUFFIXES: $(SUFFIXES) .cpp
 
 obj/%.o : %.cpp
-	$(CXX) $(CFLAGS) $(INCLUDES) -c -o $@ $<
+	@mkdir -p $(objdir)
+	$(CXX) $(CFLAGS) $(INCLUDES) -c -MD -MF $(patsubst obj/%.o, obj/%.d, $@) -MT $@ -o $@ $<
 
 %.c2t: %.tmpl
 	ctpp2c $< $@
