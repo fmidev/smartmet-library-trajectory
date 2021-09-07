@@ -23,7 +23,7 @@ LIBFILE = lib$(LIB).so
 INCLUDES += \
 	-I$(includedir)/smartmet \
 	-I$(includedir)/smartmet/newbase \
-	-I$(includedir)/smartmet/smarttools \
+	-I$(includedir)/smartmet/smarttools
 
 LIBS += -L$(libdir) \
 	-lsmartmet-smarttools \
