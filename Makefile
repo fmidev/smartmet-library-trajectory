@@ -88,7 +88,7 @@ clean:
 	rm -rf obj
 
 format:
-	clang-format -i -style=file include/*.h source/*.cpp main/*.cpp
+	clang-format -i -style=file trajectory/*.h trajectory/*.cpp main/*.cpp
 
 install:
 	mkdir -p $(includedir)/$(INCDIR)
