@@ -4,7 +4,7 @@
 %define DEVELNAME %{SPECNAME}-devel
 Summary: Trajectory calculation
 Name: %{BINNAME}
-Version: 21.7.8
+Version: 21.10.13
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Tools
@@ -14,18 +14,17 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
 BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
-BuildRequires: smartmet-library-newbase-devel >= 21.5.6
-BuildRequires: smartmet-library-smarttools-devel >= 21.5.6
-BuildRequires: smartmet-library-locus-devel >= 21.7.8
-BuildRequires: smartmet-library-macgyver-devel >= 21.7.8
+BuildRequires: smartmet-library-newbase-devel >= 21.9.22
+BuildRequires: smartmet-library-smarttools-devel >= 21.9.20
+BuildRequires: smartmet-library-locus-devel >= 21.8.11
+BuildRequires: smartmet-library-macgyver-devel >= 21.10.4
 BuildRequires: boost169-devel
 BuildRequires: ctpp2 >= 2.8.8
 Requires: gdal32
-Requires: smartmet-library-macgyver >= 21.7.8
-Requires: smartmet-library-locus >= 21.7.8
-Requires: smartmet-library-newbase >= 21.5.6
-Requires: smartmet-library-smarttools >= 21.5.6
-Requires: smartmet-library-trajectory
+Requires: smartmet-library-macgyver >= 21.10.4
+Requires: smartmet-library-locus >= 21.8.11
+Requires: smartmet-library-newbase >= 21.9.22
+Requires: smartmet-library-smarttools >= 21.9.20
 Requires: smartmet-trajectory-formats
 Requires: boost169-date-time
 Requires: boost169-filesystem
@@ -45,8 +44,8 @@ Requires: libpqxx < 1:7.0
 BuildRequires: libpqxx-devel < 1:7.0
 %else
 %if %{defined el8}
-Requires: libpqxx >= 1:7.0
-BuildRequires: libpqxx-devel >= 1:7.0
+Requires: libpqxx >= 5.0.1
+BuildRequires: libpqxx-devel >= 5.0.1
 %else
 Requires: libpqxx
 BuildRequires: libpqxx-devel
@@ -59,7 +58,7 @@ FMI Trajectory Calculation Tools
 %package -n %{SPECNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
-Requires: smartmet-library-locus >= 21.7.8
+Requires: smartmet-library-locus >= 21.8.11
 Provides: %{SPECNAME}
 Obsoletes: libsmartmet-trajectory < 17.1.4
 %description -n %{SPECNAME}
@@ -68,7 +67,7 @@ FMI Trajectory Calculation Libraries
 %package -n %{DEVELNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
-Requires: smartmet-library-locus >= 21.7.8
+Requires: smartmet-library-locus >= 21.8.11
 Requires: %{SPECNAME} = %{version}-%{release}
 Provides: %{DEVELNAME}
 Obsoletes: libsmartmet-trajectory-devel < 17.1.4
@@ -78,7 +77,7 @@ FMI Trajectory Calculation Libraries
 %package -n %{BINNAME}-formats
 Summary: Trajectory calculation library data formats
 Group: Development/Libraries
-Provides: %{SPECNAME}-formats
+Provides: %{BINNAME}-formats
 Obsoletes: smartmet-library-trajectory-formats < 17.8.7
 Obsoletes: smartmet-trajectory-format < 17.8.7
 %description -n %{BINNAME}-formats
@@ -123,6 +122,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/%{DIRNAME}
 
 %changelog
+* Wed Oct 13 2021 Mika Heiskanen <mika.heiskanen@fmi.fi> - 21.10.13-1.fmi
+- Fixed requirements and provides fields
+
 * Thu Jul  8 2021 Andris Pavēnis <andris.pavenis@fmi.fi> 21.7.8-1.fmi
 - Use libpqxx7 for RHEL8
 
