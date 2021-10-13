@@ -9,7 +9,7 @@ Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Libraries
 URL: https://github.com/fmidev/smartmet-library-trajectory
-Source0: %{BINNAME}.tar.gz
+Source0: %{SPECNAME}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
 BuildRequires: rpm-build
 BuildRequires: gcc-c++
@@ -87,7 +87,7 @@ FMI Trajectory Calculation Libraries
 %prep
 rm -rf $RPM_BUILD_ROOT
 
-%setup -q -n %{BINNAME}
+%setup -q -n %{SPECNAME}
  
 %build
 make %{_smp_mflags}

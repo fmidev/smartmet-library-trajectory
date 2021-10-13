@@ -1,6 +1,6 @@
 MODULE = trajectory
 LIB = smartmet-trajectory
-SPEC = smartmet-trajectory
+SPEC = smartmet-library-trajectory
 INCDIR = smartmet/trajectory
 
 REQUIRES = gdal
