@@ -14,17 +14,19 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
 BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
-BuildRequires: smartmet-library-newbase-devel >= 21.9.22
-BuildRequires: smartmet-library-smarttools-devel >= 21.9.20
+BuildRequires: smartmet-library-newbase-devel >= 21.10.13
+BuildRequires: smartmet-library-gis-devel >= 21.9.24
+BuildRequires: smartmet-library-smarttools-devel >= 21.10.13
 BuildRequires: smartmet-library-locus-devel >= 21.8.11
 BuildRequires: smartmet-library-macgyver-devel >= 21.10.4
 BuildRequires: boost169-devel
 BuildRequires: ctpp2 >= 2.8.8
 Requires: gdal32
 Requires: smartmet-library-macgyver >= 21.10.4
+Requires: smartmet-library-gis >= 21.9.24
 Requires: smartmet-library-locus >= 21.8.11
-Requires: smartmet-library-newbase >= 21.9.22
-Requires: smartmet-library-smarttools >= 21.9.20
+Requires: smartmet-library-newbase >= 21.10.13
+Requires: smartmet-library-smarttools >= 21.10.13
 Requires: smartmet-trajectory-formats
 Requires: boost169-date-time
 Requires: boost169-filesystem
