@@ -27,7 +27,6 @@ Requires: smartmet-library-gis >= 21.9.24
 Requires: smartmet-library-locus >= 21.8.11
 Requires: smartmet-library-newbase >= 21.10.13
 Requires: smartmet-library-smarttools >= 21.9.20
-Requires: smartmet-trajectory-formats
 Requires: boost169-date-time
 Requires: boost169-filesystem
 Requires: boost169-iostreams
@@ -56,17 +55,6 @@ BuildRequires: libpqxx-devel
 %description
 FMI Trajectory Calculation Tools
 
-%package -n %{BINNAME}
-Summary: Trajectory calculation
-Group: Development/Tools
-Requires: smartmet-library-locus >= 21.8.11
-Requires: smartmet-library-trajectory
-Provides: %{BINNAME}
-Obsoletes: smartmet-trajectory < 17.1.4
-Obsoletes: smartmet-trajectory-debuginfo < 17.1.4
-%description -n %{BINNAME}
-FMI Trajectory Calculation Libraries
-
 %package -n %{DEVELNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
@@ -74,16 +62,9 @@ Requires: smartmet-library-locus >= 21.8.11
 Requires: %{SPECNAME} = %{version}-%{release}
 Provides: %{DEVELNAME}
 Obsoletes: libsmartmet-trajectory-devel < 17.1.4
+Obsoletes: smartmet-trajectory
+Obsoletes: smartmet-trajectory-formats
 %description -n %{DEVELNAME}
-FMI Trajectory Calculation Libraries
-
-%package -n %{BINNAME}-formats
-Summary: Trajectory calculation library data formats
-Group: Development/Libraries
-Provides: %{BINNAME}-formats
-Obsoletes: smartmet-library-trajectory-formats < 17.8.7
-Obsoletes: smartmet-trajectory-format < 17.8.7
-%description -n %{BINNAME}-formats
 FMI Trajectory Calculation Libraries
 
 %prep
@@ -103,11 +84,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(0775,root,root,0775)
 %{_libdir}/lib%{BINNAME}.so
-
-%post -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
-
-%files -n %{BINNAME}-formats
+%{_bindir}/qdtrajectory
 %defattr(0664,root,root,0775)
 %{_datadir}/smartmet/%{DIRNAME}/gpx.c2t
 %{_datadir}/smartmet/%{DIRNAME}/kml.c2t
@@ -116,9 +93,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/smartmet/%{DIRNAME}/kmzx.c2t
 %{_datadir}/smartmet/%{DIRNAME}/xml.c2t
 
-%files -n %{BINNAME}
-%defattr(0775,root,root,0775)
-%{_bindir}/qdtrajectory
+%post -p /sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 %files -n %{DEVELNAME}
 %defattr(0664,root,root,0775)
