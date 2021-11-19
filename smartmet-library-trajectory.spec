@@ -4,7 +4,7 @@
 %define DEVELNAME %{SPECNAME}-devel
 Summary: Trajectory calculation library
 Name: %{SPECNAME}
-Version: 21.10.13
+Version: 21.11.19
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Libraries
@@ -101,6 +101,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/%{DIRNAME}
 
 %changelog
+* Fri Nov 19 2021 Andris Pavēnis <andris.pavenis@fmi.fi> 21.11.19-1.fmi
+- Merge contents of RPM packages smartmet-trajectory and smartmet-trajectory-formats into smartmet-library-trajectory
+
 * Wed Oct 13 2021 Mika Heiskanen <mika.heiskanen@fmi.fi> - 21.10.13-1.fmi
 - Fixed requirements and provides fields
 
