@@ -4,7 +4,7 @@
 %define DEVELNAME %{SPECNAME}-devel
 Summary: Trajectory calculation library
 Name: %{SPECNAME}
-Version: 21.11.19
+Version: 21.12.2
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Libraries
@@ -14,18 +14,18 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
 BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
-BuildRequires: smartmet-library-newbase-devel >= 21.10.13
-BuildRequires: smartmet-library-gis-devel >= 21.9.24
+BuildRequires: smartmet-library-newbase-devel >= 21.12.1
+BuildRequires: smartmet-library-gis-devel >= 21.12.1
 BuildRequires: smartmet-library-smarttools-devel >= 21.9.20
-BuildRequires: smartmet-library-locus-devel >= 21.8.11
-BuildRequires: smartmet-library-macgyver-devel >= 21.10.4
+BuildRequires: smartmet-library-locus-devel >= 21.12.2
+BuildRequires: smartmet-library-macgyver-devel >= 21.12.1
 BuildRequires: boost169-devel
 BuildRequires: ctpp2 >= 2.8.8
 Requires: gdal33
-Requires: smartmet-library-macgyver >= 21.10.4
-Requires: smartmet-library-gis >= 21.9.24
-Requires: smartmet-library-locus >= 21.8.11
-Requires: smartmet-library-newbase >= 21.10.13
+Requires: smartmet-library-macgyver >= 21.12.1
+Requires: smartmet-library-gis >= 21.12.1
+Requires: smartmet-library-locus >= 21.12.2
+Requires: smartmet-library-newbase >= 21.12.1
 Requires: smartmet-library-smarttools >= 21.9.20
 Requires: boost169-date-time
 Requires: boost169-filesystem
@@ -44,8 +44,8 @@ Requires: libpqxx < 1:7.0
 BuildRequires: libpqxx-devel < 1:7.0
 %else
 %if %{defined el8}
-Requires: libpqxx >= 5.0.1
-BuildRequires: libpqxx-devel >= 5.0.1
+Requires: libpqxx >= 1:7.6.0, libpqxx < 1:7.7.0
+BuildRequires: libpqxx-devel >= 1:7.6.0, libpqxx-devel < 1:7.7.0
 %else
 Requires: libpqxx
 BuildRequires: libpqxx-devel
@@ -58,7 +58,7 @@ FMI Trajectory Calculation Tools
 %package -n %{DEVELNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
-Requires: smartmet-library-locus >= 21.8.11
+Requires: smartmet-library-locus >= 21.12.2
 Requires: %{SPECNAME} = %{version}-%{release}
 Provides: %{DEVELNAME}
 Obsoletes: libsmartmet-trajectory-devel < 17.1.4
