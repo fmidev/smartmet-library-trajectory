@@ -14,18 +14,18 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
 BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
-BuildRequires: smartmet-library-newbase-devel >= 21.12.1
-BuildRequires: smartmet-library-gis-devel >= 21.12.1
+BuildRequires: smartmet-library-newbase-devel >= 21.1.21
+BuildRequires: smartmet-library-gis-devel >= 21.1.21
 BuildRequires: smartmet-library-smarttools-devel >= 21.9.20
 BuildRequires: smartmet-library-locus-devel >= 21.12.2
-BuildRequires: smartmet-library-macgyver-devel >= 21.12.1
+BuildRequires: smartmet-library-macgyver-devel >= 21.1.21
 BuildRequires: boost169-devel
 BuildRequires: ctpp2 >= 2.8.8
-Requires: gdal33
-Requires: smartmet-library-macgyver >= 21.12.1
-Requires: smartmet-library-gis >= 21.12.1
+Requires: gdal34
+Requires: smartmet-library-macgyver >= 21.1.21
+Requires: smartmet-library-gis >= 21.1.21
 Requires: smartmet-library-locus >= 21.12.2
-Requires: smartmet-library-newbase >= 21.12.1
+Requires: smartmet-library-newbase >= 21.1.21
 Requires: smartmet-library-smarttools >= 21.9.20
 Requires: boost169-date-time
 Requires: boost169-filesystem
@@ -35,7 +35,7 @@ Requires: boost169-program-options
 Requires: boost169-regex
 Requires: boost169-thread
 Requires: boost169-system
-BuildRequires: gdal33-devel
+BuildRequires: gdal34-devel
 Provides: qdtrajectory
 Obsoletes: libsmartmet-trajectory < 17.1.4
 
