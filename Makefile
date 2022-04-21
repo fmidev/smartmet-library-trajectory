@@ -118,6 +118,13 @@ objdir:
 
 $(LIBFILE): $(OBJFILES)
 	$(CXX) $(CFLAGS) -shared -rdynamic -o $(LIBFILE) $(OBJFILES) $(LIBS)
+	@echo Checking $(LIBFILE) for unresolved references
+	@if ldd -r $(LIBFILE) 2>&1 | c++filt | grep ^undefined\ symbol |\
+			grep -Pv ':\ __(?:(?:a|t|ub)san_|sanitizer_)'; \
+	then \
+		rm -v $(LIBFILE); \
+		exit 1; \
+	fi
 
 rpm: clean $(SPEC).spec
 	rm -f $(SPEC).tar.gz # Clean a possible leftover from previous attempt
