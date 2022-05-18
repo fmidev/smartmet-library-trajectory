@@ -149,12 +149,8 @@ static NFmiPoint CalcRandStartPoint(const NFmiPoint &theStartPoint,
   double dirRandValue =
       360 * static_cast<double>(rand()) / RAND_MAX;  // joku reaali luku v‰lill‰ 0 - 1
   NFmiLocation loc(theStartPoint);
-#ifdef WGS84
-  loc.SetLocation(dirRandValue, rangeRandValue);
-#else
   const bool usePacificView = false;
   loc.SetLocation(dirRandValue, rangeRandValue, usePacificView);
-#endif
   return loc.GetLocation();
 }
 
@@ -354,12 +350,8 @@ void NFmiTrajectorySystem::CalculateSingleTrajectory(
       double dir = ::fmod(WD + 180, 360);
       if (!forwardDir)
         dir = ::fmod(WD, 360);  // backwardissa k‰‰nnet‰‰n tuuli 180 astetta
-#ifdef WGS84
-      nextLoc = currentLoc.GetLocation(dir, dist);
-#else
       const bool usePacificView = false;
       nextLoc = currentLoc.GetLocation(dir, dist, usePacificView);
-#endif
       theTrajector.AddPoint(nextLoc.GetLocation());
       currentLoc = nextLoc;
       index++;
@@ -525,12 +517,8 @@ static NFmiLocation CalcNewLocation(const NFmiLocation &theCurrentLocation,
   double dist = WS * theTimeStepInMinutes * 60;  // saadaan kuljettu matka metrein‰
   double dir = ::fmod(isForwardDir ? (WD + 180) : WD,
                       360);  // jos backward trajectory pit‰‰ k‰‰nt‰‰ virtaus suunta 180 asteella
-#ifdef WGS84
-  return theCurrentLocation.GetLocation(dir, dist);
-#else
   const bool usePacificView = false;
   return theCurrentLocation.GetLocation(dir, dist, usePacificView);
-#endif
 }
 
 static double CalcNewPressureLevel(boost::shared_ptr<NFmiFastQueryInfo> &theInfo,
