@@ -11,30 +11,37 @@ Group: Development/Libraries
 URL: https://github.com/fmidev/smartmet-library-trajectory
 Source0: %{SPECNAME}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
+
+%if 0%{?rhel} && 0%{rhel} < 9
+%define smartmet_boost boost169
+%else
+%define smartmet_boost boost
+%endif
+
 BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
-BuildRequires: smartmet-library-newbase-devel >= 22.5.24
-BuildRequires: smartmet-library-gis-devel >= 22.5.4
+BuildRequires: smartmet-library-newbase-devel >= 22.6.16
+BuildRequires: smartmet-library-gis-devel >= 22.6.16
 BuildRequires: smartmet-library-smarttools-devel >= 22.5.24
 BuildRequires: smartmet-library-locus-devel >= 22.3.28
-BuildRequires: smartmet-library-macgyver-devel >= 22.3.28
-BuildRequires: boost169-devel
+BuildRequires: smartmet-library-macgyver-devel >= 22.6.16
+BuildRequires: %{smartmet_boost}-devel
 BuildRequires: ctpp2 >= 2.8.8
 Requires: gdal34
-Requires: smartmet-library-macgyver >= 22.3.28
-Requires: smartmet-library-gis >= 22.5.4
+Requires: smartmet-library-macgyver >= 22.6.16
+Requires: smartmet-library-gis >= 22.6.16
 Requires: smartmet-library-locus >= 22.3.28
-Requires: smartmet-library-newbase >= 22.5.24
+Requires: smartmet-library-newbase >= 22.6.16
 Requires: smartmet-library-smarttools >= 22.5.24
-Requires: boost169-date-time
-Requires: boost169-filesystem
-Requires: boost169-iostreams
-Requires: boost169-locale
-Requires: boost169-program-options
-Requires: boost169-regex
-Requires: boost169-thread
-Requires: boost169-system
+Requires: %{smartmet_boost}-date-time
+Requires: %{smartmet_boost}-filesystem
+Requires: %{smartmet_boost}-iostreams
+Requires: %{smartmet_boost}-locale
+Requires: %{smartmet_boost}-program-options
+Requires: %{smartmet_boost}-regex
+Requires: %{smartmet_boost}-thread
+Requires: %{smartmet_boost}-system
 BuildRequires: gdal34-devel
 Provides: qdtrajectory
 Obsoletes: libsmartmet-trajectory < 17.1.4
@@ -43,9 +50,10 @@ Obsoletes: libsmartmet-trajectory < 17.1.4
 Requires: libpqxx < 1:7.0
 BuildRequires: libpqxx-devel < 1:7.0
 %else
-%if %{defined el8}
-Requires: libpqxx >= 6.2.5 libpqxx < 1:7.7.0
-BuildRequires: libpqxx-devel >= 6.2.5 libpqxx-devel < 1:7.7.0
+%if 0%{?rhel} && 0%{rhel} >= 8
+Requires: libpqxx >= 1:7.7.0, libpqxx < 1:7.8.0
+BuildRequires: libpqxx-devel >= 1:7.7.0, libpqxx-devel < 1:7.8.0
+#TestRequires: libpqxx-devel >= 1:7.7.0, libpqxx-devel < 1:7.8.0
 %else
 Requires: libpqxx
 BuildRequires: libpqxx-devel
