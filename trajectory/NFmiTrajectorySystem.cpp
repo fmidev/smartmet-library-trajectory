@@ -111,7 +111,8 @@ void NFmiTrajectorySystem::AddTrajectory(bool fCalculateData)
   boost::shared_ptr<NFmiTrajectory> tmp(boost::shared_ptr<NFmiTrajectory>(new NFmiTrajectory()));
   SetSelectedValuesToTrajectory(tmp, true, false);
 
-  if (fCalculateData) CalculateTrajectory(tmp);
+  if (fCalculateData)
+    CalculateTrajectory(tmp);
 
   itsTrajectories.push_back(tmp);
 }
@@ -122,7 +123,8 @@ static int CalcRandomizerStep(int theTimeStepInMinutes, int theRandomizerStepInM
 {
   double value = static_cast<double>(theRandomizerStepInMinutes) / theTimeStepInMinutes;
   int randStep = round(value);
-  if (randStep < 1) randStep = 1;
+  if (randStep < 1)
+    randStep = 1;
   return randStep;
 }
 
@@ -142,13 +144,12 @@ static NFmiMetTime CalcRandStartTime(const NFmiMetTime &theStartTime,
 static NFmiPoint CalcRandStartPoint(const NFmiPoint &theStartPoint,
                                     double theStartLocationRangeInKM)
 {
-  const bool usePacificView = false;
-
   double rangeRandValue = theStartLocationRangeInKM * 1000 * static_cast<double>(rand()) /
                           RAND_MAX;  // joku reaali luku v‰lill‰ 0 - 1
   double dirRandValue =
       360 * static_cast<double>(rand()) / RAND_MAX;  // joku reaali luku v‰lill‰ 0 - 1
   NFmiLocation loc(theStartPoint);
+  const bool usePacificView = false;
   loc.SetLocation(dirRandValue, rangeRandValue, usePacificView);
   return loc.GetLocation();
 }
@@ -160,7 +161,8 @@ static double CalcRandStartPressureLevel(double theStartPressureLevel,
   double rangeRandValue = theStartPressureLevelRange * (2.0 * rand() - RAND_MAX) /
                           RAND_MAX;  // joku reaali luku v‰lill‰ -1 ja 1
   double value = theStartPressureLevel + rangeRandValue;
-  if (value < 1) value = 1;
+  if (value < 1)
+    value = 1;
   if (value > theMaxPressureLevel)  // ei leikata max-rajaan, vaan 'pompautetaan' takaisin hieman
     value = value + (theMaxPressureLevel - value);
   return value;
@@ -261,8 +263,10 @@ static double RandomizeWSValue(double WS, double randFactor)
 static double WDAdd(double WD, double changeValue, double maxValue)
 {
   double result = WD + changeValue;
-  if (result < 0) result += maxValue;
-  if (result > maxValue) result = ::fmod(result, maxValue);
+  if (result < 0)
+    result += maxValue;
+  if (result > maxValue)
+    result = ::fmod(result, maxValue);
   return result;
 }
 
@@ -333,7 +337,8 @@ void NFmiTrajectorySystem::CalculateSingleTrajectory(
       WS = theInfo->InterpolatedValue(currentLoc.GetLocation(), currentTime);
       theInfo->Param(kFmiWindDirection);
       WD = theInfo->InterpolatedValue(currentLoc.GetLocation(), currentTime);
-      if (WS == kFloatMissing || WD == kFloatMissing) break;
+      if (WS == kFloatMissing || WD == kFloatMissing)
+        break;
       if (theRandStep && (index % theRandStep) == 0)
       {
         WSdiff = RandomizeWSValue(WS, theRandFactor);
@@ -343,7 +348,8 @@ void NFmiTrajectorySystem::CalculateSingleTrajectory(
       WD = ::WDAdd(WD, WDdiff, 360);
       double dist = WS * theTimeStepInMinutes * 60;  // saadaan kuljettu matka metrein‰
       double dir = ::fmod(WD + 180, 360);
-      if (!forwardDir) dir = ::fmod(WD, 360);  // backwardissa k‰‰nnet‰‰n tuuli 180 astetta
+      if (!forwardDir)
+        dir = ::fmod(WD, 360);  // backwardissa k‰‰nnet‰‰n tuuli 180 astetta
       const bool usePacificView = false;
       nextLoc = currentLoc.GetLocation(dir, dist, usePacificView);
       theTrajector.AddPoint(nextLoc.GetLocation());
@@ -358,7 +364,8 @@ static bool IsInfoHybridData(boost::shared_ptr<NFmiFastQueryInfo> &theInfo)
   if (theInfo->SizeLevels() > 1)
   {
     theInfo->FirstLevel();
-    if (theInfo->Level()->LevelType() == kFmiHybridLevel) return true;
+    if (theInfo->Level()->LevelType() == kFmiHybridLevel)
+      return true;
   }
   return false;
 }
@@ -569,7 +576,8 @@ static double CalcNewPressureLevelWithBalloon(
                                                              Z,
                                                              theTimeStepInMinutes,
                                                              theGroundLevelIndex);
-  if (!isForwardDir) deltaP = -deltaP;
+  if (!isForwardDir)
+    deltaP = -deltaP;
   double maxP = 1000;
   if (hybridData)
   {  // pyydet‰‰n maanpinta levelin paine maanpinta arvoksi
@@ -583,7 +591,8 @@ static double CalcNewPressureLevelWithBalloon(
   // laitetaan saatu paine maanpinnan ja 1 hPa:n v‰liin
   nextPressure = theCurrentPressure + deltaP;
 
-  if (nextPressure > maxP || nextPressure < 1) return kFloatMissing;
+  if (nextPressure > maxP || nextPressure < 1)
+    return kFloatMissing;
   return nextPressure;
 }
 
@@ -592,9 +601,12 @@ static double CalcNewPressureLevelWithBalloon(
 // Oletus: value ei voi olla puuttuva.
 static bool IsValueBetween(double value, double limit1, double limit2)
 {
-  if (limit1 == kFloatMissing || limit2 == kFloatMissing) return false;
-  if (limit1 >= value && value >= limit2) return true;
-  if (limit2 >= value && value >= limit1) return true;
+  if (limit1 == kFloatMissing || limit2 == kFloatMissing)
+    return false;
+  if (limit1 >= value && value >= limit2)
+    return true;
+  if (limit2 >= value && value >= limit1)
+    return true;
   return false;
 }
 
@@ -642,7 +654,8 @@ static double CalcNewPressureLevelIsentropically(boost::shared_ptr<NFmiFastQuery
   double tInd = 0;
   bool status1 = theInfo->GetLocationIndex(theLoc.GetLocation(), xInd, yInd);
   bool status2 = theInfo->GetTimeIndex(theTime, tInd);
-  if (status1 == false || status2 == false) return kFloatMissing;
+  if (status1 == false || status2 == false)
+    return kFloatMissing;
   theInfo->ParamIndex(theTpotParamIndex);
   unsigned long levelIndex1 = static_cast<unsigned long>(theStartPSearchIndex);
   bool isPIndexInBetween = theInfo->SizeLevels() >= levelIndex1 + 1;
@@ -783,7 +796,8 @@ void NFmiTrajectorySystem::CalculateSingle3DTrajectory(
   unsigned long pressureParamIndex = theInfo->ParamIndex();
 
   FmiParameterName usedWParam = GetInfoUsedVerticalVelotityParam(theInfo);
-  if (usedWParam == kFmiBadParameter) return;  // ei ole vertikaalinopeus parametria, ei voi jatkaa
+  if (usedWParam == kFmiBadParameter)
+    return;  // ei ole vertikaalinopeus parametria, ei voi jatkaa
 
   double currentPressure = theTrajector.StartPressureLevel();
   NFmiLocation currentLoc(theTrajector.StartLatLon());
@@ -859,7 +873,8 @@ void NFmiTrajectorySystem::CalculateSingle3DTrajectory(
       {
         theInfo->ParamIndex(tpotParamIndex);
         isentropicTpotValue = theInfo->FastPressureLevelValue(xInd, yInd, tInd, pInd);
-        if (isentropicTpotValue == kFloatMissing) break;
+        if (isentropicTpotValue == kFloatMissing)
+          break;
         theTrajector.IsentropicTpotValue(isentropicTpotValue);
       }
     }
@@ -921,7 +936,8 @@ void NFmiTrajectorySystem::CalculateSingle3DTrajectory(
                                             forwardDir,
                                             theTimeStepInMinutes,
                                             hybridData);
-    if (nextPressure == kFloatMissing) break;
+    if (nextPressure == kFloatMissing)
+      break;
     heightValue = ::GetHeightValueForNewPressure(
         theInfo, nextLoc.GetLocation(), currentTime, nextPressure, groundLevelIndex);
     theTrajector.AddPoint(
@@ -947,7 +963,8 @@ boost::shared_ptr<NFmiFastQueryInfo> NFmiTrajectorySystem::GetWantedInfo(
   else if (theTrajectory->DataType() == 3)
     dataType = NFmiInfoData::kTrajectoryHistoryData;
   bool useGroundData = false;
-  if (theTrajectory->DataType() == 0) useGroundData = true;
+  if (theTrajectory->DataType() == 0)
+    useGroundData = true;
   boost::shared_ptr<NFmiFastQueryInfo> tmp =
       itsInfoOrganizer->FindInfo(dataType, theTrajectory->Producer(), useGroundData);
   if (tmp == 0 && theTrajectory->Producer().GetIdent() == kFmiMETEOR)
@@ -960,7 +977,8 @@ boost::shared_ptr<NFmiFastQueryInfo> NFmiTrajectorySystem::GetWantedInfo(
     {
       if (useGroundData)
       {
-        if (tmp->SizeLevels() > 1) ::SetFastInfoToZero(tmp);
+        if (tmp->SizeLevels() > 1)
+          ::SetFastInfoToZero(tmp);
       }
       else
       {
@@ -1084,7 +1102,8 @@ static bool KeepLevelSettingsForTrajektories(
       levels.insert((*it)->PressureLevel());
       dataTypes.insert((*it)->DataType());
     }
-    if (trajectoryCount > producers.size() && levels.size() > 1) return true;
+    if (trajectoryCount > producers.size() && levels.size() > 1)
+      return true;
   }
   return false;
 }
@@ -1110,7 +1129,8 @@ void NFmiTrajectorySystem::SetSelectedValuesToAllTrajectories(void)
 void NFmiTrajectorySystem::SetSelectedValuesToLastTrajectory(void)
 {
   fTrajectoryViewTimeBagDirty = true;
-  if (itsTrajectories.empty()) return;
+  if (itsTrajectories.empty())
+    return;
   std::vector<boost::shared_ptr<NFmiTrajectory> >::iterator it = itsTrajectories.end();
   --it;
   if (it != itsTrajectories.end())
@@ -1200,9 +1220,11 @@ void NFmiTrajectorySystem::CalculateTrajectoryViewTimeBag(void)
   for (; it != itsTrajectories.end(); ++it)
   {
     fTime = (*it)->CalcPossibleFirstTime();
-    if (::LessThan(fTime, firstTime)) firstTime = fTime;
+    if (::LessThan(fTime, firstTime))
+      firstTime = fTime;
     lTime = (*it)->CalcPossibleLastTime();
-    if (::GreaterThan(lTime, lastTime)) lastTime = lTime;
+    if (::GreaterThan(lTime, lastTime))
+      lastTime = lTime;
   }
   if (firstTime != gMissingTime && lastTime != gMissingTime)
     itsTrajectoryViewTimeBag = NFmiTimeBag(firstTime, lastTime, 60);
@@ -1283,7 +1305,8 @@ void NFmiTrajectorySystem::Write(std::ostream &os) const
   os << "// possible extra data" << std::endl;
   os << extraData;
 
-  if (os.fail()) throw std::runtime_error("NFmiTrajectorySystem::Write failed");
+  if (os.fail())
+    throw std::runtime_error("NFmiTrajectorySystem::Write failed");
 }
 
 void NFmiTrajectorySystem::Read(std::istream &is)
@@ -1294,7 +1317,8 @@ void NFmiTrajectorySystem::Read(std::istream &is)
     throw std::runtime_error(
         "NFmiTrajectorySystem::Read failed the version number war newer than program can handle.");
 
-  if (is.fail()) throw std::runtime_error("NFmiTrajectorySystem::Read failed");
+  if (is.fail())
+    throw std::runtime_error("NFmiTrajectorySystem::Read failed");
 
   itsTrajectories.clear();
   std::vector<boost::shared_ptr<NFmiTrajectory> >::size_type ssize = 0;
@@ -1306,7 +1330,8 @@ void NFmiTrajectorySystem::Read(std::istream &is)
     itsTrajectories.push_back(tmp);
   }
 
-  if (is.fail()) throw std::runtime_error("NFmiTrajectorySystem::Read failed");
+  if (is.fail())
+    throw std::runtime_error("NFmiTrajectorySystem::Read failed");
   is >> itsSelectedLatLon;
 
   // time with utc hour + day shift to current day
@@ -1328,18 +1353,21 @@ void NFmiTrajectorySystem::Read(std::istream &is)
       fShowTrajectoryAnimationMarkers >> fSelectedTrajectoryIsentropic >>
       fShowTrajectoriesInCrossSectionView >> fUseMapTime;
 
-  if (is.fail()) throw std::runtime_error("NFmiTrajectorySystem::Read failed");
+  if (is.fail())
+    throw std::runtime_error("NFmiTrajectorySystem::Read failed");
   is >> itsTempBalloonTrajectorSettings;
 
   is >> fCalcTempBalloonTrajectors;
 
-  if (is.fail()) throw std::runtime_error("NFmiTrajectorySystem::Read failed");
+  if (is.fail())
+    throw std::runtime_error("NFmiTrajectorySystem::Read failed");
   NFmiDataStoringHelpers::NFmiExtraDataStorage extraData;  // lopuksi viel‰ mahdollinen extra data
   is >> extraData;
   // T‰ss‰ sitten otetaaan extradatasta talteen uudet muuttujat, mit‰ on mahdollisesti tullut
   // eli jos uusia muutujia tai arvoja, k‰sittele t‰ss‰.
 
-  if (is.fail()) throw std::runtime_error("NFmiTrajectorySystem::Read failed");
+  if (is.fail())
+    throw std::runtime_error("NFmiTrajectorySystem::Read failed");
 
   itsCurrentVersionNumber = itsLatestVersionNumber;  // aina jatketaan viimeisell‰ versio numerolla
 }

@@ -2,83 +2,83 @@
 %define BINNAME smartmet-%{DIRNAME}
 %define SPECNAME smartmet-library-%{DIRNAME}
 %define DEVELNAME %{SPECNAME}-devel
-Summary: Trajectory calculation
-Name: %{BINNAME}
-Version: 20.8.21
+Summary: Trajectory calculation library
+Name: %{SPECNAME}
+Version: 22.6.17
 Release: 1%{?dist}.fmi
 License: FMI
-Group: Development/Tools
+Group: Development/Libraries
 URL: https://github.com/fmidev/smartmet-library-trajectory
-Source0: %{name}.tar.gz
+Source0: %{SPECNAME}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
+
+%if 0%{?rhel} && 0%{rhel} < 9
+%define smartmet_boost boost169
+%else
+%define smartmet_boost boost
+%endif
+
 BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
-BuildRequires: smartmet-library-newbase-devel >= 20.8.21
-BuildRequires: smartmet-library-smarttools-devel >= 20.8.21
-BuildRequires: smartmet-library-locus-devel >= 20.8.21
-BuildRequires: smartmet-library-macgyver-devel >= 20.8.21
-BuildRequires: boost169-devel
+BuildRequires: smartmet-library-newbase-devel >= 22.6.16
+BuildRequires: smartmet-library-gis-devel >= 22.6.16
+BuildRequires: smartmet-library-smarttools-devel >= 22.5.24
+BuildRequires: smartmet-library-locus-devel >= 22.3.28
+BuildRequires: smartmet-library-macgyver-devel >= 22.6.16
+BuildRequires: %{smartmet_boost}-devel
 BuildRequires: ctpp2 >= 2.8.8
-BuildRequires: scons
-Requires: smartmet-library-macgyver >= 20.8.21
-Requires: smartmet-library-locus >= 20.8.21
-Requires: smartmet-library-newbase >= 20.8.21
-Requires: smartmet-library-smarttools >= 20.8.21
-Requires: smartmet-library-trajectory
-Requires: smartmet-trajectory-formats
-Requires: boost169-date-time
-Requires: boost169-filesystem
-Requires: boost169-iostreams
-Requires: boost169-locale
-Requires: boost169-program-options
-Requires: boost169-regex
-Requires: boost169-thread
-Requires: boost169-system
-%if 0%{rhel} >= 8
-BuildRequires: gdal30-devel
-%else
-BuildRequires: gdal-devel
-%endif
+Requires: gdal34
+Requires: smartmet-library-macgyver >= 22.6.16
+Requires: smartmet-library-gis >= 22.6.16
+Requires: smartmet-library-locus >= 22.3.28
+Requires: smartmet-library-newbase >= 22.6.16
+Requires: smartmet-library-smarttools >= 22.5.24
+Requires: %{smartmet_boost}-date-time
+Requires: %{smartmet_boost}-filesystem
+Requires: %{smartmet_boost}-iostreams
+Requires: %{smartmet_boost}-locale
+Requires: %{smartmet_boost}-program-options
+Requires: %{smartmet_boost}-regex
+Requires: %{smartmet_boost}-thread
+Requires: %{smartmet_boost}-system
+BuildRequires: gdal34-devel
 Provides: qdtrajectory
-Obsoletes: smartmet-trajectory < 17.1.4
-Obsoletes: smartmet-trajectory-debuginfo < 17.1.4
+Obsoletes: libsmartmet-trajectory < 17.1.4
+
+%if %{defined el7}
+Requires: libpqxx < 1:7.0
+BuildRequires: libpqxx-devel < 1:7.0
+%else
+%if 0%{?rhel} && 0%{rhel} >= 8
+Requires: libpqxx >= 1:7.7.0, libpqxx < 1:7.8.0
+BuildRequires: libpqxx-devel >= 1:7.7.0, libpqxx-devel < 1:7.8.0
+#TestRequires: libpqxx-devel >= 1:7.7.0, libpqxx-devel < 1:7.8.0
+%else
+Requires: libpqxx
+BuildRequires: libpqxx-devel
+%endif
+%endif
 
 %description
 FMI Trajectory Calculation Tools
 
-%package -n %{SPECNAME}
-Summary: Trajectory calculation library
-Group: Development/Libraries
-Requires: smartmet-library-locus >= 20.8.21
-Provides: %{SPECNAME}
-Obsoletes: libsmartmet-trajectory < 17.1.4
-%description -n %{SPECNAME}
-FMI Trajectory Calculation Libraries
-
 %package -n %{DEVELNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
-Requires: smartmet-library-locus >= 20.8.21
-Requires: %{SPECNAME}
+Requires: smartmet-library-locus >= 22.3.28
+Requires: %{SPECNAME} = %{version}-%{release}
 Provides: %{DEVELNAME}
 Obsoletes: libsmartmet-trajectory-devel < 17.1.4
+Obsoletes: smartmet-trajectory
+Obsoletes: smartmet-trajectory-formats
 %description -n %{DEVELNAME}
-FMI Trajectory Calculation Libraries
-
-%package -n %{BINNAME}-formats
-Summary: Trajectory calculation library data formats
-Group: Development/Libraries
-Provides: %{SPECNAME}-formats
-Obsoletes: smartmet-library-trajectory-formats < 17.8.7
-Obsoletes: smartmet-trajectory-format < 17.8.7
-%description -n %{BINNAME}-formats
 FMI Trajectory Calculation Libraries
 
 %prep
 rm -rf $RPM_BUILD_ROOT
 
-%setup -q -n %{BINNAME}
+%setup -q -n %{SPECNAME}
  
 %build
 make %{_smp_mflags}
@@ -91,9 +91,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(0775,root,root,0775)
+%{_libdir}/lib%{BINNAME}.so
 %{_bindir}/qdtrajectory
-
-%files -n %{BINNAME}-formats
 %defattr(0664,root,root,0775)
 %{_datadir}/smartmet/%{DIRNAME}/gpx.c2t
 %{_datadir}/smartmet/%{DIRNAME}/kml.c2t
@@ -102,26 +101,100 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/smartmet/%{DIRNAME}/kmzx.c2t
 %{_datadir}/smartmet/%{DIRNAME}/xml.c2t
 
-%files -n %{SPECNAME}
-%defattr(0775,root,root,0775)
-%{_libdir}/lib%{BINNAME}.so
 %post -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
-
 
 %files -n %{DEVELNAME}
 %defattr(0664,root,root,0775)
 %{_includedir}/smartmet/%{DIRNAME}
 
 %changelog
+* Fri Jun 17 2022 Andris Pavēnis <andris.pavenis@fmi.fi> 22.6.17-1.fmi
+- Add support for RHEL9. Update libpqxx to 7.7.0 (rhel8+) and fmt to 8.1.1
+
+* Tue May 24 2022 Mika Heiskanen <mika.heiskanen@fmi.fi> - 22.5.24-1.fmi
+- Repackaged due to NFmiArea ABI changes
+
+* Fri May 20 2022 Mika Heiskanen <mika.heiskanen@fmi.fi> - 22.5.20-1.fmi
+- Repackaged due to ABI changes to newbase LatLon methods
+
+* Wed May 18 2022 Mika Heiskanen <mika.heiskanen@fmi.fi> - 22.5.18-1.fmi
+- Removed obsolete WGS84 ifdefs
+
+* Fri Jan 21 2022 Andris Pavēnis <andris.pavenis@fmi.fi> 22.1.21-1.fmi
+- Repackage due to upgrade of packages from PGDG repo: gdal-3.4, geos-3.10, proj-8.2
+
+* Tue Dec  7 2021 Andris Pavēnis <andris.pavenis@fmi.fi> 21.12.7-1.fmi
+- Update to postgresql 13 and gdal 3.3
+
+* Fri Nov 19 2021 Andris Pavēnis <andris.pavenis@fmi.fi> 21.11.19-1.fmi
+- Merge contents of RPM packages smartmet-trajectory and smartmet-trajectory-formats into smartmet-library-trajectory
+
+* Wed Oct 13 2021 Mika Heiskanen <mika.heiskanen@fmi.fi> - 21.10.13-1.fmi
+- Fixed requirements and provides fields
+
+* Thu Jul  8 2021 Andris Pavēnis <andris.pavenis@fmi.fi> 21.7.8-1.fmi
+- Use libpqxx7 for RHEL8
+
+* Mon Jun 21 2021 Andris Pavēnis <andris.pavenis@fmi.fi> 21.6.21-1.fmi
+- Repackaged due to smartmet-library-locus ABI changes
+
+* Thu May  6 2021 Mika Heiskanen <mika.heiskanen@fmi.fi> - 21.5.6-1.fmi
+- Repackaged due to NFmiAzimuthalArea ABI changes
+
+* Thu Feb 18 2021 Mika Heiskanen <mika.heiskanen@fmi.fi> - 21.2.18-1.fmi
+- Repackaged due to NFmiArea ABI changes
+
+* Tue Feb 16 2021 Andris Pavēnis <andris.pavenis@fmi.fi> - 21.2.16-2.fmi
+- Repackaged due to newbase ABI changes
+
+* Tue Feb 16 2021 Mika Heiskanen <mika.heiskanen@fmi.fi> - 21.2.16-1.fmi
+- Repackaged due to NFmiArea ABI changes
+
+* Wed Jan 20 2021 Andris Pavenis <andris.pavenis@fmi.fi> - 21.2.20-1.fmi
+- Use makefile.inc
+
+* Thu Jan 14 2021 Mika Heiskanen <mika.heiskanen@fmi.fi> - 21.1.14-1.fmi
+- Repackaged smartmet to resolve debuginfo issues
+
+* Tue Jan  5 2021 Mika Heiskanen <mika.heiskanen@fmi.fi> - 21.1.5-1.fmi
+- gdal upgrade
+
+* Tue Dec 15 2020 Mika Heiskanen <mika.heiskanen@fmi.fi> - 20.12.15-1.fmi
+- Upgrade to pgdg12
+
+* Thu Aug 27 2020 Mika Heiskanen <mika.heiskanen@fmi.fi> - 20.8.27-1.fmi
+- NFmiGrid API changed
+
+* Wed Aug 26 2020 Mika Heiskanen <mika.heiskanen@fmi.fi> - 20.8.26-1.fmi
+- Repackaged due to NFmiGrid API changes
+
 * Fri Aug 21 2020 Mika Heiskanen <mika.heiskanen@fmi.fi> - 20.8.21-1.fmi
 - Upgrade to fmt 6.2
+
+* Fri Jul 31 2020 Mika Heiskanen <mika.heiskanen@fmi.fi> - 20.7.31-1.fmi
+- Repackaged due to libpqxx upgrade
 
 * Mon Jun  8 2020 Mika Heiskanen <mika.heiskanen@fmi.fi> - 20.6.8-1.fmi
 - Upgraded libpqxx dependencies
 
 * Sat Apr 18 2020 Mika Heiskanen <mika.heiskanen@fmi.fi> - 20.4.18-1.fmi
 - Upgraded to Boost 1.69
+
+* Thu Mar 26 2020 Mika Heiskanen <mika.heiskanen@fmi.fi> - 20.3.26-1.fmi
+- Repackaged due to NFmiArea API changes
+
+* Fri Feb 14 2020 Mika Heiskanen <mika.heiskanen@fmi.fi> - 20.2.14-1.fmi
+- Upgrade to pgdg12
+
+* Fri Feb  7 2020 Mika Heiskanen <mika.heiskanen@fmi.fi> - 20.2.7-1.fmi
+- Repackaged due to newbase ABI changes
+
+* Fri Dec 13 2019 Mika Heiskanen <mika.heiskanen@fmi.fi> - 19.12.13-1.fmi
+- Removed obsolete GDAL dependency
+
+* Thu Dec 12 2019 Mika Heiskanen <mika.heiskanen@fmi.fi> - 19.12.12-1.fmi
+- Upgrade to GDAL 3.0
 
 * Wed Nov 20 2019 Mika Heiskanen <mika.heiskanen@fmi.fi> - 19.11.20-1.fmi
 - Repackaged due to newbase API changes

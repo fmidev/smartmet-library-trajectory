@@ -109,7 +109,10 @@ NFmiMetTime NFmiTrajectory::CalcPossibleLastTime(void)
   }
 }
 
-bool NFmiTrajectory::Is3DTrajectory(void) const { return itsMainTrajector.Is3DTrajectory(); }
+bool NFmiTrajectory::Is3DTrajectory(void) const
+{
+  return itsMainTrajector.Is3DTrajectory();
+}
 // Laskee mahd. ajassa harvennetut trajektori latlon-pisteet.
 // laskuissa käytetään main-trajektoria
 void NFmiTrajectory::CalculateCrossSectionTrajectoryHelpData(void)
@@ -205,7 +208,8 @@ void NFmiTrajectory::Write(std::ostream &os) const
   os << "// possible extra data" << std::endl;
   os << extraData;
 
-  if (os.fail()) throw std::runtime_error("NFmiTrajectory::Write failed");
+  if (os.fail())
+    throw std::runtime_error("NFmiTrajectory::Write failed");
 }
 
 void NFmiTrajectory::Read(std::istream &is)
@@ -235,11 +239,13 @@ void NFmiTrajectory::Read(std::istream &is)
 
   is >> itsTempBalloonTrajectorSettings;
 
-  if (is.fail()) throw std::runtime_error("NFmiTrajectory::Read failed");
+  if (is.fail())
+    throw std::runtime_error("NFmiTrajectory::Read failed");
   NFmiDataStoringHelpers::NFmiExtraDataStorage extraData;  // lopuksi vielä mahdollinen extra data
   is >> extraData;
   // Tässä sitten otetaaan extradatasta talteen uudet muuttujat, mitä on mahdollisesti tullut
   // eli jos uusia muutujia tai arvoja, käsittele tässä.
 
-  if (is.fail()) throw std::runtime_error("NFmiTrajectory::Read failed");
+  if (is.fail())
+    throw std::runtime_error("NFmiTrajectory::Read failed");
 }

@@ -37,7 +37,10 @@ void NFmiSingleTrajector::ClearPoints(void)
   itsPressures.clear();
 }
 
-void NFmiSingleTrajector::AddPoint(const NFmiPoint &theLatLon) { itsPoints.push_back(theLatLon); }
+void NFmiSingleTrajector::AddPoint(const NFmiPoint &theLatLon)
+{
+  itsPoints.push_back(theLatLon);
+}
 void NFmiSingleTrajector::AddPoint(const NFmiPoint &theLatLon,
                                    float thePressure,
                                    float theHeightValue)
@@ -50,7 +53,8 @@ void NFmiSingleTrajector::AddPoint(const NFmiPoint &theLatLon,
 bool NFmiSingleTrajector::Is3DTrajectory(void) const
 {
   if (!itsPoints.empty())
-    if (itsPoints.size() == itsPressures.size()) return true;
+    if (itsPoints.size() == itsPressures.size())
+      return true;
   return false;
 }
 

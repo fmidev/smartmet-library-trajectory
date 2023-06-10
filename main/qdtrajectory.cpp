@@ -129,10 +129,14 @@ void Options::report(std::ostream &out) const
   REPORT(out, "Template file:", templatefile);
   REPORT(out, "Plume size:", plumesize);
   REPORT(out, "Plume disturbance factor:", disturbance);
-  if (arearadius) REPORT(out, "Plume dispersion radius in km:", *arearadius);
-  if (timeinterval) REPORT(out, "Plume time dispersion in minutes:", *timeinterval);
-  if (pressure) REPORT(out, "Plume pressure level:", *pressure);
-  if (pressurerange) REPORT(out, "Plume pressure dispersion in hPa:", *pressurerange);
+  if (arearadius)
+    REPORT(out, "Plume dispersion radius in km:", *arearadius);
+  if (timeinterval)
+    REPORT(out, "Plume time dispersion in minutes:", *timeinterval);
+  if (pressure)
+    REPORT(out, "Plume pressure level:", *pressure);
+  if (pressurerange)
+    REPORT(out, "Plume pressure dispersion in hPa:", *pressurerange);
   REPORT(out, "Isentropic mode:", isentropic);
   REPORT(out, "Backward simulation in time:", backwards);
   out << '\n';
@@ -260,7 +264,8 @@ boost::posix_time::ptime parse_starttime(const std::string &theStr)
   if (!p.is_not_a_date_time() && options.timestep > 1)
   {
     int offset = p.time_of_day().total_seconds() % (60 * options.timestep);
-    if (offset > 0) p += boost::posix_time::seconds(60 * options.timestep - offset);
+    if (offset > 0)
+      p += boost::posix_time::seconds(60 * options.timestep - offset);
   }
 
   return p;
@@ -373,22 +378,29 @@ bool parse_options(int argc, char *argv[])
     return false;
   }
 
-  if (opt.count("radius")) options.arearadius = opt["radius"].as<double>();
+  if (opt.count("radius"))
+    options.arearadius = opt["radius"].as<double>();
 
-  if (opt.count("interval")) options.timeinterval = opt["interval"].as<unsigned int>();
+  if (opt.count("interval"))
+    options.timeinterval = opt["interval"].as<unsigned int>();
 
-  if (opt.count("pressure")) options.pressure = opt["pressure"].as<double>();
+  if (opt.count("pressure"))
+    options.pressure = opt["pressure"].as<double>();
 
-  if (opt.count("pressure-range")) options.pressurerange = opt["pressure-range"].as<double>();
+  if (opt.count("pressure-range"))
+    options.pressurerange = opt["pressure-range"].as<double>();
 
-  if (opt.count("height")) options.height = opt["height"].as<double>();
+  if (opt.count("height"))
+    options.height = opt["height"].as<double>();
 
-  if (opt.count("height-range")) options.heightrange = opt["height-range"].as<double>();
+  if (opt.count("height-range"))
+    options.heightrange = opt["height-range"].as<double>();
 
   if (options.queryfile != "-" && !fs::exists(options.queryfile))
     throw std::runtime_error("Input file '" + options.queryfile + "' does not exist");
 
-  if (!opt_format.empty()) options.format = boost::algorithm::to_lower_copy(opt_format);
+  if (!opt_format.empty())
+    options.format = boost::algorithm::to_lower_copy(opt_format);
 
   if (!opt_place.empty())
   {
@@ -399,24 +411,31 @@ bool parse_options(int argc, char *argv[])
     std::string database = "fminames";
     Locus::Query query(host, username, password, database);
     auto res = query.FetchByName(opts, opt_place);
-    if (res.empty()) throw std::runtime_error("Unknown location '" + opt_place);
-    if (options.verbose) print_location(std::cerr, res[0]);
+    if (res.empty())
+      throw std::runtime_error("Unknown location '" + opt_place);
+    if (options.verbose)
+      print_location(std::cerr, res[0]);
 
     options.coordinate = NFmiPoint(res[0].lon, res[0].lat);
   }
 
-  if (!opt_lonlat.empty()) options.coordinate = parse_lonlat(opt_lonlat);
+  if (!opt_lonlat.empty())
+    options.coordinate = parse_lonlat(opt_lonlat);
 
-  if (!opt_latlon.empty()) options.coordinate = parse_latlon(opt_lonlat);
+  if (!opt_latlon.empty())
+    options.coordinate = parse_latlon(opt_lonlat);
 
-  if (opt_longitude != kFloatMissing) options.coordinate.X(opt_longitude);
+  if (opt_longitude != kFloatMissing)
+    options.coordinate.X(opt_longitude);
 
-  if (opt_latitude != kFloatMissing) options.coordinate.Y(opt_latitude);
+  if (opt_latitude != kFloatMissing)
+    options.coordinate.Y(opt_latitude);
 
   if (options.coordinate.X() == kFloatMissing || options.coordinate.Y() == kFloatMissing)
     throw std::runtime_error("No simulation coordinate specified");
 
-  if (!opt_starttime.empty()) options.starttime = parse_starttime(opt_starttime);
+  if (!opt_starttime.empty())
+    options.starttime = parse_starttime(opt_starttime);
 
   if (!options.pressure && !options.height)
     throw std::runtime_error("Must specify simulation start pressure or height");
@@ -507,10 +526,14 @@ boost::shared_ptr<NFmiTrajectory> calculate_trajectory(
   // trajectory->TempBalloonTrajectorSettings(NFmiTempBalloonTrajectorSettings());
 
   // Plume initial dispersion radius, start time interval, and pressure disribution
-  if (options.arearadius) trajectory->StartLocationRangeInKM(*options.arearadius);
-  if (options.timeinterval) trajectory->StartTimeRangeInMinutes(*options.timeinterval);
-  if (options.pressure) trajectory->PressureLevel(*options.pressure);
-  if (options.pressurerange) trajectory->StartPressureLevelRange(*options.pressurerange);
+  if (options.arearadius)
+    trajectory->StartLocationRangeInKM(*options.arearadius);
+  if (options.timeinterval)
+    trajectory->StartTimeRangeInMinutes(*options.timeinterval);
+  if (options.pressure)
+    trajectory->PressureLevel(*options.pressure);
+  if (options.pressurerange)
+    trajectory->StartPressureLevelRange(*options.pressurerange);
 
   // Convert input height parameters to simulation pressure parameters
   if (options.height)
@@ -538,8 +561,10 @@ boost::shared_ptr<NFmiTrajectory> calculate_trajectory(
       float p2 =
           theInfo->HeightValue(*options.height + dz, trajectory->LatLon(), trajectory->Time());
 
-      if (p2 == kFloatMissing) p2 = pmax;
-      if (p1 == kFloatMissing) p1 = pmax;
+      if (p2 == kFloatMissing)
+        p2 = pmax;
+      if (p1 == kFloatMissing)
+        p1 = pmax;
 
       trajectory->PressureLevel((p1 + p2) / 2);
       trajectory->StartPressureLevelRange((p1 - p2) / 2);
@@ -573,7 +598,8 @@ void hash_trajector(CTPP::CDT &hash, int index, const NFmiSingleTrajector &traje
 
   // For iteration
   int timestep = options.timestep;
-  if (options.backwards) timestep = -timestep;
+  if (options.backwards)
+    timestep = -timestep;
 
   // Common information
 
@@ -682,7 +708,8 @@ void build_hash(CTPP::CDT &hash, const NFmiTrajectory &trajectory)
 
 std::string template_filename()
 {
-  if (!options.templatefile.empty()) return options.templatefile;
+  if (!options.templatefile.empty())
+    return options.templatefile;
 
   return (options.templatedir + "/" + options.format + ".c2t");
 }
@@ -702,14 +729,16 @@ std::string format_result(boost::shared_ptr<NFmiTrajectory> trajectory)
   if (!boost::filesystem::exists(tmpl))
     throw std::runtime_error("Template file '" + tmpl + "' is missing");
 
-  if (options.verbose) std::cerr << "Format template file is '" << tmpl << "'\n";
+  if (options.verbose)
+    std::cerr << "Format template file is '" << tmpl << "'\n";
 
   // Build the hash
 
   CTPP::CDT hash;
   build_hash(hash, *trajectory);
 
-  if (options.debughash) std::cerr << hash.Dump() << std::endl;
+  if (options.debughash)
+    std::cerr << hash.Dump() << std::endl;
 
   // Format data using the template
 
@@ -752,9 +781,11 @@ std::string pretty_input_filename(const std::string &theName)
 
 int run(int argc, char *argv[])
 {
-  if (!parse_options(argc, argv)) return 0;
+  if (!parse_options(argc, argv))
+    return 0;
 
-  if (options.verbose) options.report(std::cerr);
+  if (options.verbose)
+    options.report(std::cerr);
 
   // Read input data
 
@@ -799,9 +830,11 @@ int run(int argc, char *argv[])
   else
   {
     std::ofstream out(options.outfile.c_str());
-    if (!out) throw std::runtime_error("Failed to open '" + options.outfile + "' for writing");
+    if (!out)
+      throw std::runtime_error("Failed to open '" + options.outfile + "' for writing");
 
-    if (options.verbose) std::cerr << "Writing to '" + options.outfile + "'\n";
+    if (options.verbose)
+      std::cerr << "Writing to '" + options.outfile + "'\n";
 
     filter.push(out);
     filter << result;
@@ -819,7 +852,8 @@ int run(int argc, char *argv[])
  */
 // ----------------------------------------------------------------------
 
-int main(int argc, char *argv[]) try
+int main(int argc, char *argv[])
+try
 {
   return run(argc, argv);
 }

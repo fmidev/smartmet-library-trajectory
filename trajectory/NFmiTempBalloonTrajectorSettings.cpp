@@ -10,7 +10,8 @@
 // vaiheista ja osaa mm. siirtyä seuraavaan vaiheeseen.
 double NFmiTempBalloonTrajectorSettings::CalcOmega(double Z, int theTimeStepInMinutes)
 {
-  if (theTimeStepInMinutes <= 0 || Z == kFloatMissing) itsState = kNoDirection;
+  if (theTimeStepInMinutes <= 0 || Z == kFloatMissing)
+    itsState = kNoDirection;
 
   switch (itsState)
   {
@@ -39,7 +40,8 @@ double NFmiTempBalloonTrajectorSettings::CalcDeltaP(boost::shared_ptr<NFmiFastQu
                                                     int theTimeStepInMinutes,
                                                     unsigned long theGroundLevelIndex)
 {
-  if (theTimeStepInMinutes <= 0 || Z == kFloatMissing) itsState = kNoDirection;
+  if (theTimeStepInMinutes <= 0 || Z == kFloatMissing)
+    itsState = kNoDirection;
 
   switch (itsState)
   {
@@ -92,12 +94,14 @@ double NFmiTempBalloonTrajectorSettings::CalcDeltaPInPhase1(
   {
     zNew = itsTopHeightInKM * 1000.;
     itsState = kTop;
-    if (itsFloatingTimeInMinutes <= 0) itsState = kDown;
+    if (itsFloatingTimeInMinutes <= 0)
+      itsState = kDown;
   }
   // 1.b.1 jatka...  laske deltaP ja palauta se [hPa/s]
   theInfo->ParamIndex(thePressureParamIndex);
   double newP = theInfo->HeightValue(static_cast<float>(zNew), theLatlon, theTime);
-  if (newP != kFloatMissing) return newP - theCurrentPressure;
+  if (newP != kFloatMissing)
+    return newP - theCurrentPressure;
   return kFloatMissing;
 }
 
@@ -107,7 +111,8 @@ double NFmiTempBalloonTrajectorSettings::CalcDeltaPInPhase2(int theTimeStepInMin
   itsCurrentFloatTimeInMinutes += theTimeStepInMinutes;
   // 2.2 ollaanko jo kelluttu tarpeeksi
   // 2.3 jos kellutus lopussa, siirry seuraavaan vaiheeseen
-  if (itsCurrentFloatTimeInMinutes >= itsFloatingTimeInMinutes) itsState = kDown;
+  if (itsCurrentFloatTimeInMinutes >= itsFloatingTimeInMinutes)
+    itsState = kDown;
   // 2.4 palauta 0 omega
   return 0;
 }
@@ -145,7 +150,8 @@ double NFmiTempBalloonTrajectorSettings::CalcDeltaPInPhase3(
   double newP = (itsState == kNoDirection)
                     ? theInfo->InterpolatedValue(theLatlon, theTime)
                     : theInfo->HeightValue(static_cast<float>(zNew), theLatlon, theTime);
-  if (newP != kFloatMissing) return newP - theCurrentPressure;
+  if (newP != kFloatMissing)
+    return newP - theCurrentPressure;
   return kFloatMissing;
 }
 
@@ -192,7 +198,8 @@ double NFmiTempBalloonTrajectorSettings::CalcOmegaInPhase1(double Z, int theTime
   {
     zNew = itsTopHeightInKM * 1000.;
     itsState = kTop;
-    if (itsFloatingTimeInMinutes <= 0) itsState = kDown;
+    if (itsFloatingTimeInMinutes <= 0)
+      itsState = kDown;
   }
   // 1.b.1 jatka...  laske omega ja palauta se [hPa/s]
   double realDZ = zNew - Z;
@@ -207,7 +214,8 @@ double NFmiTempBalloonTrajectorSettings::CalcOmegaInPhase2(int theTimeStepInMinu
   itsCurrentFloatTimeInMinutes += theTimeStepInMinutes;
   // 2.2 ollaanko jo kelluttu tarpeeksi
   // 2.3 jos kellutus lopussa, siirry seuraavaan vaiheeseen
-  if (itsCurrentFloatTimeInMinutes >= itsFloatingTimeInMinutes) itsState = kDown;
+  if (itsCurrentFloatTimeInMinutes >= itsFloatingTimeInMinutes)
+    itsState = kDown;
   // 2.4 palauta 0 omega
   return 0;
 }
@@ -250,7 +258,8 @@ void NFmiTempBalloonTrajectorSettings::Write(std::ostream &os) const
   os << "// possible extra data" << std::endl;
   os << extraData;
 
-  if (os.fail()) throw std::runtime_error("NFmiTempBalloonTrajectorSettings::Write failed");
+  if (os.fail())
+    throw std::runtime_error("NFmiTempBalloonTrajectorSettings::Write failed");
 }
 
 void NFmiTempBalloonTrajectorSettings::Read(std::istream &is)
@@ -260,11 +269,13 @@ void NFmiTempBalloonTrajectorSettings::Read(std::istream &is)
   itsState = kBase;
   itsCurrentFloatTimeInMinutes = 0;
 
-  if (is.fail()) throw std::runtime_error("NFmiTempBalloonTrajectorSettings::Read failed");
+  if (is.fail())
+    throw std::runtime_error("NFmiTempBalloonTrajectorSettings::Read failed");
   NFmiDataStoringHelpers::NFmiExtraDataStorage extraData;  // lopuksi vielä mahdollinen extra data
   is >> extraData;
   // Tässä sitten otetaaan extradatasta talteen uudet muuttujat, mitä on mahdollisesti tullut
   // eli jos uusia muutujia tai arvoja, käsittele tässä.
 
-  if (is.fail()) throw std::runtime_error("NFmiTempBalloonTrajectorSettings::Read failed");
+  if (is.fail())
+    throw std::runtime_error("NFmiTempBalloonTrajectorSettings::Read failed");
 }
