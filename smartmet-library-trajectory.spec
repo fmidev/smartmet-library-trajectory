@@ -21,18 +21,18 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
 BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
-BuildRequires: smartmet-library-newbase-devel >= 22.6.16
-BuildRequires: smartmet-library-gis-devel >= 22.6.16
+BuildRequires: smartmet-library-newbase-devel >= 23.7.10
+BuildRequires: smartmet-library-gis-devel >= 23.7.10
 BuildRequires: smartmet-library-smarttools-devel >= 22.5.24
-BuildRequires: smartmet-library-locus-devel >= 22.3.28
+BuildRequires: smartmet-library-locus-devel >= 23.7.10
 BuildRequires: smartmet-library-macgyver-devel >= 22.6.16
 BuildRequires: %{smartmet_boost}-devel
 BuildRequires: ctpp2 >= 2.8.8
-Requires: gdal34
+Requires: gdal35
 Requires: smartmet-library-macgyver >= 22.6.16
-Requires: smartmet-library-gis >= 22.6.16
-Requires: smartmet-library-locus >= 22.3.28
-Requires: smartmet-library-newbase >= 22.6.16
+Requires: smartmet-library-gis >= 23.7.10
+Requires: smartmet-library-locus >= 23.7.10
+Requires: smartmet-library-newbase >= 23.7.10
 Requires: smartmet-library-smarttools >= 22.5.24
 Requires: %{smartmet_boost}-date-time
 Requires: %{smartmet_boost}-filesystem
@@ -42,7 +42,7 @@ Requires: %{smartmet_boost}-program-options
 Requires: %{smartmet_boost}-regex
 Requires: %{smartmet_boost}-thread
 Requires: %{smartmet_boost}-system
-BuildRequires: gdal34-devel
+BuildRequires: gdal35-devel
 Provides: qdtrajectory
 Obsoletes: libsmartmet-trajectory < 17.1.4
 
