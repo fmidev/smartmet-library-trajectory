@@ -66,7 +66,7 @@ FMI Trajectory Calculation Tools
 %package -n %{DEVELNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
-Requires: smartmet-library-locus >= 22.3.28
+Requires: smartmet-library-locus >= 23.7.10
 Requires: %{SPECNAME} = %{version}-%{release}
 Provides: %{DEVELNAME}
 Obsoletes: libsmartmet-trajectory-devel < 17.1.4
