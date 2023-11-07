@@ -5,6 +5,12 @@
 #include "NFmiTempBalloonTrajectorSettings.h"
 #include <smarttools/NFmiDataStoringHelpers.h>
 
+#if __cplusplus >= 201703L
+#define FALL_THROUGH [[fallthrough]]
+#else
+#define FALL_THROUGH [[fallthrough]]
+#endif
+
 // laske currentilla arvoilla nousu/laskunopeus yksikössä hPa/s. Osaa tehdä päätelmiä eri luotaus
 // pallon lennon
 // vaiheista ja osaa mm. siirtyä seuraavaan vaiheeseen.
@@ -17,6 +23,7 @@ double NFmiTempBalloonTrajectorSettings::CalcOmega(double Z, int theTimeStepInMi
   {
     case kBase:
       itsState = kUp;  // HUOM! tästä on siis tarkoitus jatkaa suoraan kUp caseen!
+      FALL_THROUGH;
     case kUp:
       return CalcOmegaInPhase1(Z, theTimeStepInMinutes);
     case kTop:
@@ -47,6 +54,7 @@ double NFmiTempBalloonTrajectorSettings::CalcDeltaP(boost::shared_ptr<NFmiFastQu
   {
     case kBase:
       itsState = kUp;  // HUOM! tästä on siis tarkoitus jatkaa suoraan kUp caseen!
+      FALL_THROUGH;
     case kUp:
       return CalcDeltaPInPhase1(theInfo,
                                 theLatlon,

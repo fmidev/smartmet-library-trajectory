@@ -25,11 +25,11 @@ BuildRequires: smartmet-library-newbase-devel >= 23.7.28
 BuildRequires: smartmet-library-gis-devel >= 23.7.10
 BuildRequires: smartmet-library-smarttools-devel >= 22.5.24
 BuildRequires: smartmet-library-locus-devel >= 23.7.10
-BuildRequires: smartmet-library-macgyver-devel >= 23.7.28
+BuildRequires: smartmet-library-macgyver-devel >= 23.11.8
 BuildRequires: %{smartmet_boost}-devel
 BuildRequires: ctpp2 >= 2.8.8
 Requires: gdal35
-Requires: smartmet-library-macgyver >= 23.7.28
+Requires: smartmet-library-macgyver >= 23.11.8
 Requires: smartmet-library-gis >= 23.7.10
 Requires: smartmet-library-locus >= 23.7.10
 Requires: smartmet-library-newbase >= 23.7.28
