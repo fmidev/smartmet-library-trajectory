@@ -38,7 +38,7 @@ struct Options
 
   bool verbose;
   NFmiPoint coordinate;
-  boost::posix_time::ptime starttime;
+  Fmi::DateTime starttime;
   unsigned int timestep;
   unsigned int hours;
   std::string queryfile;
@@ -251,9 +251,9 @@ void print_location(std::ostream &out, const Locus::SimpleLocation &theLoc)
  */
 // ----------------------------------------------------------------------
 
-boost::posix_time::ptime parse_starttime(const std::string &theStr)
+Fmi::DateTime parse_starttime(const std::string &theStr)
 {
-  boost::posix_time::ptime p;
+  Fmi::DateTime p;
 
   if (theStr == "now")
     p = Fmi::TimeParser::parse("0");
@@ -265,7 +265,7 @@ boost::posix_time::ptime parse_starttime(const std::string &theStr)
   {
     int offset = p.time_of_day().total_seconds() % (60 * options.timestep);
     if (offset > 0)
-      p += boost::posix_time::seconds(60 * options.timestep - offset);
+      p += Fmi::Seconds(60 * options.timestep - offset);
   }
 
   return p;
@@ -619,7 +619,7 @@ void hash_trajector(CTPP::CDT &hash, int index, const NFmiSingleTrajector &traje
   {
     CTPP::CDT &group = hash["points"][i];
 
-    boost::posix_time::ptime pt = t;
+    Fmi::DateTime pt = t;
 
     // Track start and end times
     if (i == 0)
