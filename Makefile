@@ -30,7 +30,6 @@ LIBS += -L$(libdir) \
 	-lsmartmet-newbase \
 	-lsmartmet-locus \
 	-lsmartmet-macgyver \
-	-lboost_date_time \
 	-lboost_filesystem \
 	-lboost_iostreams \
 	-lboost_locale \
