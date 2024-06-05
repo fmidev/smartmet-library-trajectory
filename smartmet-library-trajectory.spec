@@ -28,7 +28,7 @@ BuildRequires: smartmet-library-locus-devel >= 23.7.28
 BuildRequires: smartmet-library-macgyver-devel >= 24.1.17
 BuildRequires: %{smartmet_boost}-devel
 BuildRequires: ctpp2 >= 2.8.8
-Requires: gdal35
+Requires: gdal38
 Requires: smartmet-library-macgyver >= 24.1.17
 Requires: smartmet-library-gis >= 24.1.3
 Requires: smartmet-library-locus >= 23.7.28
@@ -41,18 +41,19 @@ Requires: %{smartmet_boost}-program-options
 Requires: %{smartmet_boost}-regex
 Requires: %{smartmet_boost}-thread
 Requires: %{smartmet_boost}-system
-BuildRequires: gdal35-devel
+BuildRequires: gdal38-devel
 Provides: qdtrajectory
 Obsoletes: libsmartmet-trajectory < 17.1.4
 
-%if %{defined el7}
-Requires: libpqxx < 1:7.0
-BuildRequires: libpqxx-devel < 1:7.0
-%else
-%if 0%{?rhel} && 0%{rhel} >= 8
+%if %{defined el8}
 Requires: libpqxx >= 1:7.7.0, libpqxx < 1:7.8.0
 BuildRequires: libpqxx-devel >= 1:7.7.0, libpqxx-devel < 1:7.8.0
 #TestRequires: libpqxx-devel >= 1:7.7.0, libpqxx-devel < 1:7.8.0
+%else
+%if 0%{?rhel} && 0%{rhel} >= 9
+Requires: libpqxx >= 1:7.9.0, libpqxx < 1:7.10.0
+BuildRequires: libpqxx-devel >= 1:7.9.0, libpqxx-devel < 1:7.10.0
+#TestRequires: libpqxx-devel >= 1:7.9.0, libpqxx-devel < 1:7.10.0
 %else
 Requires: libpqxx
 BuildRequires: libpqxx-devel
