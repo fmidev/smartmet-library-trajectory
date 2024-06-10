@@ -28,7 +28,7 @@ BuildRequires: smartmet-library-locus-devel >= 23.7.28
 BuildRequires: smartmet-library-macgyver-devel >= 24.1.17
 BuildRequires: %{smartmet_boost}-devel
 BuildRequires: ctpp2 >= 2.8.8
-Requires: gdal38
+Requires: gdal38-libs
 Requires: smartmet-library-macgyver >= 24.1.17
 Requires: smartmet-library-gis >= 24.1.3
 Requires: smartmet-library-locus >= 23.7.28
