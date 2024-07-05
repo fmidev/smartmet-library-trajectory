@@ -150,7 +150,7 @@ void Options::report(std::ostream &out) const
 
 void list_formats()
 {
-  namespace fs = boost::filesystem;
+  namespace fs = std::filesystem;
 
   fs::path p = options.templatedir;
 
@@ -281,7 +281,7 @@ Fmi::DateTime parse_starttime(const std::string &theStr)
 bool parse_options(int argc, char *argv[])
 {
   namespace po = boost::program_options;
-  namespace fs = boost::filesystem;
+  namespace fs = std::filesystem;
 
   std::string opt_format;
 
@@ -726,7 +726,7 @@ std::string format_result(std::shared_ptr<NFmiTrajectory> trajectory)
 
   std::string tmpl = template_filename();
 
-  if (!boost::filesystem::exists(tmpl))
+  if (!std::filesystem::exists(tmpl))
     throw std::runtime_error("Template file '" + tmpl + "' is missing");
 
   if (options.verbose)
