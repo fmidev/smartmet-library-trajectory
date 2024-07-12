@@ -2,7 +2,7 @@
 
 #include "NFmiSingleTrajector.h"
 #include "NFmiTempBalloonTrajectorSettings.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <newbase/NFmiMetTime.h>
 #include <newbase/NFmiPoint.h>
 #include <newbase/NFmiProducer.h>
@@ -37,8 +37,8 @@ class NFmiTrajectory
   void TimeLengthInHours(int newValue) { itsTimeLengthInHours = newValue; }
   const NFmiSingleTrajector& MainTrajector(void) const { return itsMainTrajector; }
   void MainTrajector(const NFmiSingleTrajector& theTrajector) { itsMainTrajector = theTrajector; }
-  void AddPlumeTrajector(boost::shared_ptr<NFmiSingleTrajector>& theTrajector);
-  const std::vector<boost::shared_ptr<NFmiSingleTrajector> >& PlumeTrajectories(void) const
+  void AddPlumeTrajector(std::shared_ptr<NFmiSingleTrajector>& theTrajector);
+  const std::vector<std::shared_ptr<NFmiSingleTrajector> >& PlumeTrajectories(void) const
   {
     return itsPlumeTrajectories;
   }
@@ -92,7 +92,7 @@ class NFmiTrajectory
 
  private:
   NFmiSingleTrajector itsMainTrajector;  // 'pää' trajektori eli ei mitää häirintää tämän laskussa
-  std::vector<boost::shared_ptr<NFmiSingleTrajector> >
+  std::vector<std::shared_ptr<NFmiSingleTrajector> >
       itsPlumeTrajectories;  // jos haluttu parvi trajektoreita, ne on talletettu tänne
   NFmiPoint itsLatLon;  // alku piste ns. pääpiste, koska tästä voidaan laskea myös "häirityt"
                         // alkupisteet pluumiin
@@ -138,12 +138,12 @@ inline std::istream& operator>>(std::istream& is, NFmiTrajectory& item)
   return is;
 }
 
-inline std::ostream& operator<<(std::ostream& os, boost::shared_ptr<NFmiTrajectory> item)
+inline std::ostream& operator<<(std::ostream& os, std::shared_ptr<NFmiTrajectory> item)
 {
   (*item).Write(os);
   return os;
 }
-inline std::istream& operator>>(std::istream& is, boost::shared_ptr<NFmiTrajectory> item)
+inline std::istream& operator>>(std::istream& is, std::shared_ptr<NFmiTrajectory> item)
 {
   (*item).Read(is);
   return is;

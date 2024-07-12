@@ -38,7 +38,7 @@ double NFmiTempBalloonTrajectorSettings::CalcOmega(double Z, int theTimeStepInMi
   }
 }
 
-double NFmiTempBalloonTrajectorSettings::CalcDeltaP(boost::shared_ptr<NFmiFastQueryInfo> &theInfo,
+double NFmiTempBalloonTrajectorSettings::CalcDeltaP(std::shared_ptr<NFmiFastQueryInfo> &theInfo,
                                                     const NFmiPoint &theLatlon,
                                                     const NFmiMetTime &theTime,
                                                     double theCurrentPressure,
@@ -83,7 +83,7 @@ double NFmiTempBalloonTrajectorSettings::CalcDeltaP(boost::shared_ptr<NFmiFastQu
 }
 
 double NFmiTempBalloonTrajectorSettings::CalcDeltaPInPhase1(
-    boost::shared_ptr<NFmiFastQueryInfo> &theInfo,
+    std::shared_ptr<NFmiFastQueryInfo> &theInfo,
     const NFmiPoint &theLatlon,
     const NFmiMetTime &theTime,
     double theCurrentPressure,
@@ -127,7 +127,7 @@ double NFmiTempBalloonTrajectorSettings::CalcDeltaPInPhase2(int theTimeStepInMin
 
 // phase3 eli pallon lasku/putoamis vaihe
 double NFmiTempBalloonTrajectorSettings::CalcDeltaPInPhase3(
-    boost::shared_ptr<NFmiFastQueryInfo> &theInfo,
+    std::shared_ptr<NFmiFastQueryInfo> &theInfo,
     const NFmiPoint &theLatlon,
     const NFmiMetTime &theTime,
     double theCurrentPressure,

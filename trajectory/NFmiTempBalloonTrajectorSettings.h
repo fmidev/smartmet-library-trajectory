@@ -3,7 +3,7 @@
 #include <newbase/NFmiFastQueryInfo.h>
 #include <newbase/NFmiGlobals.h>
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 // luokka joka pitää sisällään luotauspallo trajektori asetukset
 class NFmiTempBalloonTrajectorSettings
@@ -43,7 +43,7 @@ class NFmiTempBalloonTrajectorSettings
   // pallon lennon
   // vaiheista ja osaa mm. siirtyä seuraavaan vaiheeseen.
   double CalcOmega(double Z, int theTimeStepInMinutes);
-  double CalcDeltaP(boost::shared_ptr<NFmiFastQueryInfo> &theInfo,
+  double CalcDeltaP(std::shared_ptr<NFmiFastQueryInfo> &theInfo,
                     const NFmiPoint &theLatlon,
                     const NFmiMetTime &theTime,
                     double theCurrentPressure,
@@ -56,7 +56,7 @@ class NFmiTempBalloonTrajectorSettings
   void Read(std::istream &is);
 
  private:
-  double CalcDeltaPInPhase1(boost::shared_ptr<NFmiFastQueryInfo> &theInfo,
+  double CalcDeltaPInPhase1(std::shared_ptr<NFmiFastQueryInfo> &theInfo,
                             const NFmiPoint &theLatlon,
                             const NFmiMetTime &theTime,
                             double theCurrentPressure,
@@ -64,7 +64,7 @@ class NFmiTempBalloonTrajectorSettings
                             double Z,
                             int theTimeStepInMinutes);
   double CalcDeltaPInPhase2(int theTimeStepInMinutes);
-  double CalcDeltaPInPhase3(boost::shared_ptr<NFmiFastQueryInfo> &theInfo,
+  double CalcDeltaPInPhase3(std::shared_ptr<NFmiFastQueryInfo> &theInfo,
                             const NFmiPoint &theLatlon,
                             const NFmiMetTime &theTime,
                             double theCurrentPressure,
