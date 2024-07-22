@@ -692,7 +692,7 @@ void build_hash(CTPP::CDT &hash, const NFmiTrajectory &trajectory)
   if (trajectory.PlumesUsed())
   {
     const auto &plumes = trajectory.PlumeTrajectories();
-    BOOST_FOREACH (const auto &traj, plumes)
+    for (const auto &traj, plumes)
     {
       ++index;
       hash_trajector(tgroup[index], index, *traj);
