@@ -3,11 +3,10 @@
 #include "NFmiTrajectorySystem.h"
 #include <boost/algorithm/string.hpp>
 #include <boost/filesystem/operations.hpp>
-#include <boost/foreach.hpp>
 #include <boost/iostreams/filter/gzip.hpp>
 #include <boost/iostreams/filtering_stream.hpp>
 #include <boost/make_shared.hpp>
-#include <boost/optional.hpp>
+#include <optional>
 #include <boost/program_options.hpp>
 #include <locus/Query.h>
 #include <locus/QueryOptions.h>
@@ -48,12 +47,12 @@ struct Options
   std::string format;
   unsigned int plumesize;
   double disturbance;
-  boost::optional<double> arearadius;
-  boost::optional<unsigned int> timeinterval;
-  boost::optional<double> pressure;
-  boost::optional<double> pressurerange;
-  boost::optional<double> height;
-  boost::optional<double> heightrange;
+  std::optional<double> arearadius;
+  std::optional<unsigned int> timeinterval;
+  std::optional<double> pressure;
+  std::optional<double> pressurerange;
+  std::optional<double> height;
+  std::optional<double> heightrange;
   bool isentropic;
   bool backwards;
   bool compress;
@@ -150,7 +149,7 @@ void Options::report(std::ostream &out) const
 
 void list_formats()
 {
-  namespace fs = boost::filesystem;
+  namespace fs = std::filesystem;
 
   fs::path p = options.templatedir;
 
@@ -281,7 +280,7 @@ Fmi::DateTime parse_starttime(const std::string &theStr)
 bool parse_options(int argc, char *argv[])
 {
   namespace po = boost::program_options;
-  namespace fs = boost::filesystem;
+  namespace fs = std::filesystem;
 
   std::string opt_format;
 
@@ -488,10 +487,10 @@ float maximum_value_vertically(NFmiFastQueryInfo &theQ,
  */
 // ----------------------------------------------------------------------
 
-boost::shared_ptr<NFmiTrajectory> calculate_trajectory(
-    boost::shared_ptr<NFmiFastQueryInfo> &theInfo)
+std::shared_ptr<NFmiTrajectory> calculate_trajectory(
+    std::shared_ptr<NFmiFastQueryInfo> &theInfo)
 {
-  auto trajectory = boost::make_shared<NFmiTrajectory>();
+  auto trajectory = std::make_shared<NFmiTrajectory>();
 
   // Copy producer information
   trajectory->Producer(*theInfo->Producer());
@@ -692,7 +691,7 @@ void build_hash(CTPP::CDT &hash, const NFmiTrajectory &trajectory)
   if (trajectory.PlumesUsed())
   {
     const auto &plumes = trajectory.PlumeTrajectories();
-    BOOST_FOREACH (const auto &traj, plumes)
+    for (const auto &traj : plumes)
     {
       ++index;
       hash_trajector(tgroup[index], index, *traj);
@@ -720,13 +719,13 @@ std::string template_filename()
  */
 // ----------------------------------------------------------------------
 
-std::string format_result(boost::shared_ptr<NFmiTrajectory> trajectory)
+std::string format_result(std::shared_ptr<NFmiTrajectory> trajectory)
 {
   // Get the output template
 
   std::string tmpl = template_filename();
 
-  if (!boost::filesystem::exists(tmpl))
+  if (!std::filesystem::exists(tmpl))
     throw std::runtime_error("Template file '" + tmpl + "' is missing");
 
   if (options.verbose)
@@ -792,7 +791,7 @@ int run(int argc, char *argv[])
   if (options.verbose)
     std::cerr << "Reading querydata from " << pretty_input_filename(options.queryfile) << std::endl;
   NFmiQueryData qd(options.queryfile);
-  auto qi = boost::make_shared<NFmiFastQueryInfo>(&qd);
+  auto qi = std::make_shared<NFmiFastQueryInfo>(&qd);
 
   // Verify the data is suitable
 

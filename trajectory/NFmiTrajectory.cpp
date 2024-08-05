@@ -70,7 +70,7 @@ void NFmiTrajectory::Clear(void)
   fCalculated = false;
 }
 
-void NFmiTrajectory::AddPlumeTrajector(boost::shared_ptr<NFmiSingleTrajector> &theTrajector)
+void NFmiTrajectory::AddPlumeTrajector(std::shared_ptr<NFmiSingleTrajector> &theTrajector)
 {
   itsPlumeTrajectories.push_back(theTrajector);
 }

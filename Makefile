@@ -25,12 +25,12 @@ INCLUDES += \
 	-I$(includedir)/smartmet/newbase \
 	-I$(includedir)/smartmet/smarttools
 
-LIBS += -L$(libdir) \
+LIBS += \
+	$(PREFIX_LDFLAGS) \
 	-lsmartmet-smarttools \
 	-lsmartmet-newbase \
 	-lsmartmet-locus \
 	-lsmartmet-macgyver \
-	-lboost_filesystem \
 	-lboost_iostreams \
 	-lboost_locale \
 	-lboost_program_options \
@@ -110,7 +110,7 @@ install:
 	$(INSTALL_DATA) $$list $(datadir)/smartmet/$(MODULE)/
 
 test:
-	cd test && make test
+	if [ -d test ]; then cd test && make test; fi
 
 objdir:
 	@mkdir -p $(objdir)

@@ -24,9 +24,9 @@ static const NFmiMetTime gMissingTime(1900, 0, 0, 0);
  */
 // ----------------------------------------------------------------------
 
-static void CalcMyTrajectory(boost::shared_ptr<NFmiFastQueryInfo> &theInfo)
+static void CalcMyTrajectory(std::shared_ptr<NFmiFastQueryInfo> &theInfo)
 {
-    boost::shared_ptr<NFmiTrajectory> trajectory(new NFmiTrajectory());
+    std::shared_ptr<NFmiTrajectory> trajectory(new NFmiTrajectory());
     trajectory->Producer(NFmiProducer(kFmiMTAHIRLAM, "Hirlam")); // tämä merkitään esim. XML-outputin tietoihin
 //  trajectory->DataType(itsSelectedDataType); // tätä ei tarvita tässä käytössä
     trajectory->LatLon(NFmiPoint(25.12, 60.36));
@@ -108,7 +108,7 @@ NFmiTrajectorySystem::~NFmiTrajectorySystem(void) {}
 void NFmiTrajectorySystem::AddTrajectory(bool fCalculateData)
 {
   fTrajectoryViewTimeBagDirty = true;
-  boost::shared_ptr<NFmiTrajectory> tmp(boost::shared_ptr<NFmiTrajectory>(new NFmiTrajectory()));
+  std::shared_ptr<NFmiTrajectory> tmp(std::shared_ptr<NFmiTrajectory>(new NFmiTrajectory()));
   SetSelectedValuesToTrajectory(tmp, true, false);
 
   if (fCalculateData)
@@ -170,7 +170,7 @@ static double CalcRandStartPressureLevel(double theStartPressureLevel,
 
 void NFmiTrajectorySystem::MakeSureThatTrajectoriesAreCalculated(void)
 {
-  std::vector<boost::shared_ptr<NFmiTrajectory> >::iterator it = itsTrajectories.begin();
+  std::vector<std::shared_ptr<NFmiTrajectory> >::iterator it = itsTrajectories.begin();
   for (; it != itsTrajectories.end(); ++it)
   {
     if ((*(*it)).Calculated() == false)  // lasketaan trajektorit vain jos niitä ei ole jo laskettu
@@ -178,14 +178,14 @@ void NFmiTrajectorySystem::MakeSureThatTrajectoriesAreCalculated(void)
   }
 }
 
-void NFmiTrajectorySystem::CalculateTrajectory(boost::shared_ptr<NFmiTrajectory> &theTrajectory)
+void NFmiTrajectorySystem::CalculateTrajectory(std::shared_ptr<NFmiTrajectory> &theTrajectory)
 {
-  boost::shared_ptr<NFmiFastQueryInfo> info = GetWantedInfo(theTrajectory);
+  std::shared_ptr<NFmiFastQueryInfo> info = GetWantedInfo(theTrajectory);
   CalculateTrajectory(theTrajectory, info);
 }
 
-void NFmiTrajectorySystem::CalculateTrajectory(boost::shared_ptr<NFmiTrajectory> &theTrajectory,
-                                               boost::shared_ptr<NFmiFastQueryInfo> &theInfo)
+void NFmiTrajectorySystem::CalculateTrajectory(std::shared_ptr<NFmiTrajectory> &theTrajectory,
+                                               std::shared_ptr<NFmiFastQueryInfo> &theInfo)
 {
   if (theInfo && theInfo->Param(kFmiWindSpeedMS) && theInfo->Param(kFmiWindDirection))
   {
@@ -230,7 +230,7 @@ void NFmiTrajectorySystem::CalculateTrajectory(boost::shared_ptr<NFmiTrajectory>
         if (theTrajectory->StartPressureLevelRange())
           usedPressureLevel = ::CalcRandStartPressureLevel(
               startPressureLevel, theTrajectory->StartPressureLevelRange(), 1000);
-        boost::shared_ptr<NFmiSingleTrajector> aTrajector(
+        std::shared_ptr<NFmiSingleTrajector> aTrajector(
             new NFmiSingleTrajector(usedPoint, usedTime, usedPressureLevel));
         CalculateSingleTrajectory(theInfo,
                                   *(aTrajector.get()),
@@ -292,7 +292,7 @@ static double RandomizewValue(double w, double randFactor)
 
 // Oletus: theInfo on jo tarkistettu.
 void NFmiTrajectorySystem::CalculateSingleTrajectory(
-    boost::shared_ptr<NFmiFastQueryInfo> &theInfo,
+    std::shared_ptr<NFmiFastQueryInfo> &theInfo,
     NFmiSingleTrajector &theTrajector,
     int theTimeStepInMinutes,
     int theTimeLengthInHours,
@@ -359,7 +359,7 @@ void NFmiTrajectorySystem::CalculateSingleTrajectory(
   }
 }
 
-static bool IsInfoHybridData(boost::shared_ptr<NFmiFastQueryInfo> &theInfo)
+static bool IsInfoHybridData(std::shared_ptr<NFmiFastQueryInfo> &theInfo)
 {
   if (theInfo->SizeLevels() > 1)
   {
@@ -370,7 +370,7 @@ static bool IsInfoHybridData(boost::shared_ptr<NFmiFastQueryInfo> &theInfo)
   return false;
 }
 
-static unsigned long GetInfoGroundLevelIndex(boost::shared_ptr<NFmiFastQueryInfo> &theInfo,
+static unsigned long GetInfoGroundLevelIndex(std::shared_ptr<NFmiFastQueryInfo> &theInfo,
                                              bool hybridData)
 {
   unsigned long groundLevelIndex = static_cast<unsigned long>(-1);
@@ -397,7 +397,7 @@ static unsigned long GetInfoGroundLevelIndex(boost::shared_ptr<NFmiFastQueryInfo
   return groundLevelIndex;
 }
 
-static unsigned long GetInfoTopLevelIndex(boost::shared_ptr<NFmiFastQueryInfo> &theInfo,
+static unsigned long GetInfoTopLevelIndex(std::shared_ptr<NFmiFastQueryInfo> &theInfo,
                                           bool hybridData)
 {
   unsigned long topLevelIndex = static_cast<unsigned long>(-1);
@@ -425,7 +425,7 @@ static unsigned long GetInfoTopLevelIndex(boost::shared_ptr<NFmiFastQueryInfo> &
 }
 
 static FmiParameterName GetInfoUsedVerticalVelotityParam(
-    boost::shared_ptr<NFmiFastQueryInfo> &theInfo)
+    std::shared_ptr<NFmiFastQueryInfo> &theInfo)
 {
   FmiParameterName usedWParam = kFmiBadParameter;
   if (theInfo->Param(kFmiVelocityPotential))
@@ -464,7 +464,7 @@ static bool MakeGroundAdjustment(double &WS,
                                  double &WD,
                                  double &w,
                                  double &P,
-                                 boost::shared_ptr<NFmiFastQueryInfo> &theInfo,
+                                 std::shared_ptr<NFmiFastQueryInfo> &theInfo,
                                  double xInd,
                                  double yInd,
                                  double tInd,
@@ -521,7 +521,7 @@ static NFmiLocation CalcNewLocation(const NFmiLocation &theCurrentLocation,
   return theCurrentLocation.GetLocation(dir, dist, usePacificView);
 }
 
-static double CalcNewPressureLevel(boost::shared_ptr<NFmiFastQueryInfo> &theInfo,
+static double CalcNewPressureLevel(std::shared_ptr<NFmiFastQueryInfo> &theInfo,
                                    double theCurrentPressure,
                                    double w,
                                    double xInd,
@@ -550,7 +550,7 @@ static double CalcNewPressureLevel(boost::shared_ptr<NFmiFastQueryInfo> &theInfo
 }
 
 static double CalcNewPressureLevelWithBalloon(
-    boost::shared_ptr<NFmiFastQueryInfo> &theInfo,
+    std::shared_ptr<NFmiFastQueryInfo> &theInfo,
     const NFmiPoint &theLatlon,
     const NFmiMetTime &theTime,
     double theCurrentPressure,
@@ -619,7 +619,7 @@ static double CalcLogPFromLinearValues(double v1, double v2, double v, double p1
 }
 
 // palauttaa kurrenttiin leveliin paine arvon haluttuun kohtaan ja aikaan
-static double GetPressureValue(boost::shared_ptr<NFmiFastQueryInfo> &theInfo,
+static double GetPressureValue(std::shared_ptr<NFmiFastQueryInfo> &theInfo,
                                double xInd,
                                double yInd,
                                double tInd,
@@ -640,7 +640,7 @@ static double GetPressureValue(boost::shared_ptr<NFmiFastQueryInfo> &theInfo,
 }
 
 // Oletus: theWantedTpot ei voi olla puuttuva.
-static double CalcNewPressureLevelIsentropically(boost::shared_ptr<NFmiFastQueryInfo> &theInfo,
+static double CalcNewPressureLevelIsentropically(std::shared_ptr<NFmiFastQueryInfo> &theInfo,
                                                  const NFmiLocation &theLoc,
                                                  const NFmiMetTime &theTime,
                                                  double theWantedTpot,
@@ -746,7 +746,7 @@ static void CalcStartingPointGroundAdjustment(NFmiFastQueryInfo &theInfo,
   }
 }
 
-static float GetHeightValueForNewPressure(boost::shared_ptr<NFmiFastQueryInfo> &theInfo,
+static float GetHeightValueForNewPressure(std::shared_ptr<NFmiFastQueryInfo> &theInfo,
                                           const NFmiPoint &theLatlon,
                                           const NFmiMetTime &theTime,
                                           double thePressure,
@@ -767,7 +767,7 @@ static float GetHeightValueForNewPressure(boost::shared_ptr<NFmiFastQueryInfo> &
 // Oletus: theInfo on jo tarkistettu.
 // theConstantW [m/s]
 void NFmiTrajectorySystem::CalculateSingle3DTrajectory(
-    boost::shared_ptr<NFmiFastQueryInfo> &theInfo,
+    std::shared_ptr<NFmiFastQueryInfo> &theInfo,
     NFmiSingleTrajector &theTrajector,
     int theTimeStepInMinutes,
     int theTimeLengthInHours,
@@ -949,13 +949,13 @@ void NFmiTrajectorySystem::CalculateSingle3DTrajectory(
   }
 }
 
-static void SetFastInfoToZero(boost::shared_ptr<NFmiFastQueryInfo> &theOwnerInfo)
+static void SetFastInfoToZero(std::shared_ptr<NFmiFastQueryInfo> &theOwnerInfo)
 {
-  theOwnerInfo = boost::shared_ptr<NFmiFastQueryInfo>(static_cast<NFmiFastQueryInfo *>(0));
+  theOwnerInfo = std::shared_ptr<NFmiFastQueryInfo>(static_cast<NFmiFastQueryInfo *>(0));
 }
 
-boost::shared_ptr<NFmiFastQueryInfo> NFmiTrajectorySystem::GetWantedInfo(
-    boost::shared_ptr<NFmiTrajectory> &theTrajectory)
+std::shared_ptr<NFmiFastQueryInfo> NFmiTrajectorySystem::GetWantedInfo(
+    std::shared_ptr<NFmiTrajectory> &theTrajectory)
 {
   NFmiInfoData::Type dataType = NFmiInfoData::kViewable;
   if (theTrajectory->DataType() == 2)
@@ -965,7 +965,7 @@ boost::shared_ptr<NFmiFastQueryInfo> NFmiTrajectorySystem::GetWantedInfo(
   bool useGroundData = false;
   if (theTrajectory->DataType() == 0)
     useGroundData = true;
-  boost::shared_ptr<NFmiFastQueryInfo> tmp =
+  std::shared_ptr<NFmiFastQueryInfo> tmp =
       itsInfoOrganizer->FindInfo(dataType, theTrajectory->Producer(), useGroundData);
   if (tmp == 0 && theTrajectory->Producer().GetIdent() == kFmiMETEOR)
   {  // Jos ei löytynyt infoa ja jos editoitu oli valittu dataksi
@@ -1087,7 +1087,7 @@ std::string NFmiTrajectorySystem::MakeCurrentTrajectorySaveFileName(void)
 }
 
 static bool KeepLevelSettingsForTrajektories(
-    std::vector<boost::shared_ptr<NFmiTrajectory> > &theTrajectoryList)
+    std::vector<std::shared_ptr<NFmiTrajectory> > &theTrajectoryList)
 {
   size_t trajectoryCount = theTrajectoryList.size();
   if (trajectoryCount > 1)
@@ -1095,7 +1095,7 @@ static bool KeepLevelSettingsForTrajektories(
     std::set<unsigned long> producers;
     std::set<double> levels;
     std::set<int> dataTypes;
-    std::vector<boost::shared_ptr<NFmiTrajectory> >::iterator it = theTrajectoryList.begin();
+    std::vector<std::shared_ptr<NFmiTrajectory> >::iterator it = theTrajectoryList.begin();
     for (; it != theTrajectoryList.end(); ++it)
     {
       producers.insert((*it)->Producer().GetIdent());
@@ -1117,7 +1117,7 @@ void NFmiTrajectorySystem::SetSelectedValuesToAllTrajectories(void)
   //	std::for_each(itsTrajectories.begin(), itsTrajectories.end(),
   // std::mem_fun(&NFmiTrajectorySystem::SetSelectedValuesToTrajectory));
   bool keepLevelSettings = KeepLevelSettingsForTrajektories(itsTrajectories);
-  std::vector<boost::shared_ptr<NFmiTrajectory> >::iterator it = itsTrajectories.begin();
+  std::vector<std::shared_ptr<NFmiTrajectory> >::iterator it = itsTrajectories.begin();
   for (; it != itsTrajectories.end(); ++it)
   {
     SetSelectedValuesToTrajectory(
@@ -1131,7 +1131,7 @@ void NFmiTrajectorySystem::SetSelectedValuesToLastTrajectory(void)
   fTrajectoryViewTimeBagDirty = true;
   if (itsTrajectories.empty())
     return;
-  std::vector<boost::shared_ptr<NFmiTrajectory> >::iterator it = itsTrajectories.end();
+  std::vector<std::shared_ptr<NFmiTrajectory> >::iterator it = itsTrajectories.end();
   --it;
   if (it != itsTrajectories.end())
   {
@@ -1143,13 +1143,13 @@ void NFmiTrajectorySystem::SetSelectedValuesToLastTrajectory(void)
 void NFmiTrajectorySystem::ReCalculateTrajectories(void)
 {
   fTrajectoryViewTimeBagDirty = true;
-  std::vector<boost::shared_ptr<NFmiTrajectory> >::iterator it = itsTrajectories.begin();
+  std::vector<std::shared_ptr<NFmiTrajectory> >::iterator it = itsTrajectories.begin();
   for (; it != itsTrajectories.end(); ++it)
     CalculateTrajectory(*it);
 }
 
 void NFmiTrajectorySystem::SetSelectedValuesToTrajectory(
-    boost::shared_ptr<NFmiTrajectory> &theTrajectory, bool fInitialize, bool fKeepLevelSettings)
+    std::shared_ptr<NFmiTrajectory> &theTrajectory, bool fInitialize, bool fKeepLevelSettings)
 {
   if (fInitialize)
   {  // muutamat asetukset laitetaan vain initialisointi vaiheessa
@@ -1216,7 +1216,7 @@ void NFmiTrajectorySystem::CalculateTrajectoryViewTimeBag(void)
   NFmiMetTime lastTime(gMissingTime);
   NFmiMetTime fTime(gMissingTime);
   NFmiMetTime lTime(gMissingTime);
-  std::vector<boost::shared_ptr<NFmiTrajectory> >::iterator it = itsTrajectories.begin();
+  std::vector<std::shared_ptr<NFmiTrajectory> >::iterator it = itsTrajectories.begin();
   for (; it != itsTrajectories.end(); ++it)
   {
     fTime = (*it)->CalcPossibleFirstTime();
@@ -1321,11 +1321,11 @@ void NFmiTrajectorySystem::Read(std::istream &is)
     throw std::runtime_error("NFmiTrajectorySystem::Read failed");
 
   itsTrajectories.clear();
-  std::vector<boost::shared_ptr<NFmiTrajectory> >::size_type ssize = 0;
+  std::vector<std::shared_ptr<NFmiTrajectory> >::size_type ssize = 0;
   is >> ssize;
-  for (std::vector<boost::shared_ptr<NFmiTrajectory> >::size_type i = 0; i < ssize; i++)
+  for (std::vector<std::shared_ptr<NFmiTrajectory> >::size_type i = 0; i < ssize; i++)
   {
-    boost::shared_ptr<NFmiTrajectory> tmp(boost::shared_ptr<NFmiTrajectory>(new NFmiTrajectory()));
+    std::shared_ptr<NFmiTrajectory> tmp(std::shared_ptr<NFmiTrajectory>(new NFmiTrajectory()));
     is >> tmp;
     itsTrajectories.push_back(tmp);
   }
@@ -1410,7 +1410,7 @@ bool NFmiTrajectorySystem::SaveXML(const std::string &theFileName)
 
   if (itsTrajectories.size() > 0)
   {
-    std::vector<boost::shared_ptr<NFmiTrajectory> > &trajectories = this->itsTrajectories;
+    std::vector<std::shared_ptr<NFmiTrajectory> > &trajectories = this->itsTrajectories;
     std::string xmlStr;
     // 1. Kirjoitetaan hederi XML-tiedostoon
     xmlStr += "<?xml version=\"1.0\" encoding=\"ISO-8859-1\" standalone=\"yes\"?>\n";
@@ -1433,7 +1433,7 @@ bool NFmiTrajectorySystem::SaveXML(const std::string &theFileName)
     xmlStr += "<data>\n";  // Tulostetaan trajektoridatapisteet trajektori kerrallaan
     xmlStr += "<trajectories>\n";
 
-    std::vector<boost::shared_ptr<NFmiTrajectory> >::iterator it = trajectories.begin();
+    std::vector<std::shared_ptr<NFmiTrajectory> >::iterator it = trajectories.begin();
 
     for (; it != trajectories.end(); ++it)
     {
@@ -1477,8 +1477,8 @@ std::string NFmiTrajectory::ToXMLStr(void)
 
   if (PlumesUsed())
   {
-    const std::vector<boost::shared_ptr<NFmiSingleTrajector> > &plumes = PlumeTrajectories();
-    std::vector<boost::shared_ptr<NFmiSingleTrajector> >::const_iterator it = plumes.begin();
+    const std::vector<std::shared_ptr<NFmiSingleTrajector> > &plumes = PlumeTrajectories();
+    std::vector<std::shared_ptr<NFmiSingleTrajector> >::const_iterator it = plumes.begin();
     for (; it != plumes.end(); ++it)
       xmlStr += (*it).get()->ToXMLStr(TimeStepInMinutes, newProducer, Direction);
   }

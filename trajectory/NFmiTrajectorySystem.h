@@ -48,7 +48,7 @@ class NFmiTrajectorySystem
   void SelectedProducer(const NFmiProducer &newValue) { itsSelectedProducer = newValue; }
   int SelectedDataType(void) const { return itsSelectedDataType; }
   void SelectedDataType(int newValue) { itsSelectedDataType = newValue; }
-  const std::vector<boost::shared_ptr<NFmiTrajectory> > &Trajectories(void) const
+  const std::vector<std::shared_ptr<NFmiTrajectory> > &Trajectories(void) const
   {
     return itsTrajectories;
   }
@@ -122,8 +122,8 @@ class NFmiTrajectorySystem
   void CalcTempBalloonTrajectors(bool newValue) { fCalcTempBalloonTrajectors = newValue; }
   bool UseMapTime(void) { return fUseMapTime; }
   void UseMapTime(bool newValue) { fUseMapTime = newValue; }
-  boost::shared_ptr<NFmiFastQueryInfo> GetWantedInfo(
-      boost::shared_ptr<NFmiTrajectory> &theTrajectory);
+  std::shared_ptr<NFmiFastQueryInfo> GetWantedInfo(
+      std::shared_ptr<NFmiTrajectory> &theTrajectory);
   bool TrajectorySaveEnabled(void) const { return fTrajectorySaveEnabled; }
   void TrajectorySaveEnabled(bool newValue) { fTrajectorySaveEnabled = newValue; }
   const std::string &TrajectorySavePath(void) const { return itsTrajectorySavePath; }
@@ -146,9 +146,9 @@ class NFmiTrajectorySystem
                                                      // trajektoryView-luokassa ennen varsinaista
                                                      // trajektorien piirtoa
   void SetCaseStudyTimes(const NFmiMetTime &theCaseStudyTime);
-  void CalculateTrajectory(boost::shared_ptr<NFmiTrajectory> &theTrajectory);
-  static void CalculateTrajectory(boost::shared_ptr<NFmiTrajectory> &theTrajectory,
-                                  boost::shared_ptr<NFmiFastQueryInfo> &theInfo);
+  void CalculateTrajectory(std::shared_ptr<NFmiTrajectory> &theTrajectory);
+  static void CalculateTrajectory(std::shared_ptr<NFmiTrajectory> &theTrajectory,
+                                  std::shared_ptr<NFmiFastQueryInfo> &theInfo);
 
   void Write(std::ostream &os) const;
   void Read(std::istream &is);
@@ -162,11 +162,11 @@ class NFmiTrajectorySystem
                                 double theRandomFactor,
                                 NFmiSingleTrajector &theTrajector);
   void CalculateTrajectoryViewTimeBag(void);
-  void SetSelectedValuesToTrajectory(boost::shared_ptr<NFmiTrajectory> &theTrajectory,
+  void SetSelectedValuesToTrajectory(std::shared_ptr<NFmiTrajectory> &theTrajectory,
                                      bool fInitialize,
                                      bool fKeepLevelSettings);
   static void CalculateSingleTrajectory(
-      boost::shared_ptr<NFmiFastQueryInfo> &theInfo,
+      std::shared_ptr<NFmiFastQueryInfo> &theInfo,
       NFmiSingleTrajector &theTrajector,
       int theTimeStepInMinutes,
       int theTimeLengthInHours,
@@ -177,7 +177,7 @@ class NFmiTrajectorySystem
       bool fCalcBalloonTrajectory,
       NFmiTempBalloonTrajectorSettings &theTempBalloonTrajectorSettings);
   static void CalculateSingle3DTrajectory(
-      boost::shared_ptr<NFmiFastQueryInfo> &theInfo,
+      std::shared_ptr<NFmiFastQueryInfo> &theInfo,
       NFmiSingleTrajector &theTrajector,
       int theTimeStepInMinutes,
       int theTimeLengthInHours,
@@ -192,7 +192,7 @@ class NFmiTrajectorySystem
   NFmiProducerSystem *itsProducerSystem;
   NFmiSilamStationList itsNuclearPlants;
   NFmiSilamStationList itsOtherPlaces;
-  std::vector<boost::shared_ptr<NFmiTrajectory> > itsTrajectories;
+  std::vector<std::shared_ptr<NFmiTrajectory> > itsTrajectories;
   NFmiPoint itsSelectedLatLon;
   NFmiMetTime itsSelectedTime;
   NFmiProducer itsSelectedProducer;
