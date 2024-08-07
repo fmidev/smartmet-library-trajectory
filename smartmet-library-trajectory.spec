@@ -21,18 +21,18 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
 BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
-BuildRequires: smartmet-library-newbase-devel >= 24.7.12
-BuildRequires: smartmet-library-gis-devel >= 24.7.12
+BuildRequires: smartmet-library-newbase-devel >= 24.8.7
+BuildRequires: smartmet-library-gis-devel >= 24.8.7
 BuildRequires: smartmet-library-smarttools-devel >= 24.7.12
-BuildRequires: smartmet-library-locus-devel >= 24.7.12
-BuildRequires: smartmet-library-macgyver-devel >= 24.7.12
+BuildRequires: smartmet-library-locus-devel >= 24.8.7
+BuildRequires: smartmet-library-macgyver-devel >= 24.8.7
 BuildRequires: %{smartmet_boost}-devel
 BuildRequires: ctpp2 >= 2.8.8
 Requires: gdal38
-Requires: smartmet-library-macgyver >= 24.7.12
-Requires: smartmet-library-gis >= 24.7.12
-Requires: smartmet-library-locus >= 24.7.12
-Requires: smartmet-library-newbase >= 24.7.12
+Requires: smartmet-library-macgyver >= 24.8.7
+Requires: smartmet-library-gis >= 24.8.7
+Requires: smartmet-library-locus >= 24.8.7
+Requires: smartmet-library-newbase >= 24.8.7
 Requires: smartmet-library-smarttools >= 24.7.12
 Requires: %{smartmet_boost}-filesystem
 Requires: %{smartmet_boost}-iostreams
@@ -66,7 +66,7 @@ FMI Trajectory Calculation Tools
 %package -n %{DEVELNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
-Requires: smartmet-library-locus >= 24.7.12
+Requires: smartmet-library-locus >= 24.8.7
 Requires: %{SPECNAME} = %{version}-%{release}
 Provides: %{DEVELNAME}
 Obsoletes: libsmartmet-trajectory-devel < 17.1.4
