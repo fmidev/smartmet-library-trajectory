@@ -36,7 +36,6 @@ LIBS += \
 	-lboost_program_options \
 	-lboost_regex \
 	-lboost_thread \
-	-lboost_system \
 	-lctpp2 \
 	-lpqxx \
 	$(REQUIRED_LIBS) \
