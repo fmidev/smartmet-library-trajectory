@@ -28,7 +28,7 @@ BuildRequires: smartmet-library-locus-devel >= 25.2.18
 BuildRequires: smartmet-library-macgyver-devel >= 25.2.18
 BuildRequires: %{smartmet_boost}-devel
 BuildRequires: ctpp2 >= 2.8.8
-Requires: gdal310
+Requires: gdal312
 Requires: smartmet-library-macgyver >= 25.2.18
 Requires: smartmet-library-gis >= 25.2.18
 Requires: smartmet-library-locus >= 25.2.18
@@ -41,7 +41,7 @@ Requires: %{smartmet_boost}-program-options
 Requires: %{smartmet_boost}-regex
 Requires: %{smartmet_boost}-thread
 Requires: %{smartmet_boost}-system
-BuildRequires: gdal310-devel
+BuildRequires: gdal312-devel
 Provides: qdtrajectory
 Obsoletes: libsmartmet-trajectory < 17.1.4
 
