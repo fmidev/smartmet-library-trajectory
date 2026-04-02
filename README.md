@@ -1,28 +1,21 @@
-# SmartMet Trajectory Calculation Library
+# smartmet-library-trajectory
 
-The trajectory calculation library is used by both the SmartMet Editor
-and SmartMet Server to provide trajectory calculations for massless
-particles.
+Part of [SmartMet Server](https://github.com/fmidev/smartmet-library-spine). See the [SmartMet Server documentation](https://github.com/fmidev/smartmet-library-spine) for an overview of the ecosystem.
 
-## Licence
-The library is not currently public.
+## Overview
 
-## How to contribute
-Found a bug? Want to implement a new feature? Your contribution is very welcome!
+The trajectory library provides trajectory calculations for massless particles in meteorological wind fields. It computes forward and backward trajectories by integrating particle motion through gridded wind data.
 
-Small changes and bug fixes can be submitted via pull request. In larger contributions, premilinary plan is recommended (in GitHub wiki). 
+## Features
 
-CLA is required in order to contribute. Please contact us for more information!
+- Forward and backward trajectory calculation
+- Integration with QueryData wind fields
+- Used in both SmartMet Editor and SmartMet Server
 
-## Documentation
-Each module is documented in module [module wiki](../../wiki). 
+## License
 
-## Communication and Resources
-You may contact us from following channels:
-* Email: beta@fmi.fi
-* Facebook: https://www.facebook.com/fmibeta/
-* GitHub: [issues](../../issues)
+This library is not currently public.
 
-Other resources which may be useful:
-* Presentation about the server: http://www.slideshare.net/tervo/smartmet-server-providing-metocean-data
-* Our public web pages (in Finnish):  http://ilmatieteenlaitos.fi/avoin-lahdekoodi
+## Contributing
+
+Contact us at beta@fmi.fi for more information.
