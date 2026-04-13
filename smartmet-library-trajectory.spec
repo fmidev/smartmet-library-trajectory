@@ -4,7 +4,7 @@
 %define DEVELNAME %{SPECNAME}-devel
 Summary: Trajectory calculation library
 Name: %{SPECNAME}
-Version: 26.2.4
+Version: 26.4.13
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Libraries
@@ -22,16 +22,16 @@ BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
 BuildRequires: smartmet-library-newbase-devel >= 26.2.4
-BuildRequires: smartmet-library-gis-devel >= 26.2.4
+BuildRequires: smartmet-library-gis-devel >= 26.4.13
 BuildRequires: smartmet-library-smarttools-devel >= 26.2.4
-BuildRequires: smartmet-library-locus-devel >= 26.2.4
-BuildRequires: smartmet-library-macgyver-devel >= 26.2.4
+BuildRequires: smartmet-library-locus-devel >= 26.4.13
+BuildRequires: smartmet-library-macgyver-devel >= 26.4.13
 BuildRequires: %{smartmet_boost}-devel
 BuildRequires: ctpp2 >= 2.8.8
 Requires: gdal312
-Requires: smartmet-library-macgyver >= 26.2.4
-Requires: smartmet-library-gis >= 26.2.4
-Requires: smartmet-library-locus >= 26.2.4
+Requires: smartmet-library-macgyver >= 26.4.13
+Requires: smartmet-library-gis >= 26.4.13
+Requires: smartmet-library-locus >= 26.4.13
 Requires: smartmet-library-newbase >= 26.2.4
 Requires: smartmet-library-smarttools >= 26.2.4
 Requires: %{smartmet_boost}-filesystem
@@ -73,7 +73,7 @@ FMI Trajectory Calculation Tools
 %package -n %{DEVELNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
-Requires: smartmet-library-locus >= 26.2.4
+Requires: smartmet-library-locus >= 26.4.13
 Requires: %{SPECNAME} = %{version}-%{release}
 Provides: %{DEVELNAME}
 Obsoletes: libsmartmet-trajectory-devel < 17.1.4
@@ -116,6 +116,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/%{DIRNAME}
 
 %changelog
+* Mon Apr 13 2026 Mika Heiskanen <mika.heiskanen@fmi.fi> 26.4.13-1.fmi
+- Repackaged due to API changes
+
 * Wed Feb  4 2026 Andris Pavēnis <andris.pavenis@fmi.fi> 26.2.4-1.fmi
 - Update to proj-9.7, gdal-3.12, fmt-12
 
