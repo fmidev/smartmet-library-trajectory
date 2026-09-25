@@ -4,6 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
+Full developer documentation: `docs/developer-guide.md`.
+
 `smartmet-library-trajectory` is a C++17 library for massless particle trajectory calculations in meteorological wind fields. It computes forward/backward trajectories by integrating particle motion through gridded wind data (QueryData format). Part of the SmartMet Server ecosystem by the Finnish Meteorological Institute.
 
 ## Build commands
