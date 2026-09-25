@@ -1249,60 +1249,60 @@ const NFmiTrajectory &NFmiTrajectorySystem::Trajectory(int theIndex) const
 
 void NFmiTrajectorySystem::Write(std::ostream &os) const
 {
-  os << "// NFmiTrajectorySystem::Write..." << std::endl;
+  os << "// NFmiTrajectorySystem::Write..." << '\n';
 
-  os << "// version number" << std::endl;
+  os << "// version number" << '\n';
   itsCurrentVersionNumber =
       itsLatestVersionNumber;  // aina kirjoitetaan viimeisellä versio numerolla
-  os << itsCurrentVersionNumber << std::endl;
+  os << itsCurrentVersionNumber << '\n';
 
-  os << "// Container<Trajectories>" << std::endl;
+  os << "// Container<Trajectories>" << '\n';
   NFmiDataStoringHelpers::WriteContainer(itsTrajectories, os, std::string("\n"));
 
-  os << "// Selected-LatLon" << std::endl;
-  os << itsSelectedLatLon << std::endl;
+  os << "// Selected-LatLon" << '\n';
+  os << itsSelectedLatLon << '\n';
 
   NFmiMetTime usedViewMacroTime = NFmiDataStoringHelpers::GetUsedViewMacroTime();
-  os << "// selected time with utc hour + minute + day shift to current day" << std::endl;
+  os << "// selected time with utc hour + minute + day shift to current day" << '\n';
   NFmiDataStoringHelpers::WriteTimeWithOffsets(usedViewMacroTime, itsSelectedTime, os);
 
-  os << "// Selected-Producer" << std::endl;
-  os << itsSelectedProducer << std::endl;
+  os << "// Selected-Producer" << '\n';
+  os << itsSelectedProducer << '\n';
 
-  os << "// SelectedDataType + SelectedTimeStepInMinutes + SelectedTimeLengthInHours" << std::endl;
+  os << "// SelectedDataType + SelectedTimeStepInMinutes + SelectedTimeLengthInHours" << '\n';
   os << itsSelectedDataType << " " << itsSelectedTimeStepInMinutes << " "
-     << itsSelectedTimeLengthInHours << std::endl;
+     << itsSelectedTimeLengthInHours << '\n';
 
-  os << "// SelectedPlumeProbFactor + SelectedPlumeParticleCount" << std::endl;
-  os << itsSelectedPlumeProbFactor << " " << itsSelectedPlumeParticleCount << std::endl;
+  os << "// SelectedPlumeProbFactor + SelectedPlumeParticleCount" << '\n';
+  os << itsSelectedPlumeProbFactor << " " << itsSelectedPlumeParticleCount << '\n';
 
   os << "// SelectedStartLocationRangeInKM + SelectedPressureLevel + "
         "SelectedStartPressureLevelRange"
-     << std::endl;
+     << '\n';
   os << itsSelectedStartLocationRangeInKM << " " << itsSelectedPressureLevel << " "
-     << itsSelectedStartPressureLevelRange << std::endl;
+     << itsSelectedStartPressureLevelRange << '\n';
 
-  os << "// SelectedDirection + SelectedStartTimeRangeInMinutes" << std::endl;
+  os << "// SelectedDirection + SelectedStartTimeRangeInMinutes" << '\n';
   os << static_cast<int>(itsSelectedDirection) << " " << itsSelectedStartTimeRangeInMinutes
-     << std::endl;
+     << '\n';
 
   os << "// PlumesUsed + TrajectoryViewOn + ShowTrajectoryArrows + ShowTrajectoryAnimationMarkers "
         "+ SelectedTrajectoryIsentropic + ShowTrajectoriesInCrossSectionView + UseMapTime"
-     << std::endl;
+     << '\n';
   os << fPlumesUsed << " " << fTrajectoryViewOn << " " << fShowTrajectoryArrows << " "
      << fShowTrajectoryAnimationMarkers << " " << fSelectedTrajectoryIsentropic << " "
-     << fShowTrajectoriesInCrossSectionView << " " << fUseMapTime << std::endl;
+     << fShowTrajectoriesInCrossSectionView << " " << fUseMapTime << '\n';
 
-  os << itsTempBalloonTrajectorSettings << std::endl;
+  os << itsTempBalloonTrajectorSettings << '\n';
 
-  os << "// CalcTempBalloonTrajectors" << std::endl;
-  os << fCalcTempBalloonTrajectors << std::endl;
+  os << "// CalcTempBalloonTrajectors" << '\n';
+  os << fCalcTempBalloonTrajectors << '\n';
 
   NFmiDataStoringHelpers::NFmiExtraDataStorage extraData;  // lopuksi vielä mahdollinen extra data
   // Kun tulee uusia muuttujia, tee tähän extradatan täyttöä, jotta se saadaan talteen tiedopstoon
   // siten että
   // edelliset versiot eivät mene solmuun vaikka on tullut uutta dataa.
-  os << "// possible extra data" << std::endl;
+  os << "// possible extra data" << '\n';
   os << extraData;
 
   if (os.fail())
@@ -1448,7 +1448,7 @@ bool NFmiTrajectorySystem::SaveXML(const std::string &theFileName)
     std::ofstream out(theFileName.c_str());
     if (out)
     {
-      out << xmlStr << std::endl;
+      out << xmlStr << '\n';
     }
     else
       throw std::runtime_error(std::string("trajectory save failed, cannot create file:\n") +

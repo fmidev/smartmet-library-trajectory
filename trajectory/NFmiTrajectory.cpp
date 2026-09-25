@@ -167,45 +167,45 @@ double NFmiTrajectory::IsentropicTpotValue(void) const
 
 void NFmiTrajectory::Write(std::ostream &os) const
 {
-  os << "// NFmiTrajectory::Write..." << std::endl;
+  os << "// NFmiTrajectory::Write..." << '\n';
 
-  os << "// LatLon" << std::endl;
-  os << itsLatLon << std::endl;
+  os << "// LatLon" << '\n';
+  os << itsLatLon << '\n';
 
   NFmiMetTime usedViewMacroTime = NFmiDataStoringHelpers::GetUsedViewMacroTime();
-  os << "// selected time with utc hour + minute + day shift to current day" << std::endl;
+  os << "// selected time with utc hour + minute + day shift to current day" << '\n';
   NFmiDataStoringHelpers::WriteTimeWithOffsets(usedViewMacroTime, itsTime, os);
 
-  os << "// data's origin time with utc hour + minute + day shift to current day" << std::endl;
+  os << "// data's origin time with utc hour + minute + day shift to current day" << '\n';
   NFmiDataStoringHelpers::WriteTimeWithOffsets(
       usedViewMacroTime, itsOriginTime, os);  // Tätä ei ehkä voi oikeasti käyttää!!!
 
-  os << "// Producer" << std::endl;
-  os << itsProducer << std::endl;
+  os << "// Producer" << '\n';
+  os << itsProducer << '\n';
 
   os << "// DataType + TimeStepInMinutes + TimeLengthInHours + PlumeProbFactor + PlumeParticleCount"
-     << std::endl;
+     << '\n';
   os << itsDataType << " " << itsTimeStepInMinutes << " " << itsTimeLengthInHours << " "
-     << itsPlumeProbFactor << " " << itsPlumeParticleCount << std::endl;
+     << itsPlumeProbFactor << " " << itsPlumeParticleCount << '\n';
 
   os << "// StartLocationRangeInKM + PressureLevel + StartPressureLevelRange + IsentropicTpotValue "
         "+ StartTimeRangeInMinutes"
-     << std::endl;
+     << '\n';
   os << itsStartLocationRangeInKM << " " << itsPressureLevel << " " << itsStartPressureLevelRange
-     << " " << itsIsentropicTpotValue << " " << itsStartTimeRangeInMinutes << std::endl;
+     << " " << itsIsentropicTpotValue << " " << itsStartTimeRangeInMinutes << '\n';
 
-  os << "// Direction + PlumesUsed + Isentropic + fCalcTempBalloonTrajectories" << std::endl;
+  os << "// Direction + PlumesUsed + Isentropic + fCalcTempBalloonTrajectories" << '\n';
   os << static_cast<int>(itsDirection) << " " << fPlumesUsed << " " << fIsentropic << " "
-     << fCalcTempBalloonTrajectories << std::endl;
+     << fCalcTempBalloonTrajectories << '\n';
 
-  os << "// TempBalloonTrajectorSettings" << std::endl;
-  os << itsTempBalloonTrajectorSettings << std::endl;
+  os << "// TempBalloonTrajectorSettings" << '\n';
+  os << itsTempBalloonTrajectorSettings << '\n';
 
   NFmiDataStoringHelpers::NFmiExtraDataStorage extraData;  // lopuksi vielä mahdollinen extra data
   // Kun tulee uusia muuttujia, tee tähän extradatan täyttöä, jotta se saadaan talteen tiedopstoon
   // siten että
   // edelliset versiot eivät mene solmuun vaikka on tullut uutta dataa.
-  os << "// possible extra data" << std::endl;
+  os << "// possible extra data" << '\n';
   os << extraData;
 
   if (os.fail())
