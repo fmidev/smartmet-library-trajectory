@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<trajectories producer="ECMWF level" direction="1" lon="24.94" lat="60.17" pressure="850" disturbance="25" interval="60">
+<trajectory index="0" name="Main trajectory">
+<point time="20080909T120000" lon="24.94" lat="60.17" pressure="850" height="1465.5"/>
+<point time="20080909T130000" lon="23.9873" lat="60.1697" pressure="854.1" height="1425.2"/>
+<point time="20080909T140000" lon="22.9731" lat="60.1515" pressure="850.2" height="1464.1"/>
+<point time="20080909T150000" lon="21.9615" lat="60.1356" pressure="836.8" height="1598.2"/>
+<point time="20080909T160000" lon="21.1792" lat="60.0619" pressure="826.3" height="1702.8"/>
+<point time="20080909T170000" lon="20.5769" lat="59.9746" pressure="824.2" height="1726"/>
+<point time="20080909T180000" lon="20.0691" lat="59.8771" pressure="820.5" height="1764.8"/>
+</trajectory>
+<trajectory index="1" name="Plume 1">
+<point time="20080909T124000" lon="24.94" lat="60.17" pressure="850" height="1466.7"/>
+<point time="20080909T134000" lon="24.0752" lat="60.2988" pressure="852.2" height="1448.7"/>
+<point time="20080909T144000" lon="22.9414" lat="60.0558" pressure="846" height="1505.1"/>
+<point time="20080909T154000" lon="21.8487" lat="59.9263" pressure="833.1" height="1632.2"/>
+<point time="20080909T164000" lon="21.1135" lat="59.9322" pressure="826.8" height="1697.9"/>
+<point time="20080909T174000" lon="20.5084" lat="59.9955" pressure="822.7" height="1742.8"/>
+<point time="20080909T184000" lon="19.9216" lat="59.9531" pressure="818" height="1791.9"/>
+</trajectory>
+<trajectory index="2" name="Plume 2">
+<point time="20080909T121000" lon="24.94" lat="60.17" pressure="850" height="1465.8"/>
+<point time="20080909T131000" lon="24.2439" lat="60.0758" pressure="853.4" height="1430.7"/>
+<point time="20080909T141000" lon="23.179" lat="59.8647" pressure="852.6" height="1435.3"/>
+<point time="20080909T151000" lon="22.4448" lat="59.7325" pressure="837.4" height="1582.4"/>
+<point time="20080909T161000" lon="21.7552" lat="59.7428" pressure="824.3" height="1715.1"/>
+<point time="20080909T171000" lon="21.0685" lat="59.6325" pressure="818.4" height="1776.5"/>
+<point time="20080909T181000" lon="20.5501" lat="59.5295" pressure="815.8" height="1805.1"/>
+<point time="20080909T191000" lon="20.1634" lat="59.4714" pressure="813.9" height="1826.4"/>
+</trajectory>
+</trajectories>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<trajectories producer="ECMWF level" direction="1" lon="24.94" lat="60.17" pressure="850" disturbance="25" range="50">
+<trajectory index="0" name="Main trajectory">
+<point time="20080909T120000" lon="24.94" lat="60.17" pressure="850" height="1465.5"/>
+<point time="20080909T130000" lon="23.9873" lat="60.1697" pressure="854.1" height="1425.2"/>
+<point time="20080909T140000" lon="22.9731" lat="60.1515" pressure="850.2" height="1464.1"/>
+<point time="20080909T150000" lon="21.9615" lat="60.1356" pressure="836.8" height="1598.2"/>
+<point time="20080909T160000" lon="21.1792" lat="60.0619" pressure="826.3" height="1702.8"/>
+<point time="20080909T170000" lon="20.5769" lat="59.9746" pressure="824.2" height="1726"/>
+<point time="20080909T180000" lon="20.0691" lat="59.8771" pressure="820.5" height="1764.8"/>
+</trajectory>
+<trajectory index="1" name="Plume 1">
+<point time="20080909T120000" lon="24.94" lat="60.17" pressure="884" height="1145.8"/>
+<point time="20080909T130000" lon="23.9999" lat="60.2709" pressure="888.7" height="1104.8"/>
+<point time="20080909T140000" lon="22.8534" lat="60.0083" pressure="886.4" height="1122.7"/>
+<point time="20080909T150000" lon="21.7" lat="59.8181" pressure="878.8" height="1196.8"/>
+<point time="20080909T160000" lon="20.8734" lat="59.7657" pressure="880.6" height="1185.3"/>
+<point time="20080909T170000" lon="20.1741" lat="59.7825" pressure="884.2" height="1157.8"/>
+<point time="20080909T180000" lon="19.5591" lat="59.698" pressure="882.9" height="1174"/>
+</trajectory>
+<trajectory index="2" name="Plume 2">
+<point time="20080909T120000" lon="24.94" lat="60.17" pressure="860.7" height="1363.6"/>
+<point time="20080909T130000" lon="24.235" lat="60.0649" pressure="864.1" height="1329.2"/>
+<point time="20080909T140000" lon="23.1482" lat="59.8342" pressure="863.8" height="1328.4"/>
+<point time="20080909T150000" lon="22.3987" lat="59.6852" pressure="850.1" height="1460.7"/>
+<point time="20080909T160000" lon="21.7083" lat="59.6804" pressure="837.3" height="1588.4"/>
+<point time="20080909T170000" lon="21.0336" lat="59.5375" pressure="832.4" height="1638.7"/>
+<point time="20080909T180000" lon="20.5267" lat="59.4039" pressure="830.9" height="1656.6"/>
+</trajectory>
+<trajectory index="3" name="Plume 3">
+<point time="20080909T120000" lon="24.94" lat="60.17" pressure="829.3" height="1665.9"/>
+<point time="20080909T130000" lon="23.9151" lat="60.2242" pressure="831.1" height="1647.8"/>
+<point time="20080909T140000" lon="23.0938" lat="60.418" pressure="825.6" height="1707.3"/>
+<point time="20080909T150000" lon="22.2612" lat="60.535" pressure="811.8" height="1848.4"/>
+<point time="20080909T160000" lon="21.6831" lat="60.6479" pressure="802.8" height="1941.9"/>
+<point time="20080909T170000" lon="21.1824" lat="60.5377" pressure="799.8" height="1971.9"/>
+<point time="20080909T180000" lon="20.4642" lat="60.4194" pressure="798.5" height="1986.5"/>
+</trajectory>
+</trajectories>

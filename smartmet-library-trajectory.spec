@@ -67,6 +67,9 @@ BuildRequires: libpqxx-devel
 %endif
 %endif
 
+#TestRequires: smartmet-test-data >= 26.8.26
+#TestRequires: make
+
 %description
 FMI Trajectory Calculation Tools
 

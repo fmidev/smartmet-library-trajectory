@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.0">
+<name>Trajectory simulation with ECMWF level</name>
+<wpt lat="60.17" lon="24.94">
+<name>Simulation start point</name>
+</wpt>
+<trk>
+<name>Main trajectory</name>
+<number>1</number>
+<trkseg>
+<trkpt lat="60.17" lon="24.94"><ele>1465.5</ele><time>2008-09-09T12:00:00</time><desc>850 hPa</desc></trkpt>
+<trkpt lat="60.1697" lon="23.9873"><ele>1425.2</ele><time>2008-09-09T13:00:00</time><desc>854.1 hPa</desc></trkpt>
+<trkpt lat="60.1515" lon="22.9731"><ele>1464.1</ele><time>2008-09-09T14:00:00</time><desc>850.2 hPa</desc></trkpt>
+<trkpt lat="60.1356" lon="21.9615"><ele>1598.2</ele><time>2008-09-09T15:00:00</time><desc>836.8 hPa</desc></trkpt>
+<trkpt lat="60.0619" lon="21.1792"><ele>1702.8</ele><time>2008-09-09T16:00:00</time><desc>826.3 hPa</desc></trkpt>
+<trkpt lat="59.9746" lon="20.5769"><ele>1726</ele><time>2008-09-09T17:00:00</time><desc>824.2 hPa</desc></trkpt>
+<trkpt lat="59.8771" lon="20.0691"><ele>1764.8</ele><time>2008-09-09T18:00:00</time><desc>820.5 hPa</desc></trkpt>
+<trkpt lat="59.7533" lon="19.6589"><ele>1812.1</ele><time>2008-09-09T19:00:00</time><desc>815.8 hPa</desc></trkpt>
+<trkpt lat="59.6252" lon="19.3279"><ele>1854.5</ele><time>2008-09-09T20:00:00</time><desc>811.7 hPa</desc></trkpt>
+<trkpt lat="59.481" lon="19.0487"><ele>1887.8</ele><time>2008-09-09T21:00:00</time><desc>808.4 hPa</desc></trkpt>
+<trkpt lat="59.3299" lon="18.7958"><ele>1888.2</ele><time>2008-09-09T22:00:00</time><desc>808.5 hPa</desc></trkpt>
+<trkpt lat="59.168" lon="18.5899"><ele>1867.3</ele><time>2008-09-09T23:00:00</time><desc>810.7 hPa</desc></trkpt>
+<trkpt lat="59.0011" lon="18.4088"><ele>1834.4</ele><time>2008-09-10T00:00:00</time><desc>814.2 hPa</desc></trkpt>
+</trkseg>
+</trk>
+</gpx>

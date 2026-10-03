@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+<name>Trajectory simulation with ECMWF level</name>
+<Placemark>
+<name>Simulation start point</name>
+<Point>
+<coordinates>24.94,60.17</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Main trajectory</name>
+<LineString>
+<TimeSpan>
+<begin>2008-09-09T12:00:00</begin>
+<end>2008-09-10T00:00:00</end>
+</TimeSpan>
+<coordinates>
+24.94,60.17,1465.5
+23.9873,60.1697,1425.2
+22.9731,60.1515,1464.1
+21.9615,60.1356,1598.2
+21.1792,60.0619,1702.8
+20.5769,59.9746,1726
+20.0691,59.8771,1764.8
+19.6589,59.7533,1812.1
+19.3279,59.6252,1854.5
+19.0487,59.481,1887.8
+18.7958,59.3299,1888.2
+18.5899,59.168,1867.3
+18.4088,59.0011,1834.4
+</coordinates>
+</LineString>
+</Placemark>
+</Document>
+</kml>

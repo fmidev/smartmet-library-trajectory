@@ -1,0 +1,11 @@
+# name | qdtrajectory arguments (the data file is appended)
+xml_helsinki_500 | --lonlat 24.94,60.17 -t 200809091200 -H 12 -T 60 -P 500 -f xml
+kml_helsinki_850 | --lonlat 24.94,60.17 -t 200809091200 -H 12 -T 60 -P 850 -f kml
+gpx_helsinki_850 | --lonlat 24.94,60.17 -t 200809091200 -H 12 -T 60 -P 850 -f gpx
+kmlx_850 | --lonlat 23.76,61.50 -t 200809091200 -H 6 -T 30 -P 700 -f kmlx
+backwards_kml | --lonlat 24.94,60.17 -t 200809100000 -H 12 -T 60 -P 850 -b -f kml
+isentropic_xml | --lonlat 24.94,60.17 -t 200809091200 -H 12 -T 60 -P 850 -i -f xml
+kml_tessellate_extrude | --lonlat 24.94,60.17 -t 200809091200 -H 6 -T 60 -P 850 -f kml --kml-tessellate --kml-extrude
+plume_xml | --lonlat 24.94,60.17 -t 200809091200 -H 6 -T 60 -P 850 -N 3 -D 25 -R 20 -f xml
+plume_pressure_range_xml | --lonlat 24.94,60.17 -t 200809091200 -H 6 -T 60 -P 850 -N 3 --pressure-range 50 -f xml
+plume_interval_xml | --lonlat 24.94,60.17 -t 200809091200 -H 6 -T 60 -P 850 -N 2 -I 60 -f xml

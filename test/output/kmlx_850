@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">
+<Document>
+<name>Trajectory simulation with ECMWF level</name>
+<Schema id="trajectoryschema">
+<gx:SimpleArrayField name="pressure" type="float">
+<displayName>Pressure</displayName>
+</gx:SimpleArrayField>
+</Schema>
+<Placemark>
+<name>Simulation start point</name>
+<Point>
+<coordinates>23.76,61.5</coordinates>
+</Point>
+</Placemark>
+<Placemark>
+<name>Main trajectory</name>
+<gx:Track>
+<when>2008-09-09T12:00:00</when>
+<when>2008-09-09T12:30:00</when>
+<when>2008-09-09T13:00:00</when>
+<when>2008-09-09T13:30:00</when>
+<when>2008-09-09T14:00:00</when>
+<when>2008-09-09T14:30:00</when>
+<when>2008-09-09T15:00:00</when>
+<when>2008-09-09T15:30:00</when>
+<when>2008-09-09T16:00:00</when>
+<when>2008-09-09T16:30:00</when>
+<when>2008-09-09T17:00:00</when>
+<when>2008-09-09T17:30:00</when>
+<when>2008-09-09T18:00:00</when>
+<gx:coord>23.76 61.5 3053.1</gx:coord>
+<gx:coord>23.4537 61.5254 3066.1</gx:coord>
+<gx:coord>23.1246 61.5494 3082.1</gx:coord>
+<gx:coord>22.7736 61.5756 3103</gx:coord>
+<gx:coord>22.4037 61.6052 3133</gx:coord>
+<gx:coord>22.0162 61.6348 3175.3</gx:coord>
+<gx:coord>21.6141 61.6655 3221.7</gx:coord>
+<gx:coord>21.2031 61.7017 3260.2</gx:coord>
+<gx:coord>20.7872 61.7414 3287.1</gx:coord>
+<gx:coord>20.3685 61.7818 3303.3</gx:coord>
+<gx:coord>19.9547 61.8241 3311.7</gx:coord>
+<gx:coord>19.5455 61.8655 3318</gx:coord>
+<gx:coord>19.1511 61.917 3329.3</gx:coord>
+<ExtendedData>
+<SchemaData schemaUrl="#trajectoryschema">
+<gx:SimpleArrayData name="pressure">
+<gx:value>700</gx:value>
+<gx:value>698.8</gx:value>
+<gx:value>697.4</gx:value>
+<gx:value>695.5</gx:value>
+<gx:value>692.9</gx:value>
+<gx:value>689.1</gx:value>
+<gx:value>685</gx:value>
+<gx:value>681.6</gx:value>
+<gx:value>679.3</gx:value>
+<gx:value>677.9</gx:value>
+<gx:value>677.2</gx:value>
+<gx:value>676.7</gx:value>
+<gx:value>675.8</gx:value>
+</gx:SimpleArrayData>
+</SchemaData>
+</ExtendedData>
+</gx:Track>
+</Placemark>
+</Document>
+</kml>
