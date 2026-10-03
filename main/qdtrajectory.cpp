@@ -719,7 +719,7 @@ std::string template_filename()
  */
 // ----------------------------------------------------------------------
 
-std::string format_result(std::shared_ptr<NFmiTrajectory> trajectory)
+std::string format_result(const std::shared_ptr<NFmiTrajectory>& trajectory)
 {
   // Get the output template
 

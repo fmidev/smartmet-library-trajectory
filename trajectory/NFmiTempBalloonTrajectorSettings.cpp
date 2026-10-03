@@ -253,17 +253,17 @@ double NFmiTempBalloonTrajectorSettings::CalcOmegaInPhase3(double Z, int theTime
 
 void NFmiTempBalloonTrajectorSettings::Write(std::ostream &os) const
 {
-  os << "// NFmiTempBalloonTrajectorSettings::Write..." << std::endl;
+  os << "// NFmiTempBalloonTrajectorSettings::Write..." << '\n';
 
-  os << "// RisingSpeed + FallSpeed + TopHeightInKM + FloatingTimeInMinutes" << std::endl;
+  os << "// RisingSpeed + FallSpeed + TopHeightInKM + FloatingTimeInMinutes" << '\n';
   os << itsRisingSpeed << " " << itsFallSpeed << " " << itsTopHeightInKM << " "
-     << itsFloatingTimeInMinutes << std::endl;
+     << itsFloatingTimeInMinutes << '\n';
 
   NFmiDataStoringHelpers::NFmiExtraDataStorage extraData;  // lopuksi vielä mahdollinen extra data
   // Kun tulee uusia muuttujia, tee tähän extradatan täyttöä, jotta se saadaan talteen tiedopstoon
   // siten että
   // edelliset versiot eivät mene solmuun vaikka on tullut uutta dataa.
-  os << "// possible extra data" << std::endl;
+  os << "// possible extra data" << '\n';
   os << extraData;
 
   if (os.fail())
