@@ -12,6 +12,10 @@ The trajectory library provides trajectory calculations for massless particles i
 - Integration with QueryData wind fields
 - Used in both SmartMet Editor and SmartMet Server
 
+## Documentation
+
+- [Developer guide](docs/developer-guide.md): integration method, 3D trajectories, plumes and pitfalls
+
 ## License
 
 This library is not currently public.
