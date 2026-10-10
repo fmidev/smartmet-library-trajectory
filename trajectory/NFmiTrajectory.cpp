@@ -138,7 +138,7 @@ void NFmiTrajectory::CalculateCrossSectionTrajectoryHelpData()
       if (pointLocationCounter < ssize)
         itsCrossSectionTrajectoryPoints.push_back(points[pointLocationCounter]);
       else
-        itsCrossSectionTrajectoryPoints.push_back(NFmiPoint(kFloatMissing, kFloatMissing));
+        itsCrossSectionTrajectoryPoints.emplace_back(kFloatMissing, kFloatMissing);
       pointLocationCounter += skipValue;
       aTime.NextMetTime();
     }
