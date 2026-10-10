@@ -170,7 +170,7 @@ static double CalcRandStartPressureLevel(double theStartPressureLevel,
 
 void NFmiTrajectorySystem::MakeSureThatTrajectoriesAreCalculated(void)
 {
-  std::vector<std::shared_ptr<NFmiTrajectory> >::iterator it = itsTrajectories.begin();
+  auto it = itsTrajectories.begin();
   for (; it != itsTrajectories.end(); ++it)
   {
     if ((*(*it)).Calculated() == false)  // lasketaan trajektorit vain jos niitä ei ole jo laskettu
@@ -373,7 +373,7 @@ static bool IsInfoHybridData(std::shared_ptr<NFmiFastQueryInfo> &theInfo)
 static unsigned long GetInfoGroundLevelIndex(std::shared_ptr<NFmiFastQueryInfo> &theInfo,
                                              bool hybridData)
 {
-  unsigned long groundLevelIndex = static_cast<unsigned long>(-1);
+  auto groundLevelIndex = static_cast<unsigned long>(-1);
   if (hybridData)
   {
     if (theInfo->PressureValueAvailable())
@@ -400,7 +400,7 @@ static unsigned long GetInfoGroundLevelIndex(std::shared_ptr<NFmiFastQueryInfo> 
 static unsigned long GetInfoTopLevelIndex(std::shared_ptr<NFmiFastQueryInfo> &theInfo,
                                           bool hybridData)
 {
-  unsigned long topLevelIndex = static_cast<unsigned long>(-1);
+  auto topLevelIndex = static_cast<unsigned long>(-1);
   if (hybridData)
   {
     if (theInfo->PressureValueAvailable())
@@ -657,7 +657,7 @@ static double CalcNewPressureLevelIsentropically(std::shared_ptr<NFmiFastQueryIn
   if (status1 == false || status2 == false)
     return kFloatMissing;
   theInfo->ParamIndex(theTpotParamIndex);
-  unsigned long levelIndex1 = static_cast<unsigned long>(theStartPSearchIndex);
+  auto levelIndex1 = static_cast<unsigned long>(theStartPSearchIndex);
   bool isPIndexInBetween = theInfo->SizeLevels() >= levelIndex1 + 1;
   levelIndex1 = isPIndexInBetween ? levelIndex1 : levelIndex1 - 1;
   unsigned long levelIndex2 = isPIndexInBetween ? levelIndex1 + 1 : levelIndex1;
@@ -1037,10 +1037,10 @@ void NFmiTrajectorySystem::InitializeFromSettings(void)
   itsLastTrajectoryLegendStr =
       NFmiSettings::Require<std::string>("MetEditor::TrajectorySystem::LastTrajectoryLegendStr");
 
-  std::string silamPlantFileName =
+  auto silamPlantFileName =
       NFmiSettings::Optional<std::string>("MetEditor::TrajectorySystem::SilamPlantFile", "");
   InitializeSilamStationList(itsNuclearPlants, silamPlantFileName);
-  std::string silamOtherPlacesFileName =
+  auto silamOtherPlacesFileName =
       NFmiSettings::Optional<std::string>("MetEditor::TrajectorySystem::SilamOtherPlacesFile", "");
   InitializeSilamStationList(itsOtherPlaces, silamOtherPlacesFileName);
 }
@@ -1095,7 +1095,7 @@ static bool KeepLevelSettingsForTrajektories(
     std::set<unsigned long> producers;
     std::set<double> levels;
     std::set<int> dataTypes;
-    std::vector<std::shared_ptr<NFmiTrajectory> >::iterator it = theTrajectoryList.begin();
+    auto it = theTrajectoryList.begin();
     for (; it != theTrajectoryList.end(); ++it)
     {
       producers.insert((*it)->Producer().GetIdent());
@@ -1117,7 +1117,7 @@ void NFmiTrajectorySystem::SetSelectedValuesToAllTrajectories(void)
   //	std::for_each(itsTrajectories.begin(), itsTrajectories.end(),
   // std::mem_fun(&NFmiTrajectorySystem::SetSelectedValuesToTrajectory));
   bool keepLevelSettings = KeepLevelSettingsForTrajektories(itsTrajectories);
-  std::vector<std::shared_ptr<NFmiTrajectory> >::iterator it = itsTrajectories.begin();
+  auto it = itsTrajectories.begin();
   for (; it != itsTrajectories.end(); ++it)
   {
     SetSelectedValuesToTrajectory(
@@ -1131,7 +1131,7 @@ void NFmiTrajectorySystem::SetSelectedValuesToLastTrajectory(void)
   fTrajectoryViewTimeBagDirty = true;
   if (itsTrajectories.empty())
     return;
-  std::vector<std::shared_ptr<NFmiTrajectory> >::iterator it = itsTrajectories.end();
+  auto it = itsTrajectories.end();
   --it;
   if (it != itsTrajectories.end())
   {
@@ -1143,7 +1143,7 @@ void NFmiTrajectorySystem::SetSelectedValuesToLastTrajectory(void)
 void NFmiTrajectorySystem::ReCalculateTrajectories(void)
 {
   fTrajectoryViewTimeBagDirty = true;
-  std::vector<std::shared_ptr<NFmiTrajectory> >::iterator it = itsTrajectories.begin();
+  auto it = itsTrajectories.begin();
   for (; it != itsTrajectories.end(); ++it)
     CalculateTrajectory(*it);
 }
@@ -1216,7 +1216,7 @@ void NFmiTrajectorySystem::CalculateTrajectoryViewTimeBag(void)
   NFmiMetTime lastTime(gMissingTime);
   NFmiMetTime fTime(gMissingTime);
   NFmiMetTime lTime(gMissingTime);
-  std::vector<std::shared_ptr<NFmiTrajectory> >::iterator it = itsTrajectories.begin();
+  auto it = itsTrajectories.begin();
   for (; it != itsTrajectories.end(); ++it)
   {
     fTime = (*it)->CalcPossibleFirstTime();
@@ -1433,7 +1433,7 @@ bool NFmiTrajectorySystem::SaveXML(const std::string &theFileName)
     xmlStr += "<data>\n";  // Tulostetaan trajektoridatapisteet trajektori kerrallaan
     xmlStr += "<trajectories>\n";
 
-    std::vector<std::shared_ptr<NFmiTrajectory> >::iterator it = trajectories.begin();
+    auto it = trajectories.begin();
 
     for (; it != trajectories.end(); ++it)
     {
@@ -1478,7 +1478,7 @@ std::string NFmiTrajectory::ToXMLStr(void)
   if (PlumesUsed())
   {
     const std::vector<std::shared_ptr<NFmiSingleTrajector> > &plumes = PlumeTrajectories();
-    std::vector<std::shared_ptr<NFmiSingleTrajector> >::const_iterator it = plumes.begin();
+    auto it = plumes.begin();
     for (; it != plumes.end(); ++it)
       xmlStr += (*it).get()->ToXMLStr(TimeStepInMinutes, newProducer, Direction);
   }
