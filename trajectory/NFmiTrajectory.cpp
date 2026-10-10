@@ -62,7 +62,7 @@ NFmiTrajectory::NFmiTrajectory(const NFmiPoint &theLatLon,
 {
 }
 
-NFmiTrajectory::~NFmiTrajectory(void) {}
+NFmiTrajectory::~NFmiTrajectory(void) = default;
 void NFmiTrajectory::Clear(void)
 {
   itsMainTrajector.ClearPoints();

@@ -104,7 +104,7 @@ NFmiTrajectorySystem::NFmiTrajectorySystem(NFmiInfoOrganizer *theInfoOrganizer,
   }
 }
 
-NFmiTrajectorySystem::~NFmiTrajectorySystem(void) {}
+NFmiTrajectorySystem::~NFmiTrajectorySystem(void) = default;
 void NFmiTrajectorySystem::AddTrajectory(bool fCalculateData)
 {
   fTrajectoryViewTimeBagDirty = true;

@@ -30,7 +30,7 @@ NFmiSingleTrajector::NFmiSingleTrajector(const NFmiPoint &theLatLon,
 {
 }
 
-NFmiSingleTrajector::~NFmiSingleTrajector(void) {}
+NFmiSingleTrajector::~NFmiSingleTrajector(void) = default;
 void NFmiSingleTrajector::ClearPoints(void)
 {
   itsPoints.clear();
