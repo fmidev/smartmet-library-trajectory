@@ -2,7 +2,7 @@
 #include "NFmiSingleTrajector.h"
 
 //_________________________________________________________ NFmiSingleTrajector
-NFmiSingleTrajector::NFmiSingleTrajector(void)
+NFmiSingleTrajector::NFmiSingleTrajector()
     : itsPoints(),
       itsPressures(),
       itsHeightValues(),
@@ -31,7 +31,7 @@ NFmiSingleTrajector::NFmiSingleTrajector(const NFmiPoint &theLatLon,
 }
 
 NFmiSingleTrajector::~NFmiSingleTrajector(void) = default;
-void NFmiSingleTrajector::ClearPoints(void)
+void NFmiSingleTrajector::ClearPoints()
 {
   itsPoints.clear();
   itsPressures.clear();
@@ -50,7 +50,7 @@ void NFmiSingleTrajector::AddPoint(const NFmiPoint &theLatLon,
   itsHeightValues.push_back(theHeightValue);
 }
 
-bool NFmiSingleTrajector::Is3DTrajectory(void) const
+bool NFmiSingleTrajector::Is3DTrajectory() const
 {
   if (!itsPoints.empty())
     if (itsPoints.size() == itsPressures.size())

@@ -11,32 +11,32 @@
 class NFmiSingleTrajector
 {
  public:
-  NFmiSingleTrajector(void);
+  NFmiSingleTrajector();
   NFmiSingleTrajector(const NFmiPoint &theLatLon,
                       const NFmiMetTime &theTime,
                       double thePressureLevel);
-  ~NFmiSingleTrajector(void);
+  ~NFmiSingleTrajector();
 
   std::string ToXMLStr(int TimeStepInMinutes, NFmiProducer &Producer, FmiDirection Direction);
-  const std::vector<NFmiPoint> &Points(void) const { return itsPoints; }
-  const std::vector<float> &Pressures(void) const { return itsPressures; }
-  const std::vector<float> &HeightValues(void) const { return itsHeightValues; }
-  const NFmiPoint &StartLatLon(void) const { return itsStartLatLon; }
+  const std::vector<NFmiPoint>& Points() const { return itsPoints; }
+  const std::vector<float>& Pressures() const { return itsPressures; }
+  const std::vector<float>& HeightValues() const { return itsHeightValues; }
+  const NFmiPoint& StartLatLon() const { return itsStartLatLon; }
   void StartLatLon(const NFmiPoint &newValue) { itsStartLatLon = newValue; }
-  const NFmiMetTime &StartTime(void) const { return itsStartTime; }
+  const NFmiMetTime& StartTime() const { return itsStartTime; }
   void StartTime(const NFmiMetTime &newValue) { itsStartTime = newValue; }
-  void ClearPoints(void);
+  void ClearPoints();
   void AddPoint(const NFmiPoint &theLatLon);
   void AddPoint(const NFmiPoint &theLatLon, float thePressure, float theHeightValue);
-  double StartPressureLevel(void) const { return itsStartPressureLevel; }
+  double StartPressureLevel() const { return itsStartPressureLevel; }
   void StartPressureLevel(double newValue) { itsStartPressureLevel = newValue; }
-  bool Is3DTrajectory(void) const;
-  double IsentropicTpotValue(void) const { return itsIsentropicTpotValue; }
+  bool Is3DTrajectory() const;
+  double IsentropicTpotValue() const { return itsIsentropicTpotValue; }
   void IsentropicTpotValue(double newValue) { itsIsentropicTpotValue = newValue; }
   void SetRandomValues(double theWD, double theWS, double thew);
-  double RandWSdiff(void) const { return itsRandWSdiff; }
-  double RandWDdiff(void) const { return itsRandWDdiff; }
-  double Randwdiff(void) const { return itsRandwdiff; }
+  double RandWSdiff() const { return itsRandWSdiff; }
+  double RandWDdiff() const { return itsRandWDdiff; }
+  double Randwdiff() const { return itsRandwdiff; }
 
  private:
   std::vector<NFmiPoint> itsPoints;

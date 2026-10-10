@@ -2,7 +2,7 @@
 #include <smarttools/NFmiDataStoringHelpers.h>
 
 //_________________________________________________________ NFmiTrajectory
-NFmiTrajectory::NFmiTrajectory(void)
+NFmiTrajectory::NFmiTrajectory()
     : itsMainTrajector(),
       itsPlumeTrajectories(),
       itsLatLon(),
@@ -63,7 +63,7 @@ NFmiTrajectory::NFmiTrajectory(const NFmiPoint &theLatLon,
 }
 
 NFmiTrajectory::~NFmiTrajectory(void) = default;
-void NFmiTrajectory::Clear(void)
+void NFmiTrajectory::Clear()
 {
   itsMainTrajector.ClearPoints();
   itsPlumeTrajectories.clear();  // kaikki roskiin vain
@@ -75,7 +75,7 @@ void NFmiTrajectory::AddPlumeTrajector(std::shared_ptr<NFmiSingleTrajector> &the
   itsPlumeTrajectories.push_back(theTrajector);
 }
 
-NFmiMetTime NFmiTrajectory::CalcPossibleFirstTime(void)
+NFmiMetTime NFmiTrajectory::CalcPossibleFirstTime()
 {
   if (itsDirection == kForward)
   {
@@ -92,7 +92,7 @@ NFmiMetTime NFmiTrajectory::CalcPossibleFirstTime(void)
   }
 }
 
-NFmiMetTime NFmiTrajectory::CalcPossibleLastTime(void)
+NFmiMetTime NFmiTrajectory::CalcPossibleLastTime()
 {
   if (itsDirection == kBackward)
   {
@@ -109,13 +109,13 @@ NFmiMetTime NFmiTrajectory::CalcPossibleLastTime(void)
   }
 }
 
-bool NFmiTrajectory::Is3DTrajectory(void) const
+bool NFmiTrajectory::Is3DTrajectory() const
 {
   return itsMainTrajector.Is3DTrajectory();
 }
 // Laskee mahd. ajassa harvennetut trajektori latlon-pisteet.
 // laskuissa käytetään main-trajektoria
-void NFmiTrajectory::CalculateCrossSectionTrajectoryHelpData(void)
+void NFmiTrajectory::CalculateCrossSectionTrajectoryHelpData()
 {
   itsCrossSectionTrajectoryPoints.clear();
   itsCrossSectionTrajectoryTimes.clear();
@@ -160,7 +160,7 @@ void NFmiTrajectory::CalculateCrossSectionTrajectoryHelpData(void)
   }
 }
 
-double NFmiTrajectory::IsentropicTpotValue(void) const
+double NFmiTrajectory::IsentropicTpotValue() const
 {
   return itsMainTrajector.IsentropicTpotValue();
 }

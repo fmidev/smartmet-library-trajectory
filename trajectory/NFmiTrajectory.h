@@ -12,72 +12,72 @@
 class NFmiTrajectory
 {
  public:
-  NFmiTrajectory(void);
+  NFmiTrajectory();
   NFmiTrajectory(const NFmiPoint& theLatLon,
                  const NFmiMetTime& theTime,
                  const NFmiProducer& theProducer,
                  int theDataType,
                  int theTimeStepInMinutes,
                  int theTimeLengthInHours);
-  ~NFmiTrajectory(void);
+  ~NFmiTrajectory();
 
-  void Clear(void);
-  std::string ToXMLStr(void);
-  const NFmiPoint& LatLon(void) const { return itsLatLon; }
+  void Clear();
+  std::string ToXMLStr();
+  const NFmiPoint& LatLon() const { return itsLatLon; }
   void LatLon(const NFmiPoint& newValue) { itsLatLon = newValue; }
-  const NFmiMetTime& Time(void) const { return itsTime; }
+  const NFmiMetTime& Time() const { return itsTime; }
   void Time(const NFmiMetTime& newValue) { itsTime = newValue; }
-  const NFmiProducer& Producer(void) const { return itsProducer; }
+  const NFmiProducer& Producer() const { return itsProducer; }
   void Producer(const NFmiProducer& newValue) { itsProducer = newValue; }
-  int DataType(void) const { return itsDataType; }
+  int DataType() const { return itsDataType; }
   void DataType(int newValue) { itsDataType = newValue; }
-  int TimeStepInMinutes(void) const { return itsTimeStepInMinutes; }
+  int TimeStepInMinutes() const { return itsTimeStepInMinutes; }
   void TimeStepInMinutes(int newValue) { itsTimeStepInMinutes = newValue; }
-  int TimeLengthInHours(void) const { return itsTimeLengthInHours; }
+  int TimeLengthInHours() const { return itsTimeLengthInHours; }
   void TimeLengthInHours(int newValue) { itsTimeLengthInHours = newValue; }
-  const NFmiSingleTrajector& MainTrajector(void) const { return itsMainTrajector; }
+  const NFmiSingleTrajector& MainTrajector() const { return itsMainTrajector; }
   void MainTrajector(const NFmiSingleTrajector& theTrajector) { itsMainTrajector = theTrajector; }
   void AddPlumeTrajector(std::shared_ptr<NFmiSingleTrajector>& theTrajector);
-  const std::vector<std::shared_ptr<NFmiSingleTrajector> >& PlumeTrajectories(void) const
+  const std::vector<std::shared_ptr<NFmiSingleTrajector> >& PlumeTrajectories() const
   {
     return itsPlumeTrajectories;
   }
-  double PlumeProbFactor(void) const { return itsPlumeProbFactor; }
+  double PlumeProbFactor() const { return itsPlumeProbFactor; }
   void PlumeProbFactor(double newValue) { itsPlumeProbFactor = newValue; }
-  int PlumeParticleCount(void) const { return itsPlumeParticleCount; }
+  int PlumeParticleCount() const { return itsPlumeParticleCount; }
   void PlumeParticleCount(int newValue) { itsPlumeParticleCount = newValue; }
-  bool PlumesUsed(void) const { return fPlumesUsed; }
+  bool PlumesUsed() const { return fPlumesUsed; }
   void PlumesUsed(bool newValue) { fPlumesUsed = newValue; }
-  double StartLocationRangeInKM(void) const { return itsStartLocationRangeInKM; }
+  double StartLocationRangeInKM() const { return itsStartLocationRangeInKM; }
   void StartLocationRangeInKM(double newValue) { itsStartLocationRangeInKM = newValue; }
-  int StartTimeRangeInMinutes(void) const { return itsStartTimeRangeInMinutes; }
+  int StartTimeRangeInMinutes() const { return itsStartTimeRangeInMinutes; }
   void StartTimeRangeInMinutes(int newValue) { itsStartTimeRangeInMinutes = newValue; }
-  FmiDirection Direction(void) const { return itsDirection; }
+  FmiDirection Direction() const { return itsDirection; }
   void Direction(FmiDirection newValue) { itsDirection = newValue; }
-  NFmiMetTime CalcPossibleFirstTime(void);
-  NFmiMetTime CalcPossibleLastTime(void);
-  double PressureLevel(void) const { return itsPressureLevel; }
+  NFmiMetTime CalcPossibleFirstTime();
+  NFmiMetTime CalcPossibleLastTime();
+  double PressureLevel() const { return itsPressureLevel; }
   void PressureLevel(double newValue) { itsPressureLevel = newValue; }
-  double StartPressureLevelRange(void) const { return itsStartPressureLevelRange; }
+  double StartPressureLevelRange() const { return itsStartPressureLevelRange; }
   void StartPressureLevelRange(double newValue) { itsStartPressureLevelRange = newValue; }
-  bool Is3DTrajectory(void) const;
-  const NFmiMetTime& OriginTime(void) const { return itsOriginTime; }
+  bool Is3DTrajectory() const;
+  const NFmiMetTime& OriginTime() const { return itsOriginTime; }
   void OriginTime(const NFmiMetTime& theOriginTime) { itsOriginTime = theOriginTime; }
-  bool Isentropic(void) const { return fIsentropic; }
+  bool Isentropic() const { return fIsentropic; }
   void Isentropic(bool newValue) { fIsentropic = newValue; }
-  double IsentropicTpotValue(void) const;
-  void CalculateCrossSectionTrajectoryHelpData(void);
-  const std::vector<NFmiPoint>& CrossSectionTrajectoryPoints(void) const
+  double IsentropicTpotValue() const;
+  void CalculateCrossSectionTrajectoryHelpData();
+  const std::vector<NFmiPoint>& CrossSectionTrajectoryPoints() const
   {
     return itsCrossSectionTrajectoryPoints;
   }
-  const std::vector<NFmiMetTime> CrossSectionTrajectoryTimes(void) const
+  const std::vector<NFmiMetTime> CrossSectionTrajectoryTimes() const
   {
     return itsCrossSectionTrajectoryTimes;
   }
-  bool CalcTempBalloonTrajectories(void) const { return fCalcTempBalloonTrajectories; }
+  bool CalcTempBalloonTrajectories() const { return fCalcTempBalloonTrajectories; }
   void CalcTempBalloonTrajectories(bool newValue) { fCalcTempBalloonTrajectories = newValue; }
-  const NFmiTempBalloonTrajectorSettings& TempBalloonTrajectorSettings(void) const
+  const NFmiTempBalloonTrajectorSettings& TempBalloonTrajectorSettings() const
   {
     return itsTempBalloonTrajectorSettings;
   }
@@ -85,7 +85,7 @@ class NFmiTrajectory
   {
     itsTempBalloonTrajectorSettings = newValue;
   }
-  bool Calculated(void) const { return fCalculated; }
+  bool Calculated() const { return fCalculated; }
   void Calculated(bool newValue) { fCalculated = newValue; }
   void Write(std::ostream& os) const;
   void Read(std::istream& is);

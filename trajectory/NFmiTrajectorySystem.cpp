@@ -168,7 +168,7 @@ static double CalcRandStartPressureLevel(double theStartPressureLevel,
   return value;
 }
 
-void NFmiTrajectorySystem::MakeSureThatTrajectoriesAreCalculated(void)
+void NFmiTrajectorySystem::MakeSureThatTrajectoriesAreCalculated()
 {
   auto it = itsTrajectories.begin();
   for (; it != itsTrajectories.end(); ++it)
@@ -996,7 +996,7 @@ std::shared_ptr<NFmiFastQueryInfo> NFmiTrajectorySystem::GetWantedInfo(
   return tmp;
 }
 
-void NFmiTrajectorySystem::ClearTrajectories(void)
+void NFmiTrajectorySystem::ClearTrajectories()
 {
   fTrajectoryViewTimeBagDirty = true;
   itsTrajectories.clear();
@@ -1022,7 +1022,7 @@ static void InitializeSilamStationList(NFmiSilamStationList &theStationList,
   theStationList.Init(theFileName);
 }
 
-void NFmiTrajectorySystem::InitializeFromSettings(void)
+void NFmiTrajectorySystem::InitializeFromSettings()
 {
   int model = NFmiSettings::Require<int>("MetEditor::TrajectorySystem::Model");
   itsSelectedProducer = GetSelectedProducer(*itsProducerSystem, model);
@@ -1046,7 +1046,7 @@ void NFmiTrajectorySystem::InitializeFromSettings(void)
 }
 
 // Huom! tämä asettaa kaikki talletettavat asiat settingseihin, mutta ei tee save:a.
-void NFmiTrajectorySystem::StoreSettings(void)
+void NFmiTrajectorySystem::StoreSettings()
 {
   int model = itsProducerSystem->FindProducerInfo(itsSelectedProducer);
   NFmiSettings::Set("MetEditor::TrajectorySystem::Model", NFmiStringTools::Convert(model - 1));
@@ -1066,7 +1066,7 @@ void NFmiTrajectorySystem::StoreSettings(void)
   // NFmiSettings::Require<std::string>("MetEditor::TrajectorySystem::LastTrajectoryLegendStr");
 }
 
-std::string NFmiTrajectorySystem::MakeCurrentTrajectorySaveFileName(void)
+std::string NFmiTrajectorySystem::MakeCurrentTrajectorySaveFileName()
 {
   NFmiMetTime currentTime(1);
   // tässä siis rakennetaan ajan perusteella tiedosto nimi, olettaen että
@@ -1110,7 +1110,7 @@ static bool KeepLevelSettingsForTrajektories(
 
 // Asetetaan tietyt valitut arvot kaikille trajektoreille, mutta ei esim. mallia tai datatyyppiä!
 // Asetetaan mm. alkupiste, alkuaika jne.
-void NFmiTrajectorySystem::SetSelectedValuesToAllTrajectories(void)
+void NFmiTrajectorySystem::SetSelectedValuesToAllTrajectories()
 {
   fTrajectoryViewTimeBagDirty = true;
   // miten saisi tälläisen mem_fun virityksen toimimaan for_each:ille?!?!?!?
@@ -1126,7 +1126,7 @@ void NFmiTrajectorySystem::SetSelectedValuesToAllTrajectories(void)
   }
 }
 
-void NFmiTrajectorySystem::SetSelectedValuesToLastTrajectory(void)
+void NFmiTrajectorySystem::SetSelectedValuesToLastTrajectory()
 {
   fTrajectoryViewTimeBagDirty = true;
   if (itsTrajectories.empty())
@@ -1140,7 +1140,7 @@ void NFmiTrajectorySystem::SetSelectedValuesToLastTrajectory(void)
   }
 }
 
-void NFmiTrajectorySystem::ReCalculateTrajectories(void)
+void NFmiTrajectorySystem::ReCalculateTrajectories()
 {
   fTrajectoryViewTimeBagDirty = true;
   auto it = itsTrajectories.begin();
@@ -1176,7 +1176,7 @@ void NFmiTrajectorySystem::SetSelectedValuesToTrajectory(
   theTrajectory->TempBalloonTrajectorSettings(itsTempBalloonTrajectorSettings);
 }
 
-const NFmiTimeBag &NFmiTrajectorySystem::TrajectoryViewTimeBag(void)
+const NFmiTimeBag& NFmiTrajectorySystem::TrajectoryViewTimeBag()
 {
   if (fTrajectoryViewTimeBagDirty)
   {
@@ -1210,7 +1210,7 @@ static bool GreaterThan(const NFmiMetTime &time1, const NFmiMetTime &time2)
     return time1 > time2;
 }
 
-void NFmiTrajectorySystem::CalculateTrajectoryViewTimeBag(void)
+void NFmiTrajectorySystem::CalculateTrajectoryViewTimeBag()
 {
   NFmiMetTime firstTime(gMissingTime);
   NFmiMetTime lastTime(gMissingTime);
@@ -1459,7 +1459,7 @@ bool NFmiTrajectorySystem::SaveXML(const std::string &theFileName)
   return false;
 }
 
-std::string NFmiTrajectory::ToXMLStr(void)
+std::string NFmiTrajectory::ToXMLStr()
 {
   std::string xmlStr;
   // 2. Kirjoitetaan PÄÄtrajektori

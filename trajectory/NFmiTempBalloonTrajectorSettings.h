@@ -9,23 +9,23 @@
 class NFmiTempBalloonTrajectorSettings
 {
  public:
-  NFmiTempBalloonTrajectorSettings(void)
+  NFmiTempBalloonTrajectorSettings()
       : itsRisingSpeed(4.34),
         itsFallSpeed(3.28),
         itsTopHeightInKM(15),
-        itsFloatingTimeInMinutes(0){};
-  ~NFmiTempBalloonTrajectorSettings(void){};
-  double RisingSpeed(void) const { return itsRisingSpeed; }
+        itsFloatingTimeInMinutes(0) {};
+  ~NFmiTempBalloonTrajectorSettings() {};
+  double RisingSpeed() const { return itsRisingSpeed; }
   void RisingSpeed(double newValue) { itsRisingSpeed = newValue; }
-  double FallSpeed(void) const { return itsFallSpeed; }
+  double FallSpeed() const { return itsFallSpeed; }
   void FallSpeed(double newValue) { itsFallSpeed = newValue; }
-  double TopHeightInKM(void) const { return itsTopHeightInKM; }
+  double TopHeightInKM() const { return itsTopHeightInKM; }
   void TopHeightInKM(double newValue) { itsTopHeightInKM = newValue; }
-  double FloatingTimeInMinutes(void) const { return itsFloatingTimeInMinutes; }
+  double FloatingTimeInMinutes() const { return itsFloatingTimeInMinutes; }
   void FloatingTimeInMinutes(double newValue) { itsFloatingTimeInMinutes = newValue; }
-  FmiDirection State(void) const { return itsState; }
+  FmiDirection State() const { return itsState; }
   void State(FmiDirection newState) { itsState = newState; }
-  double CurrentFloatTimeInMinutes(void) const { return itsCurrentFloatTimeInMinutes; }
+  double CurrentFloatTimeInMinutes() const { return itsCurrentFloatTimeInMinutes; }
   void CurrentFloatTimeInMinutes(double newValue)
   {
     itsCurrentFloatTimeInMinutes = newValue;
@@ -34,7 +34,7 @@ class NFmiTempBalloonTrajectorSettings
   {
     itsCurrentFloatTimeInMinutes += theAddedTimeInMinutes;
   }
-  void Reset(void)
+  void Reset()
   {
     itsCurrentFloatTimeInMinutes = 0.;
     itsState = kBase;
