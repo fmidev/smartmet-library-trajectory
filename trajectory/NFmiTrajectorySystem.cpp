@@ -12,6 +12,7 @@
 #include <smarttools/NFmiInfoOrganizer.h>
 #include <smarttools/NFmiProducerSystem.h>
 #include <fstream>
+#include <memory>
 
 double NFmiTrajectorySystem::itsLatestVersionNumber = 1.0;
 
@@ -108,7 +109,7 @@ NFmiTrajectorySystem::~NFmiTrajectorySystem(void) = default;
 void NFmiTrajectorySystem::AddTrajectory(bool fCalculateData)
 {
   fTrajectoryViewTimeBagDirty = true;
-  std::shared_ptr<NFmiTrajectory> tmp(std::shared_ptr<NFmiTrajectory>(new NFmiTrajectory()));
+  std::shared_ptr<NFmiTrajectory> tmp(std::make_shared<NFmiTrajectory>());
   SetSelectedValuesToTrajectory(tmp, true, false);
 
   if (fCalculateData)
@@ -1325,7 +1326,7 @@ void NFmiTrajectorySystem::Read(std::istream &is)
   is >> ssize;
   for (std::vector<std::shared_ptr<NFmiTrajectory> >::size_type i = 0; i < ssize; i++)
   {
-    std::shared_ptr<NFmiTrajectory> tmp(std::shared_ptr<NFmiTrajectory>(new NFmiTrajectory()));
+    std::shared_ptr<NFmiTrajectory> tmp(std::make_shared<NFmiTrajectory>());
     is >> tmp;
     itsTrajectories.push_back(tmp);
   }
