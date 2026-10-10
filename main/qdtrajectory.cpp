@@ -106,11 +106,11 @@ Options::Options()
 
 void Options::report(std::ostream &out) const
 {
-#define HEADER(stream, title)                                                                 \
-  stream << ANSI_BOLD_ON << ANSI_UNDERLINE_ON << title << ANSI_BOLD_OFF << ANSI_UNDERLINE_OFF \
+#define HEADER(stream, title)                                                                   \
+  stream << ANSI_BOLD_ON << ANSI_UNDERLINE_ON << (title) << ANSI_BOLD_OFF << ANSI_UNDERLINE_OFF \
          << '\n';
-#define REPORT(stream, name, value)                                                          \
-  stream << ANSI_ITALIC_ON << std::setw(35) << std::left << name << ANSI_ITALIC_OFF << value \
+#define REPORT(stream, name, value)                                                              \
+  stream << ANSI_ITALIC_ON << std::setw(35) << std::left << (name) << ANSI_ITALIC_OFF << (value) \
          << '\n';
 
   HEADER(out, "Options summary");
