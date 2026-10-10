@@ -951,7 +951,7 @@ void NFmiTrajectorySystem::CalculateSingle3DTrajectory(
 
 static void SetFastInfoToZero(std::shared_ptr<NFmiFastQueryInfo> &theOwnerInfo)
 {
-  theOwnerInfo = std::shared_ptr<NFmiFastQueryInfo>(static_cast<NFmiFastQueryInfo *>(0));
+  theOwnerInfo = std::shared_ptr<NFmiFastQueryInfo>(static_cast<NFmiFastQueryInfo*>(nullptr));
 }
 
 std::shared_ptr<NFmiFastQueryInfo> NFmiTrajectorySystem::GetWantedInfo(
@@ -967,7 +967,7 @@ std::shared_ptr<NFmiFastQueryInfo> NFmiTrajectorySystem::GetWantedInfo(
     useGroundData = true;
   std::shared_ptr<NFmiFastQueryInfo> tmp =
       itsInfoOrganizer->FindInfo(dataType, theTrajectory->Producer(), useGroundData);
-  if (tmp == 0 && theTrajectory->Producer().GetIdent() == kFmiMETEOR)
+  if (tmp == nullptr && theTrajectory->Producer().GetIdent() == kFmiMETEOR)
   {  // Jos ei löytynyt infoa ja jos editoitu oli valittu dataksi
      // pitää etsiä editoitavasta datasta.
     // Tämä palauttaa minkä tahansa editoitavan datan eikä tarkastele tyyppeja tai leveleitä!!
