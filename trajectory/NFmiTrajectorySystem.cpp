@@ -1567,12 +1567,12 @@ void NFmiTrajectorySystem::SetCaseStudyTimes(const NFmiMetTime &theCaseStudyTime
   if (itsTrajectories.size() > 0)
   {
     long diffInMinutes = theCaseStudyTime.DifferenceInMinutes(itsTrajectories[0]->Time());
-    for (size_t i = 0; i < itsTrajectories.size(); i++)
+    for (auto& itsTrajectorie : itsTrajectories)
     {
-      NFmiMetTime newTime = itsTrajectories[i]->Time();
+      NFmiMetTime newTime = itsTrajectorie->Time();
       newTime.ChangeByMinutes(diffInMinutes);
-      itsTrajectories[i]->Time(newTime);
-      itsTrajectories[i]->Calculated(false);
+      itsTrajectorie->Time(newTime);
+      itsTrajectorie->Calculated(false);
     }
   }
   itsSelectedTime = theCaseStudyTime;
