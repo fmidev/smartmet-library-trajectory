@@ -133,6 +133,7 @@ static NFmiMetTime CalcRandStartTime(const NFmiMetTime &theStartTime,
                                      double theStartTimeRangeInMinutes,
                                      int theRoundStepInMinutes)
 {
+  // NOLINTNEXTLINE(cert-msc50-cpp): rand() is not used for security here
   double rangeRandValue = theStartTimeRangeInMinutes * (2.0 * rand() - RAND_MAX) /
                           RAND_MAX;  // joku reaali luku v‰lill‰ -1 ja - 1
   long usedRangeRandValue = round(rangeRandValue / theRoundStepInMinutes) * theRoundStepInMinutes;
@@ -145,9 +146,11 @@ static NFmiMetTime CalcRandStartTime(const NFmiMetTime &theStartTime,
 static NFmiPoint CalcRandStartPoint(const NFmiPoint &theStartPoint,
                                     double theStartLocationRangeInKM)
 {
+  // NOLINTNEXTLINE(cert-msc50-cpp): rand() is not used for security here
   double rangeRandValue = theStartLocationRangeInKM * 1000 * static_cast<double>(rand()) /
                           RAND_MAX;  // joku reaali luku v‰lill‰ 0 - 1
   double dirRandValue =
+      // NOLINTNEXTLINE(cert-msc50-cpp): rand() is not used for security here
       360 * static_cast<double>(rand()) / RAND_MAX;  // joku reaali luku v‰lill‰ 0 - 1
   NFmiLocation loc(theStartPoint);
   const bool usePacificView = false;
@@ -159,6 +162,7 @@ static double CalcRandStartPressureLevel(double theStartPressureLevel,
                                          double theStartPressureLevelRange,
                                          double theMaxPressureLevel)
 {
+  // NOLINTNEXTLINE(cert-msc50-cpp): rand() is not used for security here
   double rangeRandValue = theStartPressureLevelRange * (2.0 * rand() - RAND_MAX) /
                           RAND_MAX;  // joku reaali luku v‰lill‰ -1 ja 1
   double value = theStartPressureLevel + rangeRandValue;
@@ -255,6 +259,7 @@ void NFmiTrajectorySystem::CalculateTrajectory(std::shared_ptr<NFmiTrajectory> &
 // randFactor on satunnaisuuden suurin vaihtelu arvo verrattuna annettuun WS:‰‰n.
 static double RandomizeWSValue(double WS, double randFactor)
 {
+  // NOLINTNEXTLINE(cert-msc50-cpp): rand() is not used for security here
   double randValue = (2.0 * rand() - RAND_MAX) / RAND_MAX;  // joku reaali luku v‰lill‰ -1 - 1
   double modifyValue =
       WS * randValue * randFactor * 0.01;  // muutetaan luku oikeaksi muutos arvoksi
@@ -277,6 +282,7 @@ static double WDAdd(double WD, double changeValue, double maxValue)
 // randFactor on satunnaisuuden suurin vaihtelu arvo verrattuna annettuun WS:‰‰n.
 static double RandomizeWDValue(double randFactor, double maxValue)
 {
+  // NOLINTNEXTLINE(cert-msc50-cpp): rand() is not used for security here
   double randValue = (2.0 * rand() - RAND_MAX) / RAND_MAX;
   // min/max muutos on 1/3 osa maxValuesta
   double modifyValue = maxValue * 0.33 * randValue * randFactor *
@@ -286,6 +292,7 @@ static double RandomizeWDValue(double randFactor, double maxValue)
 
 static double RandomizewValue(double w, double randFactor)
 {
+  // NOLINTNEXTLINE(cert-msc50-cpp): rand() is not used for security here
   double randValue = (2.0 * rand() - RAND_MAX) / RAND_MAX;  // joku reaali luku v‰lill‰ -1 - 1
   double modifyValue = w * randValue * randFactor * 0.01;  // muutetaan luku oikeaksi muutos arvoksi
   return modifyValue;
