@@ -17,7 +17,7 @@ class NFmiSingleTrajector
                       double thePressureLevel);
   ~NFmiSingleTrajector();
 
-  std::string ToXMLStr(int TimeStepInMinutes, NFmiProducer &Producer, FmiDirection Direction);
+  std::string ToXMLStr(int TimeStepInMinutes, const NFmiProducer& Producer, FmiDirection Direction);
   const std::vector<NFmiPoint>& Points() const { return itsPoints; }
   const std::vector<float>& Pressures() const { return itsPressures; }
   const std::vector<float>& HeightValues() const { return itsHeightValues; }

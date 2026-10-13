@@ -183,13 +183,13 @@ void NFmiTrajectorySystem::MakeSureThatTrajectoriesAreCalculated()
   }
 }
 
-void NFmiTrajectorySystem::CalculateTrajectory(std::shared_ptr<NFmiTrajectory> &theTrajectory)
+void NFmiTrajectorySystem::CalculateTrajectory(const std::shared_ptr<NFmiTrajectory>& theTrajectory)
 {
   std::shared_ptr<NFmiFastQueryInfo> info = GetWantedInfo(theTrajectory);
   CalculateTrajectory(theTrajectory, info);
 }
 
-void NFmiTrajectorySystem::CalculateTrajectory(std::shared_ptr<NFmiTrajectory> &theTrajectory,
+void NFmiTrajectorySystem::CalculateTrajectory(const std::shared_ptr<NFmiTrajectory>& theTrajectory,
                                                std::shared_ptr<NFmiFastQueryInfo> &theInfo)
 {
   if (theInfo && theInfo->Param(kFmiWindSpeedMS) && theInfo->Param(kFmiWindDirection))
@@ -367,7 +367,7 @@ void NFmiTrajectorySystem::CalculateSingleTrajectory(
   }
 }
 
-static bool IsInfoHybridData(std::shared_ptr<NFmiFastQueryInfo> &theInfo)
+static bool IsInfoHybridData(const std::shared_ptr<NFmiFastQueryInfo>& theInfo)
 {
   if (theInfo->SizeLevels() > 1)
   {
@@ -378,7 +378,7 @@ static bool IsInfoHybridData(std::shared_ptr<NFmiFastQueryInfo> &theInfo)
   return false;
 }
 
-static unsigned long GetInfoGroundLevelIndex(std::shared_ptr<NFmiFastQueryInfo> &theInfo,
+static unsigned long GetInfoGroundLevelIndex(const std::shared_ptr<NFmiFastQueryInfo>& theInfo,
                                              bool hybridData)
 {
   auto groundLevelIndex = static_cast<unsigned long>(-1);
@@ -405,7 +405,7 @@ static unsigned long GetInfoGroundLevelIndex(std::shared_ptr<NFmiFastQueryInfo> 
   return groundLevelIndex;
 }
 
-static unsigned long GetInfoTopLevelIndex(std::shared_ptr<NFmiFastQueryInfo> &theInfo,
+static unsigned long GetInfoTopLevelIndex(const std::shared_ptr<NFmiFastQueryInfo>& theInfo,
                                           bool hybridData)
 {
   auto topLevelIndex = static_cast<unsigned long>(-1);
@@ -433,7 +433,7 @@ static unsigned long GetInfoTopLevelIndex(std::shared_ptr<NFmiFastQueryInfo> &th
 }
 
 static FmiParameterName GetInfoUsedVerticalVelotityParam(
-    std::shared_ptr<NFmiFastQueryInfo> &theInfo)
+    const std::shared_ptr<NFmiFastQueryInfo>& theInfo)
 {
   FmiParameterName usedWParam = kFmiBadParameter;
   if (theInfo->Param(kFmiVelocityPotential))
@@ -472,7 +472,7 @@ static bool MakeGroundAdjustment(double &WS,
                                  double &WD,
                                  double &w,
                                  double &P,
-                                 std::shared_ptr<NFmiFastQueryInfo> &theInfo,
+                                 const std::shared_ptr<NFmiFastQueryInfo>& theInfo,
                                  double xInd,
                                  double yInd,
                                  double tInd,
@@ -529,7 +529,7 @@ static NFmiLocation CalcNewLocation(const NFmiLocation &theCurrentLocation,
   return theCurrentLocation.GetLocation(dir, dist, usePacificView);
 }
 
-static double CalcNewPressureLevel(std::shared_ptr<NFmiFastQueryInfo> &theInfo,
+static double CalcNewPressureLevel(const std::shared_ptr<NFmiFastQueryInfo>& theInfo,
                                    double theCurrentPressure,
                                    double w,
                                    double xInd,
@@ -558,7 +558,7 @@ static double CalcNewPressureLevel(std::shared_ptr<NFmiFastQueryInfo> &theInfo,
 }
 
 static double CalcNewPressureLevelWithBalloon(
-    std::shared_ptr<NFmiFastQueryInfo> &theInfo,
+    const std::shared_ptr<NFmiFastQueryInfo>& theInfo,
     const NFmiPoint &theLatlon,
     const NFmiMetTime &theTime,
     double theCurrentPressure,
@@ -627,7 +627,7 @@ static double CalcLogPFromLinearValues(double v1, double v2, double v, double p1
 }
 
 // palauttaa kurrenttiin leveliin paine arvon haluttuun kohtaan ja aikaan
-static double GetPressureValue(std::shared_ptr<NFmiFastQueryInfo> &theInfo,
+static double GetPressureValue(const std::shared_ptr<NFmiFastQueryInfo>& theInfo,
                                double xInd,
                                double yInd,
                                double tInd,
@@ -648,7 +648,7 @@ static double GetPressureValue(std::shared_ptr<NFmiFastQueryInfo> &theInfo,
 }
 
 // Oletus: theWantedTpot ei voi olla puuttuva.
-static double CalcNewPressureLevelIsentropically(std::shared_ptr<NFmiFastQueryInfo> &theInfo,
+static double CalcNewPressureLevelIsentropically(const std::shared_ptr<NFmiFastQueryInfo>& theInfo,
                                                  const NFmiLocation &theLoc,
                                                  const NFmiMetTime &theTime,
                                                  double theWantedTpot,
@@ -754,7 +754,7 @@ static void CalcStartingPointGroundAdjustment(NFmiFastQueryInfo &theInfo,
   }
 }
 
-static float GetHeightValueForNewPressure(std::shared_ptr<NFmiFastQueryInfo> &theInfo,
+static float GetHeightValueForNewPressure(const std::shared_ptr<NFmiFastQueryInfo>& theInfo,
                                           const NFmiPoint &theLatlon,
                                           const NFmiMetTime &theTime,
                                           double thePressure,
@@ -775,7 +775,7 @@ static float GetHeightValueForNewPressure(std::shared_ptr<NFmiFastQueryInfo> &th
 // Oletus: theInfo on jo tarkistettu.
 // theConstantW [m/s]
 void NFmiTrajectorySystem::CalculateSingle3DTrajectory(
-    std::shared_ptr<NFmiFastQueryInfo> &theInfo,
+    const std::shared_ptr<NFmiFastQueryInfo>& theInfo,
     NFmiSingleTrajector &theTrajector,
     int theTimeStepInMinutes,
     int theTimeLengthInHours,
@@ -963,7 +963,7 @@ static void SetFastInfoToZero(std::shared_ptr<NFmiFastQueryInfo> &theOwnerInfo)
 }
 
 std::shared_ptr<NFmiFastQueryInfo> NFmiTrajectorySystem::GetWantedInfo(
-    std::shared_ptr<NFmiTrajectory> &theTrajectory)
+    const std::shared_ptr<NFmiTrajectory>& theTrajectory)
 {
   NFmiInfoData::Type dataType = NFmiInfoData::kViewable;
   if (theTrajectory->DataType() == 2)
@@ -1157,7 +1157,7 @@ void NFmiTrajectorySystem::ReCalculateTrajectories()
 }
 
 void NFmiTrajectorySystem::SetSelectedValuesToTrajectory(
-    std::shared_ptr<NFmiTrajectory> &theTrajectory, bool fInitialize, bool fKeepLevelSettings)
+    const std::shared_ptr<NFmiTrajectory>& theTrajectory, bool fInitialize, bool fKeepLevelSettings)
 {
   if (fInitialize)
   {  // muutamat asetukset laitetaan vain initialisointi vaiheessa
@@ -1517,7 +1517,7 @@ static std::string MakeValueStr(float theValue,
 }
 
 std::string NFmiSingleTrajector::ToXMLStr(int TimeStepInMinutes,
-                                          NFmiProducer &Producer,
+                                          const NFmiProducer& Producer,
                                           FmiDirection Direction)
 {
   std::string str;

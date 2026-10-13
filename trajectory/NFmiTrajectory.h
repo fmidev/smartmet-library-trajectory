@@ -37,7 +37,7 @@ class NFmiTrajectory
   void TimeLengthInHours(int newValue) { itsTimeLengthInHours = newValue; }
   const NFmiSingleTrajector& MainTrajector() const { return itsMainTrajector; }
   void MainTrajector(const NFmiSingleTrajector& theTrajector) { itsMainTrajector = theTrajector; }
-  void AddPlumeTrajector(std::shared_ptr<NFmiSingleTrajector>& theTrajector);
+  void AddPlumeTrajector(const std::shared_ptr<NFmiSingleTrajector>& theTrajector);
   const std::vector<std::shared_ptr<NFmiSingleTrajector> >& PlumeTrajectories() const
   {
     return itsPlumeTrajectories;

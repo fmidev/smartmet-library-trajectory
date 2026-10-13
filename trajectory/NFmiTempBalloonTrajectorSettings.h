@@ -43,7 +43,7 @@ class NFmiTempBalloonTrajectorSettings
   // pallon lennon
   // vaiheista ja osaa mm. siirtyä seuraavaan vaiheeseen.
   double CalcOmega(double Z, int theTimeStepInMinutes);
-  double CalcDeltaP(std::shared_ptr<NFmiFastQueryInfo> &theInfo,
+  double CalcDeltaP(const std::shared_ptr<NFmiFastQueryInfo>& theInfo,
                     const NFmiPoint &theLatlon,
                     const NFmiMetTime &theTime,
                     double theCurrentPressure,
@@ -56,7 +56,7 @@ class NFmiTempBalloonTrajectorSettings
   void Read(std::istream &is);
 
  private:
-  double CalcDeltaPInPhase1(std::shared_ptr<NFmiFastQueryInfo> &theInfo,
+  double CalcDeltaPInPhase1(const std::shared_ptr<NFmiFastQueryInfo>& theInfo,
                             const NFmiPoint &theLatlon,
                             const NFmiMetTime &theTime,
                             double theCurrentPressure,
@@ -64,7 +64,7 @@ class NFmiTempBalloonTrajectorSettings
                             double Z,
                             int theTimeStepInMinutes);
   double CalcDeltaPInPhase2(int theTimeStepInMinutes);
-  double CalcDeltaPInPhase3(std::shared_ptr<NFmiFastQueryInfo> &theInfo,
+  double CalcDeltaPInPhase3(const std::shared_ptr<NFmiFastQueryInfo>& theInfo,
                             const NFmiPoint &theLatlon,
                             const NFmiMetTime &theTime,
                             double theCurrentPressure,
@@ -75,7 +75,7 @@ class NFmiTempBalloonTrajectorSettings
   double CalcOmegaInPhase1(double Z, int theTimeStepInMinutes);
   double CalcOmegaInPhase2(int theTimeStepInMinutes);
   double CalcOmegaInPhase3(double Z, int theTimeStepInMinutes);
-  double CalcRisingRate(double Z);
+  double CalcRisingRate(double Z) const;
   double CalcFallingRate(double Z);
 
   double itsRisingSpeed;

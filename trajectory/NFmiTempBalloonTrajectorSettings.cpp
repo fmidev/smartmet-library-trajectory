@@ -38,14 +38,15 @@ double NFmiTempBalloonTrajectorSettings::CalcOmega(double Z, int theTimeStepInMi
   }
 }
 
-double NFmiTempBalloonTrajectorSettings::CalcDeltaP(std::shared_ptr<NFmiFastQueryInfo> &theInfo,
-                                                    const NFmiPoint &theLatlon,
-                                                    const NFmiMetTime &theTime,
-                                                    double theCurrentPressure,
-                                                    unsigned long thePressureParamIndex,
-                                                    double Z,
-                                                    int theTimeStepInMinutes,
-                                                    unsigned long theGroundLevelIndex)
+double NFmiTempBalloonTrajectorSettings::CalcDeltaP(
+    const std::shared_ptr<NFmiFastQueryInfo>& theInfo,
+    const NFmiPoint& theLatlon,
+    const NFmiMetTime& theTime,
+    double theCurrentPressure,
+    unsigned long thePressureParamIndex,
+    double Z,
+    int theTimeStepInMinutes,
+    unsigned long theGroundLevelIndex)
 {
   if (theTimeStepInMinutes <= 0 || Z == kFloatMissing)
     itsState = kNoDirection;
@@ -83,7 +84,7 @@ double NFmiTempBalloonTrajectorSettings::CalcDeltaP(std::shared_ptr<NFmiFastQuer
 }
 
 double NFmiTempBalloonTrajectorSettings::CalcDeltaPInPhase1(
-    std::shared_ptr<NFmiFastQueryInfo> &theInfo,
+    const std::shared_ptr<NFmiFastQueryInfo>& theInfo,
     const NFmiPoint &theLatlon,
     const NFmiMetTime &theTime,
     double theCurrentPressure,
@@ -127,7 +128,7 @@ double NFmiTempBalloonTrajectorSettings::CalcDeltaPInPhase2(int theTimeStepInMin
 
 // phase3 eli pallon lasku/putoamis vaihe
 double NFmiTempBalloonTrajectorSettings::CalcDeltaPInPhase3(
-    std::shared_ptr<NFmiFastQueryInfo> &theInfo,
+    const std::shared_ptr<NFmiFastQueryInfo>& theInfo,
     const NFmiPoint &theLatlon,
     const NFmiMetTime &theTime,
     double theCurrentPressure,
@@ -164,7 +165,7 @@ double NFmiTempBalloonTrajectorSettings::CalcDeltaPInPhase3(
 }
 
 // Sodankylän observatoriosta saatu pallon 'vakio' nousunopeus kaava. Riippuvainen korkeudesta
-double NFmiTempBalloonTrajectorSettings::CalcRisingRate(double Z)
+double NFmiTempBalloonTrajectorSettings::CalcRisingRate(double Z) const
 {
   double w = ((1.19 * itsRisingSpeed) - 4.42) * 1. / 10000. * Z + 3.42;
   return w;

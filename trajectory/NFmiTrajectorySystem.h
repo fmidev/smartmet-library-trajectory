@@ -117,10 +117,10 @@ class NFmiTrajectorySystem
   }
   bool CalcTempBalloonTrajectors() const { return fCalcTempBalloonTrajectors; }
   void CalcTempBalloonTrajectors(bool newValue) { fCalcTempBalloonTrajectors = newValue; }
-  bool UseMapTime() { return fUseMapTime; }
+  bool UseMapTime() const { return fUseMapTime; }
   void UseMapTime(bool newValue) { fUseMapTime = newValue; }
   std::shared_ptr<NFmiFastQueryInfo> GetWantedInfo(
-      std::shared_ptr<NFmiTrajectory> &theTrajectory);
+      const std::shared_ptr<NFmiTrajectory>& theTrajectory);
   bool TrajectorySaveEnabled() const { return fTrajectorySaveEnabled; }
   void TrajectorySaveEnabled(bool newValue) { fTrajectorySaveEnabled = newValue; }
   const std::string& TrajectorySavePath() const { return itsTrajectorySavePath; }
@@ -143,8 +143,8 @@ class NFmiTrajectorySystem
                                                  // trajektoryView-luokassa ennen varsinaista
                                                  // trajektorien piirtoa
   void SetCaseStudyTimes(const NFmiMetTime &theCaseStudyTime);
-  void CalculateTrajectory(std::shared_ptr<NFmiTrajectory> &theTrajectory);
-  static void CalculateTrajectory(std::shared_ptr<NFmiTrajectory> &theTrajectory,
+  void CalculateTrajectory(const std::shared_ptr<NFmiTrajectory>& theTrajectory);
+  static void CalculateTrajectory(const std::shared_ptr<NFmiTrajectory>& theTrajectory,
                                   std::shared_ptr<NFmiFastQueryInfo> &theInfo);
 
   void Write(std::ostream &os) const;
@@ -159,7 +159,7 @@ class NFmiTrajectorySystem
                                 double theRandomFactor,
                                 NFmiSingleTrajector &theTrajector);
   void CalculateTrajectoryViewTimeBag();
-  void SetSelectedValuesToTrajectory(std::shared_ptr<NFmiTrajectory> &theTrajectory,
+  void SetSelectedValuesToTrajectory(const std::shared_ptr<NFmiTrajectory>& theTrajectory,
                                      bool fInitialize,
                                      bool fKeepLevelSettings);
   static void CalculateSingleTrajectory(
@@ -174,7 +174,7 @@ class NFmiTrajectorySystem
       bool fCalcBalloonTrajectory,
       NFmiTempBalloonTrajectorSettings &theTempBalloonTrajectorSettings);
   static void CalculateSingle3DTrajectory(
-      std::shared_ptr<NFmiFastQueryInfo> &theInfo,
+      const std::shared_ptr<NFmiFastQueryInfo>& theInfo,
       NFmiSingleTrajector &theTrajector,
       int theTimeStepInMinutes,
       int theTimeLengthInHours,
