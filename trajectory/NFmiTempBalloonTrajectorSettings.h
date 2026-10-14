@@ -10,10 +10,8 @@ class NFmiTempBalloonTrajectorSettings
 {
  public:
   NFmiTempBalloonTrajectorSettings()
-      : itsRisingSpeed(4.34),
-        itsFallSpeed(3.28),
-        itsTopHeightInKM(15),
-        itsFloatingTimeInMinutes(0) {};
+
+  {};
   ~NFmiTempBalloonTrajectorSettings() {};
   double RisingSpeed() const { return itsRisingSpeed; }
   void RisingSpeed(double newValue) { itsRisingSpeed = newValue; }
@@ -78,10 +76,10 @@ class NFmiTempBalloonTrajectorSettings
   double CalcRisingRate(double Z) const;
   double CalcFallingRate(double Z);
 
-  double itsRisingSpeed;
-  double itsFallSpeed;
-  double itsTopHeightInKM;
-  double itsFloatingTimeInMinutes;
+  double itsRisingSpeed = 4.34;
+  double itsFallSpeed = 3.28;
+  double itsTopHeightInKM = 15;
+  double itsFloatingTimeInMinutes = 0;
   FmiDirection itsState;                // pallolaskuissa on tietyt vaiheet
                                         // 1. alku (reset tila) eli kBase
                                         // 2. nousu eli kUp

@@ -19,6 +19,7 @@
 #include <newbase/NFmiPoint.h>
 #include <newbase/NFmiQueryData.h>
 #include <newbase/NFmiSettings.h>
+#include <cmath>
 #include <fstream>
 #include <stdexcept>
 #include <string>
@@ -35,34 +36,37 @@ struct Options
   Options();
   void report(std::ostream &out) const;
 
-  bool verbose;
+  bool verbose = false;
   NFmiPoint coordinate;
   Fmi::DateTime starttime;
-  unsigned int timestep;
-  unsigned int hours;
+  unsigned int timestep = 10;
+  unsigned int hours = 24;
   std::string queryfile;
   std::string outfile;
   std::string templatedir;
   std::string templatefile;
   std::string format;
-  unsigned int plumesize;
-  double disturbance;
+  unsigned int plumesize = 0;
+  double disturbance = 25;
   std::optional<double> arearadius;
   std::optional<unsigned int> timeinterval;
   std::optional<double> pressure;
   std::optional<double> pressurerange;
   std::optional<double> height;
   std::optional<double> heightrange;
-  bool isentropic;
-  bool backwards;
-  bool compress;
-  bool debughash;
+  bool isentropic = false;
+  bool backwards = false;
+  bool compress = false;
+  bool debughash = false;
 
-  bool kml_tessellate;
-  bool kml_extrude;
+  bool kml_tessellate = false;
+  bool kml_extrude = false;
 };
 
+namespace
+{
 Options options;
+}  // namespace
 
 // ----------------------------------------------------------------------
 /*!
@@ -71,30 +75,11 @@ Options options;
 // ----------------------------------------------------------------------
 
 Options::Options()
-    : verbose(false),
-      coordinate(NFmiPoint(kFloatMissing, kFloatMissing)),
-      starttime(),
-      timestep(10),
-      hours(24),
+    : coordinate(NFmiPoint(kFloatMissing, kFloatMissing)),
       queryfile("-"),
       outfile("-"),
       templatedir("/usr/share/smartmet/trajectory"),
-      templatefile(),
-      format("xml"),
-      plumesize(0),
-      disturbance(25),
-      arearadius(),
-      timeinterval(),
-      pressure(),
-      pressurerange(),
-      height(),
-      heightrange(),
-      isentropic(false),
-      backwards(false),
-      compress(false),
-      debughash(false),
-      kml_tessellate(false),
-      kml_extrude(false)
+      format("xml")
 {
 }
 
@@ -147,6 +132,8 @@ void Options::report(std::ostream &out) const
  */
 // ----------------------------------------------------------------------
 
+namespace
+{
 void list_formats()
 {
   namespace fs = std::filesystem;
@@ -632,10 +619,12 @@ void hash_trajector(CTPP::CDT &hash, int index, const NFmiSingleTrajector &traje
     group["sqltime"] = sqlformatter->format(pt);
     group["xmltime"] = xmlformatter->format(pt);
 
-    group["longitude"] = round(10000 * points[i].X()) / 10000;
-    group["latitude"] = round(10000 * points[i].Y()) / 10000;
-    group["pressure"] = round(10 * pressures[i]) / 10;
-    group["height"] = round(10 * heights[i]) / 10;
+    // Pressures and heights are floats: scale in float as always, but round as a double,
+    // since std::round(float) gives a float which prints as 458.200012207
+    group["longitude"] = std::round(10000 * points[i].X()) / 10000;
+    group["latitude"] = std::round(10000 * points[i].Y()) / 10000;
+    group["pressure"] = std::round(static_cast<double>(10 * pressures[i])) / 10;
+    group["height"] = std::round(static_cast<double>(10 * heights[i])) / 10;
 
     t.ChangeByMinutes(timestep);
   }
@@ -844,6 +833,7 @@ int run(int argc, char *argv[])
 
   return 0;
 }
+}  // namespace
 
 // ----------------------------------------------------------------------
 /*!

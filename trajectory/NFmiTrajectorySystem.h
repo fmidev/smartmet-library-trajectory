@@ -193,36 +193,36 @@ class NFmiTrajectorySystem
   NFmiPoint itsSelectedLatLon;
   NFmiMetTime itsSelectedTime;
   NFmiProducer itsSelectedProducer;
-  int itsSelectedDataType;  // 0=pinta, 1=painepinta, 2=mallipinta ja 3=historia dataa
-  int itsSelectedTimeStepInMinutes;
-  int itsSelectedTimeLengthInHours;
-  double itsSelectedPlumeProbFactor;
-  int itsSelectedPlumeParticleCount;
-  double itsSelectedStartLocationRangeInKM;
-  double itsSelectedPressureLevel;            // yks. hPa
-  double itsSelectedStartPressureLevelRange;  // yks. hPa
-  FmiDirection itsSelectedDirection;
-  int itsSelectedStartTimeRangeInMinutes;
+  int itsSelectedDataType = 2;  // 0=pinta, 1=painepinta, 2=mallipinta ja 3=historia dataa
+  int itsSelectedTimeStepInMinutes = 30;
+  int itsSelectedTimeLengthInHours = 24;
+  double itsSelectedPlumeProbFactor = 25;
+  int itsSelectedPlumeParticleCount = 10;
+  double itsSelectedStartLocationRangeInKM = 0;
+  double itsSelectedPressureLevel = 850;          // yks. hPa
+  double itsSelectedStartPressureLevelRange = 0;  // yks. hPa
+  FmiDirection itsSelectedDirection = kForward;
+  int itsSelectedStartTimeRangeInMinutes = 0;
   NFmiTimeBag
       itsTrajectoryViewTimeBag;      // laske tähän kaikkien trajektorien yli 1. ja viimeinen aika
-  bool fTrajectoryViewTimeBagDirty;  // pitääkö timebagi laskea uudestaan
+  bool fTrajectoryViewTimeBagDirty = true;  // pitääkö timebagi laskea uudestaan
 
-  bool fPlumesUsed;
-  bool fTrajectoryViewOn;
-  bool fShowTrajectoryArrows;
-  bool fShowTrajectoryAnimationMarkers;
-  bool fSelectedTrajectoryIsentropic;
-  bool fShowTrajectoriesInCrossSectionView;
-  bool
-      fUseMapTime;  // käytetäänkö karttanäytön aikaa vai trajektori dialogissa olevaa aika säädintä
+  bool fPlumesUsed = true;
+  bool fTrajectoryViewOn = false;
+  bool fShowTrajectoryArrows = true;
+  bool fShowTrajectoryAnimationMarkers = true;
+  bool fSelectedTrajectoryIsentropic = false;
+  bool fShowTrajectoriesInCrossSectionView = false;
+  bool fUseMapTime{
+      false};  // käytetäänkö karttanäytön aikaa vai trajektori dialogissa olevaa aika säädintä
 
   NFmiTempBalloonTrajectorSettings itsTempBalloonTrajectorSettings;
-  bool fCalcTempBalloonTrajectors;
+  bool fCalcTempBalloonTrajectors = false;
 
   // Trajektorien talletukseen liittyvia muuttujia
   // HUOM nämä luetaan settingeistä, mutta niitä ei vielä talleteta takaisin.
   // HUOM2 Näitä ei ole tarkoituskaan viedä viewMakroihin mitenkään.
-  bool fTrajectorySaveEnabled;               // onko talletus systeemi käytössä vai ei
+  bool fTrajectorySaveEnabled = true;         // onko talletus systeemi käytössä vai ei
   std::string itsTrajectorySavePath;         // vain polku, ei file filtteriä
   std::string itsTrajectorySaveFilePattern;  // pelkkä lopullisen nimen patterni, missä aikaleiman
                                              // kohdalla esim. "traj_stuk_YYYYMMDDHHmm.txt"

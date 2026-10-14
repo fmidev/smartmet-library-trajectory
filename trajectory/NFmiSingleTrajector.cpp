@@ -3,25 +3,14 @@
 
 //_________________________________________________________ NFmiSingleTrajector
 NFmiSingleTrajector::NFmiSingleTrajector()
-    : itsPoints(),
-      itsPressures(),
-      itsHeightValues(),
-      itsStartLatLon(),
-      itsStartTime(),
-      itsStartPressureLevel(850),
-      itsRandWSdiff(0),
-      itsRandWDdiff(0),
-      itsRandwdiff(0)
+    : itsStartPressureLevel(850), itsRandWSdiff(0), itsRandWDdiff(0), itsRandwdiff(0)
 {
 }
 
-NFmiSingleTrajector::NFmiSingleTrajector(const NFmiPoint &theLatLon,
-                                         const NFmiMetTime &theTime,
+NFmiSingleTrajector::NFmiSingleTrajector(const NFmiPoint& theLatLon,
+                                         const NFmiMetTime& theTime,
                                          double thePressureLevel)
-    : itsPoints(),
-      itsPressures(),
-      itsHeightValues(),
-      itsStartLatLon(theLatLon),
+    : itsStartLatLon(theLatLon),
       itsStartTime(theTime),
       itsStartPressureLevel(thePressureLevel),
       itsRandWSdiff(0),

@@ -3,13 +3,7 @@
 
 //_________________________________________________________ NFmiTrajectory
 NFmiTrajectory::NFmiTrajectory()
-    : itsMainTrajector(),
-      itsPlumeTrajectories(),
-      itsLatLon(),
-      itsTime(),
-      itsOriginTime(),
-      itsProducer(),
-      itsDataType(2),
+    : itsDataType(2),
       itsTimeStepInMinutes(10),
       itsTimeLengthInHours(48),
       itsPlumeProbFactor(25),
@@ -20,25 +14,20 @@ NFmiTrajectory::NFmiTrajectory()
       itsIsentropicTpotValue(kFloatMissing),
       itsStartTimeRangeInMinutes(0),
       itsDirection(kForward),
-      itsCrossSectionTrajectoryPoints(),
-      itsCrossSectionTrajectoryTimes(),
       fPlumesUsed(true),
       fIsentropic(false),
       fCalcTempBalloonTrajectories(false),
-      itsTempBalloonTrajectorSettings(),
       fCalculated(false)
 {
 }
 
-NFmiTrajectory::NFmiTrajectory(const NFmiPoint &theLatLon,
-                               const NFmiMetTime &theTime,
-                               const NFmiProducer &theProducer,
+NFmiTrajectory::NFmiTrajectory(const NFmiPoint& theLatLon,
+                               const NFmiMetTime& theTime,
+                               const NFmiProducer& theProducer,
                                int theDataType,
                                int theTimeStepInMinutes,
                                int theTimeLengthInHours)
-    : itsMainTrajector(),
-      itsPlumeTrajectories(),
-      itsLatLon(theLatLon),
+    : itsLatLon(theLatLon),
       itsTime(theTime),
       itsProducer(theProducer),
       itsDataType(theDataType),
@@ -52,12 +41,9 @@ NFmiTrajectory::NFmiTrajectory(const NFmiPoint &theLatLon,
       itsIsentropicTpotValue(kFloatMissing),
       itsStartTimeRangeInMinutes(0),
       itsDirection(kForward),
-      itsCrossSectionTrajectoryPoints(),
-      itsCrossSectionTrajectoryTimes(),
       fPlumesUsed(true),
       fIsentropic(false),
       fCalcTempBalloonTrajectories(false),
-      itsTempBalloonTrajectorSettings(),
       fCalculated(false)
 {
 }

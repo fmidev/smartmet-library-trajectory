@@ -179,10 +179,12 @@ double NFmiTempBalloonTrajectorSettings::CalcFallingRate(double Z)
   return w;
 }
 
+namespace
+{
 // HUOM! Tämän pitäisi olla Z-riippuvainen (g ja roo muuttuvat korkeuden mukaan).
 // Laskee paineen muutosnopeuden (omega [hPa/s]) vertikaalinopeuden (w) ja korkeuden (z)
 // avulla.
-static double CalcOmegaValue(double w, double /* Z */)
+double CalcOmegaValue(double w, double /* Z */)
 {
   const double g = 9.81;  // putoamis kiihtyvyys (pitäisi vaihtua korkeuden mukana)
   const double rooAir =
@@ -192,6 +194,7 @@ static double CalcOmegaValue(double w, double /* Z */)
       w;  // käytetty kaavaa omega = -g*roo*w eli -kiihtyvyys*ilman tiheys*vertikaali nopeus
   return omega;
 }
+}  // namespace
 
 // phase1 eli pallon nousuvaihe
 double NFmiTempBalloonTrajectorSettings::CalcOmegaInPhase1(double Z, int theTimeStepInMinutes)
