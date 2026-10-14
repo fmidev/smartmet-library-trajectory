@@ -757,8 +757,7 @@ std::string pretty_input_filename(const std::string &theName)
 {
   if (theName == "-")
     return "standard input";
-  else
-    return "'" + theName + "'";
+  return "'" + theName + "'";
 }
 
 // ----------------------------------------------------------------------

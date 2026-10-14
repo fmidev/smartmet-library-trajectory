@@ -69,13 +69,12 @@ NFmiMetTime NFmiTrajectory::CalcPossibleFirstTime()
     aTime.ChangeByMinutes(-itsStartTimeRangeInMinutes);
     return aTime;
   }
-  else
-  {  // backward trajectory
-    NFmiMetTime aTime(itsTime);
-    aTime.ChangeByMinutes(-itsStartTimeRangeInMinutes);
-    aTime.ChangeByHours(-itsTimeLengthInHours);
-    return aTime;
-  }
+
+  // backward trajectory
+  NFmiMetTime aTime(itsTime);
+  aTime.ChangeByMinutes(-itsStartTimeRangeInMinutes);
+  aTime.ChangeByHours(-itsTimeLengthInHours);
+  return aTime;
 }
 
 NFmiMetTime NFmiTrajectory::CalcPossibleLastTime()
@@ -86,13 +85,12 @@ NFmiMetTime NFmiTrajectory::CalcPossibleLastTime()
     aTime.ChangeByMinutes(itsStartTimeRangeInMinutes);
     return aTime;
   }
-  else
-  {  // forward trajectory
-    NFmiMetTime aTime(itsTime);
-    aTime.ChangeByMinutes(itsStartTimeRangeInMinutes);
-    aTime.ChangeByHours(itsTimeLengthInHours);
-    return aTime;
-  }
+
+  // forward trajectory
+  NFmiMetTime aTime(itsTime);
+  aTime.ChangeByMinutes(itsStartTimeRangeInMinutes);
+  aTime.ChangeByHours(itsTimeLengthInHours);
+  return aTime;
 }
 
 bool NFmiTrajectory::Is3DTrajectory() const

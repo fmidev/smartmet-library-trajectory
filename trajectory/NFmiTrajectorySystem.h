@@ -194,6 +194,7 @@ class NFmiTrajectorySystem
   NFmiMetTime itsSelectedTime;
   NFmiProducer itsSelectedProducer;
   int itsSelectedDataType = 2;  // 0=pinta, 1=painepinta, 2=mallipinta ja 3=historia dataa
+  // siirrä nämä asetukset myös tiedostoon konffeihin
   int itsSelectedTimeStepInMinutes = 30;
   int itsSelectedTimeLengthInHours = 24;
   double itsSelectedPlumeProbFactor = 25;

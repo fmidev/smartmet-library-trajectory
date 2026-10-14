@@ -472,13 +472,10 @@ bool MakeGroundAdjustment(double &WS,
           groundw == kFloatMissing)
         return false;  // eli nyt on data loppunut joko ajallisesti, alueellisesti tai
                        // korkeudellisesti
-      else
-      {
-        P = groundP;
-        WS = groundWS;
-        WD = groundWD;
-        w = groundw;
-      }
+      P = groundP;
+      WS = groundWS;
+      WD = groundWD;
+      w = groundw;
     }
     else  // ollaan liian korkealla että haluttaisiin laskea maanpinta arvoja
       return false;
@@ -656,7 +653,7 @@ double CalcNewPressureLevelIsentropically(const std::shared_ptr<NFmiFastQueryInf
         levelIndex1;  // otetaan muistiin aloitus kerros, jos pitää etsiä toisesta suunnasta
     double startP = P1;
     double startValue = value1;
-    do
+    for (bool more = true; more; more = levelIndex2 > 0 && levelIndex2 < theInfo->SizeLevels() - 1)
     {
       value1 = value2;
       P1 = P2;
@@ -670,13 +667,13 @@ double CalcNewPressureLevelIsentropically(const std::shared_ptr<NFmiFastQueryInf
         nextPressure = ::CalcLogPFromLinearValues(value1, value2, theWantedTpot, P1, P2);
         return nextPressure;
       }
-    } while (levelIndex2 > 0 && levelIndex2 < theInfo->SizeLevels() - 1);
+    }
 
     // jos ei löytynyt toisesta suunnasta, kokeillaan toista suuntaa
     levelIndex2 = startLevel;
     P2 = startP;
     value2 = startValue;
-    do
+    for (bool more = true; more; more = levelIndex2 > 0 && levelIndex2 < theInfo->SizeLevels() - 1)
     {
       value1 = value2;
       P1 = P2;
@@ -691,7 +688,7 @@ double CalcNewPressureLevelIsentropically(const std::shared_ptr<NFmiFastQueryInf
         nextPressure = ::CalcLogPFromLinearValues(value1, value2, theWantedTpot, P1, P2);
         return nextPressure;
       }
-    } while (levelIndex2 > 0 && levelIndex2 < theInfo->SizeLevels() - 1);
+    }
   }
 
   return nextPressure;
@@ -992,8 +989,7 @@ const NFmiProducer GetSelectedProducer(NFmiProducerSystem &theProducerSystem,
 {
   if (theProducerSystem.Producers().size() > static_cast<size_t>(theRadioIndex))
     return theProducerSystem.Producer(theRadioIndex + 1).GetProducer();
-  else
-    return theProducerSystem.Producer(1).GetProducer();  // otetaan 1. tuottaja, jos voidaan
+  return theProducerSystem.Producer(1).GetProducer();  // otetaan 1. tuottaja, jos voidaan
 }
 
 void InitializeSilamStationList(NFmiSilamStationList &theStationList,
@@ -1187,8 +1183,7 @@ bool LessThan(const NFmiMetTime &time1, const NFmiMetTime &time2)
 {
   if (time2 == gMissingTime)
     return true;
-  else
-    return time1 < time2;
+  return time1 < time2;
 }
 
 // time1 ei ole koskaan puuttuva, time2 voi olla puuttuva
@@ -1196,8 +1191,7 @@ bool GreaterThan(const NFmiMetTime &time1, const NFmiMetTime &time2)
 {
   if (time2 == gMissingTime)
     return true;
-  else
-    return time1 > time2;
+  return time1 > time2;
 }
 }  // namespace
 
@@ -1234,8 +1228,7 @@ const NFmiTrajectory &NFmiTrajectorySystem::Trajectory(int theIndex) const
   static const NFmiTrajectory dummy;
   if (static_cast<int>(itsTrajectories.size()) > theIndex)
     return *(itsTrajectories[theIndex].get());
-  else
-    return dummy;
+  return dummy;
 }
 
 void NFmiTrajectorySystem::Write(std::ostream &os) const
@@ -1497,8 +1490,7 @@ std::string MakeValueStr(float theValue,
 {
   if (theValue == kFloatMissing)
     return wantedMissingStr;
-  else
-    return (char *)NFmiValueString::GetStringWithMaxDecimalsSmartWay(theValue, theDecimalCount);
+  return (char *)NFmiValueString::GetStringWithMaxDecimalsSmartWay(theValue, theDecimalCount);
 }
 }  // namespace
 
