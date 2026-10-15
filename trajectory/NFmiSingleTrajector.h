@@ -16,6 +16,8 @@ class NFmiSingleTrajector
                       const NFmiMetTime &theTime,
                       double thePressureLevel);
   ~NFmiSingleTrajector();
+  NFmiSingleTrajector(const NFmiSingleTrajector&) = default;
+  NFmiSingleTrajector& operator=(const NFmiSingleTrajector&) = default;
 
   std::string ToXMLStr(int TimeStepInMinutes, const NFmiProducer& Producer, FmiDirection Direction);
   const std::vector<NFmiPoint>& Points() const { return itsPoints; }
