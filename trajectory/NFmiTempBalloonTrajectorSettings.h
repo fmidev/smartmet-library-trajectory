@@ -9,10 +9,8 @@
 class NFmiTempBalloonTrajectorSettings
 {
  public:
-  NFmiTempBalloonTrajectorSettings()
-
-  {};
-  ~NFmiTempBalloonTrajectorSettings() {};
+  NFmiTempBalloonTrajectorSettings() {}
+  ~NFmiTempBalloonTrajectorSettings() {}
   NFmiTempBalloonTrajectorSettings(const NFmiTempBalloonTrajectorSettings&) = default;
   NFmiTempBalloonTrajectorSettings& operator=(const NFmiTempBalloonTrajectorSettings&) = default;
   double RisingSpeed() const { return itsRisingSpeed; }
