@@ -71,7 +71,7 @@ class NFmiTrajectory
   {
     return itsCrossSectionTrajectoryPoints;
   }
-  const std::vector<NFmiMetTime> CrossSectionTrajectoryTimes() const
+  std::vector<NFmiMetTime> CrossSectionTrajectoryTimes() const
   {
     return itsCrossSectionTrajectoryTimes;
   }

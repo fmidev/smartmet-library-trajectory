@@ -982,7 +982,7 @@ void NFmiTrajectorySystem::ClearTrajectories()
 namespace
 {
 // pitää päätellä tuottaja id:n perusteella mikä on halutun dadio buttonin indeksi alkaa 0
-const NFmiProducer GetSelectedProducer(NFmiProducerSystem &theProducerSystem,
+NFmiProducer GetSelectedProducer(NFmiProducerSystem &theProducerSystem,
                                               int theRadioIndex)
 {
   if (theProducerSystem.Producers().size() > static_cast<size_t>(theRadioIndex))
