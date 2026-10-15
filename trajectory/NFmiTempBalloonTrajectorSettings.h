@@ -13,6 +13,8 @@ class NFmiTempBalloonTrajectorSettings
 
   {};
   ~NFmiTempBalloonTrajectorSettings() {};
+  NFmiTempBalloonTrajectorSettings(const NFmiTempBalloonTrajectorSettings&) = default;
+  NFmiTempBalloonTrajectorSettings& operator=(const NFmiTempBalloonTrajectorSettings&) = default;
   double RisingSpeed() const { return itsRisingSpeed; }
   void RisingSpeed(double newValue) { itsRisingSpeed = newValue; }
   double FallSpeed() const { return itsFallSpeed; }
@@ -86,8 +88,8 @@ class NFmiTempBalloonTrajectorSettings
                                         // 3. kellunta eli kTop
                                         // 4. lasku eli kDown
                                         // 5. loppu (osunut takaisin maahan) eli kNoDirection
-  double itsCurrentFloatTimeInMinutes;  // jos 0, ei kellunta ole vielä alkanut, tämän avulla
-                                        // lasketaan milloin kellunta lopetetaan
+  double itsCurrentFloatTimeInMinutes = 0.0;  // jos 0, ei kellunta ole vielä alkanut, tämän avulla
+                                              // lasketaan milloin kellunta lopetetaan
 };
 
 inline std::ostream &operator<<(std::ostream &os, const NFmiTempBalloonTrajectorSettings &item)

@@ -45,7 +45,7 @@ class NFmiSingleTrajector
   NFmiPoint itsStartLatLon;
   NFmiMetTime itsStartTime;
   double itsStartPressureLevel;   // yks. hPa
-  double itsIsentropicTpotValue;  // kun lasketaan trajektoreita, tähän talletetaan haluttu
+  double itsIsentropicTpotValue = 0.0;  // kun lasketaan trajektoreita, tähän talletetaan haluttu
                                   // potentiaali lämpötila, mitä on käytetty
 
   double itsRandWSdiff;  // satunnainen WS muutos

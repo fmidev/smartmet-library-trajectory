@@ -657,7 +657,6 @@ double CalcNewPressureLevelIsentropically(const std::shared_ptr<NFmiFastQueryInf
     {
       value1 = value2;
       P1 = P2;
-      levelIndex1 = levelIndex2;
       levelIndex2 = (firstDirectionUp) ? levelIndex2 + 1 : levelIndex2 - 1;
       value2 = theInfo->FastPressureLevelValue(xInd, yInd, tInd, levelIndex2);
       P2 = GetPressureValue(
@@ -677,7 +676,6 @@ double CalcNewPressureLevelIsentropically(const std::shared_ptr<NFmiFastQueryInf
     {
       value1 = value2;
       P1 = P2;
-      levelIndex1 = levelIndex2;
       levelIndex2 = (firstDirectionUp) ? levelIndex2 - 1
                                        : levelIndex2 + 1;  // tässä piti kääntää level laskuria!
       value2 = theInfo->FastPressureLevelValue(xInd, yInd, tInd, levelIndex2);
@@ -781,7 +779,7 @@ void NFmiTrajectorySystem::CalculateSingle3DTrajectory(
   theInfo->ParamIndex(theInfo->HeightParamIndex());
   double heightValue = theInfo->PressureLevelValue(
       static_cast<float>(currentPressure), currentLoc.GetLocation(), startTime);
-  double nextPressure = currentPressure;
+  double nextPressure = kFloatMissing;
   if (!fCalcBalloonTrajectory)
   {
     // aloituspisteen paine pitää fiksata jos kyse hybridi datasta ja aloitus piste on alempana kuin
@@ -828,7 +826,7 @@ void NFmiTrajectorySystem::CalculateSingle3DTrajectory(
       // pallo laskuissa aloitetaan aina pinnalta
       theInfo->ParamIndex(pressureParamIndex);
       theInfo->LevelIndex(groundLevelIndex);
-      nextPressure = currentPressure = theInfo->InterpolatedValue(currentLatLon, currentTime);
+      currentPressure = theInfo->InterpolatedValue(currentLatLon, currentTime);
       theInfo->ParamIndex(theInfo->HeightParamIndex());
       heightValue = theInfo->InterpolatedValue(currentLatLon, currentTime);
       theTrajector.AddPoint(
