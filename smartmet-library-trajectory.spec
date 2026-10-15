@@ -4,7 +4,7 @@
 %define DEVELNAME %{SPECNAME}-devel
 Summary: Trajectory calculation library
 Name: %{SPECNAME}
-Version: 26.10.13
+Version: 26.10.15
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Libraries
@@ -21,19 +21,19 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot-%(%{__id_u} -n)
 BuildRequires: rpm-build
 BuildRequires: gcc-c++
 BuildRequires: make
-BuildRequires: smartmet-library-newbase-devel >= 26.10.13
-BuildRequires: smartmet-library-gis-devel >= 26.10.11
-BuildRequires: smartmet-library-smarttools-devel >= 26.10.13
-BuildRequires: smartmet-library-locus-devel >= 26.10.3
-BuildRequires: smartmet-library-macgyver-devel >= 26.10.11
+BuildRequires: smartmet-library-newbase-devel >= 26.10.15
+BuildRequires: smartmet-library-gis-devel >= 26.10.15
+BuildRequires: smartmet-library-smarttools-devel >= 26.10.15
+BuildRequires: smartmet-library-locus-devel >= 26.10.15
+BuildRequires: smartmet-library-macgyver-devel >= 26.10.15
 BuildRequires: %{smartmet_boost}-devel
 BuildRequires: ctpp2 >= 2.8.8
 Requires: gdal312
-Requires: smartmet-library-macgyver >= 26.10.11
-Requires: smartmet-library-gis >= 26.10.11
-Requires: smartmet-library-locus >= 26.10.3
-Requires: smartmet-library-newbase >= 26.10.13
-Requires: smartmet-library-smarttools >= 26.10.13
+Requires: smartmet-library-macgyver >= 26.10.15
+Requires: smartmet-library-gis >= 26.10.15
+Requires: smartmet-library-locus >= 26.10.15
+Requires: smartmet-library-newbase >= 26.10.15
+Requires: smartmet-library-smarttools >= 26.10.15
 Requires: %{smartmet_boost}-filesystem
 Requires: %{smartmet_boost}-iostreams
 Requires: %{smartmet_boost}-locale
@@ -76,7 +76,7 @@ FMI Trajectory Calculation Tools
 %package -n %{DEVELNAME}
 Summary: Trajectory calculation library
 Group: Development/Libraries
-Requires: smartmet-library-locus >= 26.10.3
+Requires: smartmet-library-locus >= 26.10.15
 Requires: %{SPECNAME} = %{version}-%{release}
 Provides: %{DEVELNAME}
 Obsoletes: libsmartmet-trajectory-devel < 17.1.4
@@ -119,9 +119,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/%{DIRNAME}
 
 %changelog
-* Tue Oct 13 2026 Mika Heiskanen <mika.heiskanen@fmi.fi> - 26.10.13-1.fmi
+* Thu Oct 15 2026 Mika Heiskanen <mika.heiskanen@fmi.fi> - 26.10.15-1.fmi
 - Declare member functions and parameters const where nothing is modified (const correctness), no functional changes
-- Requires 26.10.13 versions of newbase, smarttools due to their ABI changes
+- Requires 26.10.15 versions of newbase, smarttools due to their ABI changes
 - Fixed mechanical clang-tidy findings (internal linkage, unused parameters, initialization, redundant code), no functional changes
 - Fixed clang-tidy style findings (loops, nested conditionals, dead code)
 - Fixed clang-tidy correctness findings (member initialization, rule of five, printf formats, dead stores)
