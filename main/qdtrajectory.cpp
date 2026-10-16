@@ -93,10 +93,10 @@ void Options::report(std::ostream &out) const
 {
 #define HEADER(stream, title)                                                                   \
   stream << ANSI_BOLD_ON << ANSI_UNDERLINE_ON << (title) << ANSI_BOLD_OFF << ANSI_UNDERLINE_OFF \
-         << '\n';
+         << '\n'
 #define REPORT(stream, name, value)                                                              \
   stream << ANSI_ITALIC_ON << std::setw(35) << std::left << (name) << ANSI_ITALIC_OFF << (value) \
-         << '\n';
+         << '\n'
 
   HEADER(out, "Options summary");
   REPORT(out, "Verbose:", verbose);
