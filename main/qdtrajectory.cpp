@@ -259,6 +259,121 @@ Fmi::DateTime parse_starttime(const std::string &theStr)
 
 // ----------------------------------------------------------------------
 /*!
+ * \brief Print usage information
+ */
+// ----------------------------------------------------------------------
+
+void print_usage(const boost::program_options::options_description &desc)
+{
+  std::cout << "Usage: qdtrajectory [options] querydata\n"
+               "       qdtrajectory -i querydata [options]\n"
+               "       qdtrajectory [options] < querydata\n"
+               "       cat querydata | qdtrajectory [options]\n"
+               "\n"
+               "Calculate trajectories based on model or pressure level querydata.\n"
+               "The program always calculates one main trajectory. An additional\n"
+               "plume of perturbed trajectories can be simulated by selecing a plume\n"
+               "size and adjusting the relevant perturbation parameters.\n"
+               "\n"
+               "The supported output formats can be listed using the --list-formats\n"
+               "option, which essentially just lists the output templates found from\n"
+               "the template directory. Some common output formats include:\n"
+               "\n"
+               "     gpx   GPS eXchange format\n"
+               "     kml   Keyhole markup language\n"
+               "     kmz   Compressed KML\n"
+               "\n"
+               "In addition the extended KML format with the gx:track element is supported\n"
+               "with format names 'kmlx' and 'kmzx'.\n"
+               "\n"
+               "The 'debug' format dumps the contents of the respective C++ objects\n"
+               "in a legacy XML format, and is not intended for production use.\n"
+               "\n";
+
+  std::cout << desc << '\n';
+}
+
+// ----------------------------------------------------------------------
+/*!
+ * \brief Store the optional numeric options which have no default value
+ */
+// ----------------------------------------------------------------------
+
+void store_optional_values(const boost::program_options::variables_map &opt)
+{
+  if (opt.count("radius"))
+    options.arearadius = opt["radius"].as<double>();
+
+  if (opt.count("interval"))
+    options.timeinterval = opt["interval"].as<unsigned int>();
+
+  if (opt.count("pressure"))
+    options.pressure = opt["pressure"].as<double>();
+
+  if (opt.count("pressure-range"))
+    options.pressurerange = opt["pressure-range"].as<double>();
+
+  if (opt.count("height"))
+    options.height = opt["height"].as<double>();
+
+  if (opt.count("height-range"))
+    options.heightrange = opt["height-range"].as<double>();
+}
+
+// ----------------------------------------------------------------------
+/*!
+ * \brief Find the coordinate of a named location
+ */
+// ----------------------------------------------------------------------
+
+NFmiPoint find_place(const std::string &thePlace)
+{
+  Locus::QueryOptions opts;
+  auto username = NFmiSettings::Require<std::string>("LOCUS_USER");
+  auto password = NFmiSettings::Require<std::string>("LOCUS_PASSWD");
+  auto host = NFmiSettings::Require<std::string>("LOCUS_HOST");
+  std::string database = "fminames";
+  Locus::Query query(host, username, password, database);
+  auto res = query.FetchByName(opts, thePlace);
+  if (res.empty())
+    throw std::runtime_error("Unknown location '" + thePlace);
+  if (options.verbose)
+    print_location(std::cerr, res[0]);
+
+  return NFmiPoint(res[0].lon, res[0].lat);
+}
+
+// ----------------------------------------------------------------------
+/*!
+ * \brief Validate the combination of simulation options
+ */
+// ----------------------------------------------------------------------
+
+void validate_options()
+{
+  if (!options.pressure && !options.height)
+    throw std::runtime_error("Must specify simulation start pressure or height");
+
+  if (options.pressure && options.height)
+    throw std::runtime_error("Cannot specify both simulation start pressure and height");
+
+  if (options.pressurerange && options.heightrange)
+    throw std::runtime_error("Cannot specify both simulation pressure and height ranges");
+
+  if (options.heightrange && !options.height)
+    throw std::runtime_error(
+        "Specifying simulation height range without a height is not supported");
+
+  if (options.plumesize == 0)
+  {
+    if (options.arearadius || options.timeinterval || options.pressurerange || options.heightrange)
+      throw std::runtime_error(
+          "Specifying intervals or ranges when plume size is 0 is meaningless");
+  }
+}
+
+// ----------------------------------------------------------------------
+/*!
  * \brief Parse command line options
  * \return True, if execution may continue as usual
  */
@@ -329,32 +444,7 @@ bool parse_options(int argc, char *argv[])
 
   if (opt.count("help"))
   {
-    std::cout << "Usage: qdtrajectory [options] querydata\n"
-                 "       qdtrajectory -i querydata [options]\n"
-                 "       qdtrajectory [options] < querydata\n"
-                 "       cat querydata | qdtrajectory [options]\n"
-                 "\n"
-                 "Calculate trajectories based on model or pressure level querydata.\n"
-                 "The program always calculates one main trajectory. An additional\n"
-                 "plume of perturbed trajectories can be simulated by selecing a plume\n"
-                 "size and adjusting the relevant perturbation parameters.\n"
-                 "\n"
-                 "The supported output formats can be listed using the --list-formats\n"
-                 "option, which essentially just lists the output templates found from\n"
-                 "the template directory. Some common output formats include:\n"
-                 "\n"
-                 "     gpx   GPS eXchange format\n"
-                 "     kml   Keyhole markup language\n"
-                 "     kmz   Compressed KML\n"
-                 "\n"
-                 "In addition the extended KML format with the gx:track element is supported\n"
-                 "with format names 'kmlx' and 'kmzx'.\n"
-                 "\n"
-                 "The 'debug' format dumps the contents of the respective C++ objects\n"
-                 "in a legacy XML format, and is not intended for production use.\n"
-                 "\n";
-
-    std::cout << desc << '\n';
+    print_usage(desc);
     return false;
   }
 
@@ -364,23 +454,7 @@ bool parse_options(int argc, char *argv[])
     return false;
   }
 
-  if (opt.count("radius"))
-    options.arearadius = opt["radius"].as<double>();
-
-  if (opt.count("interval"))
-    options.timeinterval = opt["interval"].as<unsigned int>();
-
-  if (opt.count("pressure"))
-    options.pressure = opt["pressure"].as<double>();
-
-  if (opt.count("pressure-range"))
-    options.pressurerange = opt["pressure-range"].as<double>();
-
-  if (opt.count("height"))
-    options.height = opt["height"].as<double>();
-
-  if (opt.count("height-range"))
-    options.heightrange = opt["height-range"].as<double>();
+  store_optional_values(opt);
 
   if (options.queryfile != "-" && !fs::exists(options.queryfile))
     throw std::runtime_error("Input file '" + options.queryfile + "' does not exist");
@@ -389,27 +463,13 @@ bool parse_options(int argc, char *argv[])
     options.format = boost::algorithm::to_lower_copy(opt_format);
 
   if (!opt_place.empty())
-  {
-    Locus::QueryOptions opts;
-    auto username = NFmiSettings::Require<std::string>("LOCUS_USER");
-    auto password = NFmiSettings::Require<std::string>("LOCUS_PASSWD");
-    auto host = NFmiSettings::Require<std::string>("LOCUS_HOST");
-    std::string database = "fminames";
-    Locus::Query query(host, username, password, database);
-    auto res = query.FetchByName(opts, opt_place);
-    if (res.empty())
-      throw std::runtime_error("Unknown location '" + opt_place);
-    if (options.verbose)
-      print_location(std::cerr, res[0]);
-
-    options.coordinate = NFmiPoint(res[0].lon, res[0].lat);
-  }
+    options.coordinate = find_place(opt_place);
 
   if (!opt_lonlat.empty())
     options.coordinate = parse_lonlat(opt_lonlat);
 
   if (!opt_latlon.empty())
-    options.coordinate = parse_latlon(opt_lonlat);
+    options.coordinate = parse_latlon(opt_latlon);
 
   if (opt_longitude != kFloatMissing)
     options.coordinate.X(opt_longitude);
@@ -423,25 +483,7 @@ bool parse_options(int argc, char *argv[])
   if (!opt_starttime.empty())
     options.starttime = parse_starttime(opt_starttime);
 
-  if (!options.pressure && !options.height)
-    throw std::runtime_error("Must specify simulation start pressure or height");
-
-  if (options.pressure && options.height)
-    throw std::runtime_error("Cannot specify both simulation start pressure and height");
-
-  if (options.pressurerange && options.heightrange)
-    throw std::runtime_error("Cannot specify both simulation pressure and height ranges");
-
-  if (options.heightrange && !options.height)
-    throw std::runtime_error(
-        "Specifying simulation height range without a height is not supported");
-
-  if (options.plumesize == 0)
-  {
-    if (options.arearadius || options.timeinterval || options.pressurerange || options.heightrange)
-      throw std::runtime_error(
-          "Specifying intervals or ranges when plume size is 0 is meaningless");
-  }
+  validate_options();
 
   return true;
 }
