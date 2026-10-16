@@ -261,6 +261,83 @@ double RandomizewValue(double w, double randFactor)
   double modifyValue = w * randValue * randFactor * 0.01;  // muutetaan luku oikeaksi muutos arvoksi
   return modifyValue;
 }
+
+// Balloon calculations always start from the ground: add the ground point to the trajectory
+void StartBalloonFromGround(const std::shared_ptr<NFmiFastQueryInfo> &theInfo,
+                            const NFmiPoint &currentLatLon,
+                            const NFmiMetTime &currentTime,
+                            unsigned long pressureParamIndex,
+                            unsigned long groundLevelIndex,
+                            NFmiSingleTrajector &theTrajector,
+                            double &currentPressure,
+                            double &heightValue)
+{
+  theInfo->ParamIndex(pressureParamIndex);
+  theInfo->LevelIndex(groundLevelIndex);
+  currentPressure = theInfo->InterpolatedValue(currentLatLon, currentTime);
+  theInfo->ParamIndex(theInfo->HeightParamIndex());
+  heightValue = theInfo->InterpolatedValue(currentLatLon, currentTime);
+  theTrajector.AddPoint(
+      theTrajector.StartLatLon(),
+      static_cast<float>(currentPressure),
+      static_cast<float>(heightValue));  // 1. piste pit‰‰ lis‰t‰ erikseen listaan
+}
+
+// Read wind speed, direction and vertical velocity at the current point.
+// Returns false if the trajectory calculation should be stopped.
+bool ReadWindValues(const std::shared_ptr<NFmiFastQueryInfo> &theInfo,
+                    bool status1,
+                    bool status2,
+                    bool status3,
+                    double xInd,
+                    double yInd,
+                    double tInd,
+                    double pInd,
+                    FmiParameterName usedWParam,
+                    bool fIsentropic,
+                    int index,
+                    unsigned long tpotParamIndex,
+                    NFmiSingleTrajector &theTrajector,
+                    double &WS,
+                    double &WD,
+                    double &w,
+                    double &isentropicTpotValue)
+{
+  if (status1 && status2 && status3)
+  {
+    theInfo->Param(kFmiWindSpeedMS);
+    WS = theInfo->FastPressureLevelValue(xInd, yInd, tInd, pInd);
+    theInfo->Param(kFmiWindDirection);
+    WD = theInfo->FastPressureLevelValue(xInd, yInd, tInd, pInd);
+    theInfo->Param(usedWParam);
+    w = theInfo->FastPressureLevelValue(xInd, yInd, tInd, pInd);
+    if (fIsentropic && index == 0)
+    {
+      theInfo->ParamIndex(tpotParamIndex);
+      isentropicTpotValue = theInfo->FastPressureLevelValue(xInd, yInd, tInd, pInd);
+      if (isentropicTpotValue == kFloatMissing)
+        return false;
+      theTrajector.IsentropicTpotValue(isentropicTpotValue);
+    }
+    return true;
+  }
+  return status1 && status2;
+}
+
+// Step the time forward or backward by one time step
+void StepTime(NFmiMetTime &theTime, bool forwardDir)
+{
+  if (forwardDir)
+    theTime.NextMetTime();
+  else
+    theTime.PreviousMetTime();
+}
+
+// Test whether the simulation end time has not yet been reached
+bool IsBeforeEndTime(const NFmiMetTime &theTime, const NFmiMetTime &theEndTime, bool forwardDir)
+{
+  return forwardDir ? (theTime < theEndTime) : (theTime > theEndTime);
+}
 }  // namespace
 
 // Oletus: theInfo on jo tarkistettu.
@@ -814,7 +891,7 @@ void NFmiTrajectorySystem::CalculateSingle3DTrajectory(
   NFmiPoint currentLatLon;
   theTempBalloonTrajectorSettings.Reset();
 
-  for (; forwardDir ? (currentTime < endTime) : (currentTime > endTime);)
+  while (::IsBeforeEndTime(currentTime, endTime, forwardDir))
   {
     currentLatLon = currentLoc.GetLocation();
     bool status1 = theInfo->GetLocationIndex(currentLatLon, xInd, yInd);
@@ -824,35 +901,33 @@ void NFmiTrajectorySystem::CalculateSingle3DTrajectory(
         theTempBalloonTrajectorSettings.State() == kBase)
     {
       // pallo laskuissa aloitetaan aina pinnalta
-      theInfo->ParamIndex(pressureParamIndex);
-      theInfo->LevelIndex(groundLevelIndex);
-      currentPressure = theInfo->InterpolatedValue(currentLatLon, currentTime);
-      theInfo->ParamIndex(theInfo->HeightParamIndex());
-      heightValue = theInfo->InterpolatedValue(currentLatLon, currentTime);
-      theTrajector.AddPoint(
-          theTrajector.StartLatLon(),
-          static_cast<float>(currentPressure),
-          static_cast<float>(heightValue));  // 1. piste pit‰‰ lis‰t‰ erikseen listaan
+      ::StartBalloonFromGround(theInfo,
+                               currentLatLon,
+                               currentTime,
+                               pressureParamIndex,
+                               groundLevelIndex,
+                               theTrajector,
+                               currentPressure,
+                               heightValue);
     }
     bool status3 = theInfo->GetLevelIndex(currentLatLon, currentTime, currentPressure, pInd);
-    if (status1 && status2 && status3)
-    {
-      theInfo->Param(kFmiWindSpeedMS);
-      WS = theInfo->FastPressureLevelValue(xInd, yInd, tInd, pInd);
-      theInfo->Param(kFmiWindDirection);
-      WD = theInfo->FastPressureLevelValue(xInd, yInd, tInd, pInd);
-      theInfo->Param(usedWParam);
-      w = theInfo->FastPressureLevelValue(xInd, yInd, tInd, pInd);
-      if (fIsentropic && index == 0)
-      {
-        theInfo->ParamIndex(tpotParamIndex);
-        isentropicTpotValue = theInfo->FastPressureLevelValue(xInd, yInd, tInd, pInd);
-        if (isentropicTpotValue == kFloatMissing)
-          break;
-        theTrajector.IsentropicTpotValue(isentropicTpotValue);
-      }
-    }
-    else if (!status1 || !status2)
+    if (!::ReadWindValues(theInfo,
+                          status1,
+                          status2,
+                          status3,
+                          xInd,
+                          yInd,
+                          tInd,
+                          pInd,
+                          usedWParam,
+                          fIsentropic,
+                          index,
+                          tpotParamIndex,
+                          theTrajector,
+                          WS,
+                          WD,
+                          w,
+                          isentropicTpotValue))
       break;
 
     if (!::MakeGroundAdjustment(WS,
@@ -871,9 +946,7 @@ void NFmiTrajectorySystem::CalculateSingle3DTrajectory(
         WS, WD, w, theRandStep, index, theRandFactor, theTrajector);
     nextLoc = ::CalcNewLocation(currentLoc, WS, WD, theTimeStepInMinutes, forwardDir);
 
-    (forwardDir)
-        ? currentTime.NextMetTime()
-        : currentTime.PreviousMetTime();  // isentrooppi laskuja varten pit‰‰ laskea seuraava aika
+    ::StepTime(currentTime, forwardDir);  // isentrooppi laskuja varten pit‰‰ laskea seuraava aika
     if (fIsentropic)
       nextPressure = ::CalcNewPressureLevelIsentropically(theInfo,
                                                           nextLoc,
