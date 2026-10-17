@@ -18,7 +18,11 @@ make rpm              # Build RPM package
 make install          # Install (PREFIX=/usr by default)
 ```
 
-There is no test directory or test suite in this project.
+```bash
+make test             # Run the qdtrajectory regression tests in test/
+```
+
+`test/RunTests.sh` runs `qdtrajectory` for each case in `test/cases.txt` against ECMWF pressure level data from `smartmet-test-data` and compares the output with `test/output/<case>`. It uses the local `../qdtrajectory` and `../tmpl` when built, otherwise the installed ones; failing outputs are left in `test/failures/`.
 
 ## Dependencies
 

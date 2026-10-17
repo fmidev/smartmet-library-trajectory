@@ -24,10 +24,14 @@ fields of QueryData. The server's trajectory plugin, the SmartMet Editor and the
 
 ```bash
 make           # libsmartmet-trajectory.so and qdtrajectory
+make test      # qdtrajectory regression tests
 ```
 
-There are no tests; CI builds the RPMs only. Check changes by comparing `qdtrajectory` or
-trajectory plugin output before and after. The sources are **Latin-1** encoded; open and
+`test/RunTests.sh` runs `qdtrajectory` for each case in `test/cases.txt` (name and
+arguments) on ECMWF pressure level data from `smartmet-test-data`, and compares the output
+with `test/output/<name>`; differing outputs are left in `test/failures/`. The tests are
+disabled in CI (`.circleci/disable-tests-in-ci`), which builds the RPMs only. Check changes
+also against trajectory plugin output. The sources are **Latin-1** encoded; open and
 save them as such (and use `grep -a`, since some tools treat them as binary).
 
 ## 2. Computing a trajectory
