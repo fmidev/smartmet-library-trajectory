@@ -4,7 +4,7 @@
 %define DEVELNAME %{SPECNAME}-devel
 Summary: Trajectory calculation library
 Name: %{SPECNAME}
-Version: 26.10.16
+Version: 26.10.17
 Release: 1%{?dist}.fmi
 License: FMI
 Group: Development/Libraries
@@ -29,11 +29,11 @@ BuildRequires: smartmet-library-macgyver-devel >= 26.10.16
 BuildRequires: %{smartmet_boost}-devel
 BuildRequires: ctpp2 >= 2.8.8
 Requires: gdal312
-Requires: smartmet-library-macgyver >= 26.10.16
-Requires: smartmet-library-gis >= 26.10.16
+Requires: smartmet-library-macgyver >= 26.10.17
+Requires: smartmet-library-gis >= 26.10.17
 Requires: smartmet-library-locus >= 26.10.16
-Requires: smartmet-library-newbase >= 26.10.16
-Requires: smartmet-library-smarttools >= 26.10.16
+Requires: smartmet-library-newbase >= 26.10.17
+Requires: smartmet-library-smarttools >= 26.10.17
 Requires: %{smartmet_boost}-filesystem
 Requires: %{smartmet_boost}-iostreams
 Requires: %{smartmet_boost}-locale
@@ -119,6 +119,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/smartmet/%{DIRNAME}
 
 %changelog
+* Sat Oct 17 2026 Mika Heiskanen <mika.heiskanen@fmi.fi> - 26.10.17-1.fmi
+- Split functions with a cognitive complexity above 25 into smaller helpers, no functional changes
+
 * Fri Oct 16 2026 Mika Heiskanen <mika.heiskanen@fmi.fi> - 26.10.16-1.fmi
 - Fixed compiler warnings and clang-tidy findings (unused code, unreachable code, empty statements, member initialization, parameter passing, noexcept), no functional changes
 - ABI change: parameters passed by const reference or by value, removed unused members and defaulted copy operations, dependent packages must be rebuilt
