@@ -80,7 +80,7 @@ class NFmiTempBalloonTrajectorSettings
   double itsFallSpeed = 3.28;
   double itsTopHeightInKM = 15;
   double itsFloatingTimeInMinutes = 0;
-  FmiDirection itsState;                // pallolaskuissa on tietyt vaiheet
+  FmiDirection itsState = kNoDirection;                // pallolaskuissa on tietyt vaiheet
                                         // 1. alku (reset tila) eli kBase
                                         // 2. nousu eli kUp
                                         // 3. kellunta eli kTop
