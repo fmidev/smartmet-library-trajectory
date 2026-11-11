@@ -272,7 +272,7 @@ void print_usage(const boost::program_options::options_description &desc)
                "\n"
                "Calculate trajectories based on model or pressure level querydata.\n"
                "The program always calculates one main trajectory. An additional\n"
-               "plume of perturbed trajectories can be simulated by selecing a plume\n"
+               "plume of perturbed trajectories can be simulated by selecting a plume\n"
                "size and adjusting the relevant perturbation parameters.\n"
                "\n"
                "The supported output formats can be listed using the --list-formats\n"
@@ -553,7 +553,7 @@ std::shared_ptr<NFmiTrajectory> calculate_trajectory(
   // trajectory->CalcTempBalloonTrajectors(false);
   // trajectory->TempBalloonTrajectorSettings(NFmiTempBalloonTrajectorSettings());
 
-  // Plume initial dispersion radius, start time interval, and pressure disribution
+  // Plume initial dispersion radius, start time interval, and pressure distribution
   if (options.arearadius)
     trajectory->StartLocationRangeInKM(*options.arearadius);
   if (options.timeinterval)
