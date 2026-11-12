@@ -1,6 +1,3 @@
-#include "../trajectory/NFmiSingleTrajector.h"
-#include "../trajectory/NFmiTrajectory.h"
-#include "../trajectory/NFmiTrajectorySystem.h"
 #include "NFmiSingleTrajector.h"
 #include "NFmiTrajectory.h"
 #include "NFmiTrajectorySystem.h"
