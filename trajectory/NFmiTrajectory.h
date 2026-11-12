@@ -2,10 +2,14 @@
 
 #include "NFmiSingleTrajector.h"
 #include "NFmiTempBalloonTrajectorSettings.h"
-#include <memory>
+#include <newbase/NFmiGlobals.h>
 #include <newbase/NFmiMetTime.h>
 #include <newbase/NFmiPoint.h>
 #include <newbase/NFmiProducer.h>
+#include <iosfwd>
+#include <memory>
+#include <string>
+#include <vector>
 
 // trajektori voi pitää sisällään yhdestä useampaan kpl yksittäisiä
 // trajektoreita. Yksi pää trajektory ja ns. satunnais pluumi, jossa useita partikkeleita.

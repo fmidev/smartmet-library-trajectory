@@ -1,9 +1,12 @@
 #pragma once
 
-#include <newbase/NFmiDataMatrix.h>
+#include <newbase/NFmiGlobals.h>
 #include <newbase/NFmiMetTime.h>
 #include <newbase/NFmiPoint.h>
-#include <newbase/NFmiProducer.h>
+#include <string>
+#include <vector>
+
+class NFmiProducer;
 
 // pluumi eli yksi yksittäisen partikkelin eteneminen
 // tähän talletetaan vain trajectorin pisteet ja alku aika ja paikka.

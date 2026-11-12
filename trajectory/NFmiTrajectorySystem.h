@@ -6,15 +6,23 @@
 
 #pragma once
 
-#include "NFmiSingleTrajector.h"
 #include "NFmiTempBalloonTrajectorSettings.h"
-#include "NFmiTrajectory.h"
-
+#include <newbase/NFmiGlobals.h>
+#include <newbase/NFmiMetTime.h>
+#include <newbase/NFmiPoint.h>
+#include <newbase/NFmiProducer.h>
+#include <newbase/NFmiTimeBag.h>
 #include <smarttools/NFmiRawTempStationInfoSystem.h>
+#include <iosfwd>
+#include <memory>
+#include <string>
+#include <vector>
 
-class NFmiInfoOrganizer;
 class NFmiFastQueryInfo;
+class NFmiInfoOrganizer;
 class NFmiProducerSystem;
+class NFmiSingleTrajector;
+class NFmiTrajectory;
 
 //_________________________________________________________ NFmiTrajectorySystem
 class NFmiTrajectorySystem

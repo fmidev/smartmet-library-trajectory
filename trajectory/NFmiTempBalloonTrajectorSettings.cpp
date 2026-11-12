@@ -3,7 +3,10 @@
 // *****************************************************************************
 
 #include "NFmiTempBalloonTrajectorSettings.h"
+#include <newbase/NFmiFastQueryInfo.h>
 #include <smarttools/NFmiDataStoringHelpers.h>
+#include <istream>
+#include <stdexcept>
 
 #if __cplusplus >= 201703L
 #define FALL_THROUGH [[fallthrough]]

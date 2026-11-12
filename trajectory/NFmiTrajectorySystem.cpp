@@ -3,17 +3,33 @@
 //
 
 #include "NFmiTrajectorySystem.h"
-#include <newbase/NFmiDataModifierAvg.h>
+#include "NFmiSingleTrajector.h"
+#include "NFmiTrajectory.h"
+#include <newbase/NFmiDef.h>
 #include <newbase/NFmiFastQueryInfo.h>
+#include <newbase/NFmiIndividual.h>
+#include <newbase/NFmiInfoData.h>
+#include <newbase/NFmiLevel.h>
+#include <newbase/NFmiLevelType.h>
+#include <newbase/NFmiLocation.h>
+#include <newbase/NFmiParameterName.h>
 #include <newbase/NFmiProducerName.h>
 #include <newbase/NFmiSettings.h>
+#include <newbase/NFmiString.h>
+#include <newbase/NFmiStringTools.h>
+#include <newbase/NFmiTime.h>
+#include <newbase/NFmiTimePeriod.h>
 #include <newbase/NFmiValueString.h>
 #include <smarttools/NFmiDataStoringHelpers.h>
 #include <smarttools/NFmiInfoOrganizer.h>
 #include <smarttools/NFmiProducerSystem.h>
 #include <algorithm>
+#include <cmath>
+#include <cstdlib>
 #include <fstream>
 #include <memory>
+#include <set>
+#include <stdexcept>
 
 double NFmiTrajectorySystem::itsLatestVersionNumber = 1.0;
 

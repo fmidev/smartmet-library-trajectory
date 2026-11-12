@@ -1,5 +1,8 @@
 #include "NFmiTrajectory.h"
+#include <newbase/NFmiIndividual.h>
 #include <smarttools/NFmiDataStoringHelpers.h>
+#include <istream>
+#include <stdexcept>
 
 //_________________________________________________________ NFmiTrajectory
 NFmiTrajectory::NFmiTrajectory()

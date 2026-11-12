@@ -1,9 +1,12 @@
 #pragma once
 
-#include <newbase/NFmiFastQueryInfo.h>
 #include <newbase/NFmiGlobals.h>
-
+#include <newbase/NFmiMetTime.h>
+#include <newbase/NFmiPoint.h>
+#include <iosfwd>
 #include <memory>
+
+class NFmiFastQueryInfo;
 
 // luokka joka pitää sisällään luotauspallo trajektori asetukset
 class NFmiTempBalloonTrajectorSettings
